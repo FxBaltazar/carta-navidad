@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Carta Digital</title>
+<title>Carta Navideña</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
 <style>
   body {
@@ -12,13 +12,14 @@
     background: linear-gradient(to bottom, #ffe6b3, #ffd700);
     text-align: center;
     padding: 20px;
+    overflow-x: hidden;
   }
 
   h1 {
     font-family: 'Pacifico', cursive;
     color: #d9534f;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+    font-size: 3em;
+    margin-bottom: 10px;
   }
 
   .message {
@@ -27,27 +28,49 @@
     margin: 20px auto;
     border-radius: 15px;
     max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
   }
 
   .message:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   }
 
   img {
     max-width: 90%;
     height: auto;
     border-radius: 10px;
-    margin: 15px 0;
+    margin: 10px 0;
   }
 
   p {
     font-size: 1.2em;
+    color: #333;
+  }
+
+  /* Animación de nieve */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    z-index: 9999;
+    color: white;
+    user-select: none;
+    pointer-events: none;
+    font-size: 1em;
+    animation-name: fall;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
   }
 
   @media (max-width: 600px) {
-    h1 { font-size: 2em; }
+    h1 { font-size: 2.2em; }
     .message { padding: 15px; }
     p { font-size: 1em; }
   }
@@ -55,21 +78,35 @@
 </head>
 <body>
 
-<h1>¡Feliz Navidad, mi amor! 🎄❤️</h1>
+<h1>¡Feliz Navidad! 🎄✨</h1>
 
 <div class="message">
-  <p>Espero que disfrutes esta sorpresa tanto como yo disfruté preparándola 😘</p>
+  <p>Que esta Navidad esté llena de risas y dulces sorpresas 🍬🎁</p>
 </div>
 
 <div class="message">
-  <img src="images/meme1.jpg" alt="Meme divertido">
-  <p>Un meme navideño para ti 😎</p>
+  <img src="images/reno.gif" alt="Reno divertido">
+  <p>Un reno travieso se ha colado para desearte alegría 😄</p>
 </div>
 
 <div class="message">
-  <img src="images/meme2.jpg" alt="Meme divertido 2">
-  <p>Y otro más para reír juntos 😁</p>
+  <img src="images/regalo.jpg" alt="Regalo navideño">
+  <p>Que cada regalo venga con un poco de magia ✨🎁</p>
 </div>
+
+<!-- Generar nieve -->
+<script>
+  const numFlakes = 30;
+  for(let i=0; i<numFlakes; i++){
+    let snow = document.createElement('div');
+    snow.classList.add('snowflake');
+    snow.style.left = Math.random() * 100 + 'vw';
+    snow.style.fontSize = (Math.random()*10+10) + 'px';
+    snow.style.animationDuration = (Math.random()*5+5) + 's';
+    snow.innerText = '❄';
+    document.body.appendChild(snow);
+  }
+</script>
 
 </body>
 </html>
