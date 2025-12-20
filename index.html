@@ -28,34 +28,49 @@ html, body {
   z-index: 1000;
 }
 
-/* ===== BOTONES CON TU GIF ===== */
-.boton,
-.songBtn,
-#playPauseBtn {
+/* Botones navideños arcoíris oscuro */
+.boton {
   padding: 2vw 4vw;
   font-weight: bold;
   font-size: 3.5vw;
-  border-radius: 14px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
   cursor: pointer;
-  color: #fff;
-  border: 2px solid rgba(255,255,255,0.6);
 
-  background-image: url('fondos/estilo.gif');
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(
+    45deg,
+    #5a0000,
+    #003b1f,
+    #6b4f00,
+    #1f2f2f,
+    #4a2a12
+  );
+  background-size: 400% 400%;
 
-  text-shadow: 1px 1px 3px #000;
-  box-shadow: 0 0 8px rgba(0,0,0,0.7);
-  transition: transform 0.2s, box-shadow 0.2s;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+  box-shadow: 0 0 8px #111, 0 0 14px #222;
+  animation: rainbowBG 10s ease infinite alternate, glow 3s ease-in-out infinite alternate;
+  transition: transform 0.2s;
 }
 
-.boton:hover,
-.songBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 14px rgba(0,0,0,0.9);
+.boton:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 12px #111, 0 0 22px #222;
 }
 
-/* ===== MENÚS CON GIF CENTRAL ===== */
+@keyframes rainbowBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 8px #111, 0 0 14px #222; }
+  100% { box-shadow: 0 0 14px #111, 0 0 26px #222; }
+}
+
+/* Menús de selección */
 .menu {
   position: absolute;
   display: none;
@@ -63,42 +78,64 @@ html, body {
   gap: 2vw;
   top: 10vh;
   left: 2vw;
-
-  background-image: url('fondos/estilo.gif');
-  background-size: cover;
-  background-position: center;
-
-  padding: 3vw;
-  border-radius: 18px;
+  background: rgba(0,0,0,0.75);
+  padding: 1vw;
+  border-radius: 12px;
   z-index: 1001;
-
-  box-shadow: 0 0 25px rgba(0,0,0,0.8);
 }
 
-/* Botón cerrar */
+/* Botón cerrar MUY NOTORIO */
 .closeBtn {
-  padding: 0.8vw 1.5vw;
-  font-size: 3vw;
-  border-radius: 12px;
-  border: none;
-  background: rgba(0,0,0,0.6);
+  padding: 0.8vw 1.4vw;
+  font-size: 3.5vw;
+  font-weight: bold;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #b00000;
   color: white;
   cursor: pointer;
   margin-bottom: 1vw;
+  box-shadow: 0 0 12px black, 0 0 20px #b00000;
 }
 
-/* Miniaturas */
+/* Botones de canciones */
+.songBtn {
+  padding: 1vw 2vw;
+  font-size: 3vw;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+
+  background: linear-gradient(
+    45deg,
+    #003b1f,
+    #4a2a12,
+    #6b4f00
+  );
+
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  text-shadow: 1px 1px 2px black;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.songBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px #fff;
+}
+
 .menu img {
   width: 20vw;
   height: auto;
-  border-radius: 12px;
-  border: 2px solid rgba(255,255,255,0.7);
+  border: 2px solid #fff;
+  border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s;
 }
 
 .menu img:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 10px #fff;
 }
 
 /* Nieve */
@@ -129,15 +166,17 @@ html, body {
   <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
 </div>
 
+<!-- Menú música -->
 <div id="musicMenu" class="menu">
-  <button class="closeBtn" onclick="musicMenu.style.display='none'">X</button>
+  <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
   <div class="songBtn" onclick="cambiarMusica('musica/villancico.mp3')">🎶 Villancico 1</div>
   <div class="songBtn" onclick="cambiarMusica('musica/navidad2.mp3')">🎶 Villancico 2</div>
   <div class="songBtn" onclick="cambiarMusica('musica/navidad3.mp3')">🎶 Villancico 3</div>
 </div>
 
+<!-- Menú fondos -->
 <div id="bgMenu" class="menu">
-  <button class="closeBtn" onclick="bgMenu.style.display='none'">X</button>
+  <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
   <img src="fondos/fondo1.gif" onclick="cambiarFondo('fondos/fondo1.gif')">
   <img src="fondos/fondo2.gif" onclick="cambiarFondo('fondos/fondo2.gif')">
   <img src="fondos/fondo3.gif" onclick="cambiarFondo('fondos/fondo3.gif')">
@@ -146,6 +185,7 @@ html, body {
 <audio id="musica" loop></audio>
 
 <script>
+// ==== Nieve ====
 const snowCount = 50;
 for(let i=0;i<snowCount;i++){
   const snow = document.createElement('div');
@@ -158,6 +198,7 @@ for(let i=0;i<snowCount;i++){
   document.body.appendChild(snow);
 }
 
+// ==== Botones y menús ====
 const musicBtn = document.getElementById('musicBtn');
 const bgBtn = document.getElementById('bgBtn');
 const musicMenu = document.getElementById('musicMenu');
@@ -175,6 +216,7 @@ bgBtn.addEventListener('click', ()=>{
   musicMenu.style.display='none';
 });
 
+// ==== Funciones ====
 function cambiarMusica(ruta){
   musica.src = ruta;
   musica.play();
@@ -184,9 +226,10 @@ function cambiarMusica(ruta){
 }
 
 function cambiarFondo(ruta){
-  document.body.style.backgroundImage = `url('${ruta}')`;
+  document.body.style.backgroundImage = url('${ruta}');
 }
 
+// ==== Pausar/Reanudar música ====
 let pausado = false;
 playPauseBtn.addEventListener('click', ()=>{
   if(!pausado){
