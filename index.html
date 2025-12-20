@@ -12,111 +12,100 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
+
+  /* 🔴 FONDO PRINCIPAL – NO SE TOCA */
   background: url('fondos/fondo1.gif') no-repeat center center fixed;
   background-size: cover;
   overflow: hidden;
 }
 
-/* Botón y contenedor */
+/* CONTENEDOR DE BOTONES PRINCIPALES */
 .boton-container {
   position: fixed;
   top: 2%;
   left: 2%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2vw;
+  gap: 10px;
   z-index: 1000;
 }
 
-/* ===== BOTONES CON TU GIF ===== */
-.boton,
-.songBtn,
-#playPauseBtn {
-  padding: 2vw 4vw;
+/* BOTONES PRINCIPALES */
+.boton, #playPauseBtn, .songBtn {
+  padding: 10px 16px;
+  font-size: 14px;
   font-weight: bold;
-  font-size: 3.5vw;
+  color: white;
   border-radius: 14px;
   cursor: pointer;
-  color: #fff;
   border: 2px solid rgba(255,255,255,0.6);
 
+  /* 🟢 MISMO ESTILO DEL GIF */
   background-image: url('fondos/estilo.gif');
-  background-size: cover;
-  background-position: center;
+  background-position: center center;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
 
-  text-shadow: 1px 1px 3px #000;
-  box-shadow: 0 0 8px rgba(0,0,0,0.7);
-  transition: transform 0.2s, box-shadow 0.2s;
+  text-shadow: 1px 1px 3px black;
+  box-shadow: 0 0 10px rgba(0,0,0,0.8);
 }
 
-.boton:hover,
-.songBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 14px rgba(0,0,0,0.9);
-}
-
-/* ===== MENÚS CON GIF CENTRAL ===== */
+/* MENÚ DE OPCIONES */
 .menu {
-  position: absolute;
+  position: fixed;
+  top: 70px;
+  left: 10px;
   display: none;
-  flex-wrap: wrap;
-  gap: 2vw;
-  top: 10vh;
-  left: 2vw;
+  flex-direction: column;
+  gap: 10px;
 
+  width: 260px;
+  padding: 15px;
+  border-radius: 20px;
+
+  /* 🟢 AQUÍ VA EL GIF SOLO PARA OPCIONES */
   background-image: url('fondos/estilo.gif');
-  background-size: cover;
-  background-position: center;
+  background-position: center center;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
 
-  padding: 3vw;
-  border-radius: 18px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.9);
   z-index: 1001;
-
-  box-shadow: 0 0 25px rgba(0,0,0,0.8);
 }
 
-/* Botón cerrar */
+/* BOTÓN CERRAR ❌ MÁS NOTORIO */
 .closeBtn {
-  padding: 0.8vw 1.5vw;
-  font-size: 3vw;
-  border-radius: 12px;
-  border: none;
-  background: rgba(0,0,0,0.6);
+  align-self: flex-end;
+  background: #b30000;
   color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
-  margin-bottom: 1vw;
+  box-shadow: 0 0 10px black;
 }
 
-/* Miniaturas */
+/* MINIATURAS DE FONDOS */
 .menu img {
-  width: 20vw;
-  height: auto;
+  width: 100%;
   border-radius: 12px;
-  border: 2px solid rgba(255,255,255,0.7);
   cursor: pointer;
-  transition: transform 0.2s;
+  border: 2px solid rgba(255,255,255,0.7);
 }
 
-.menu img:hover {
-  transform: scale(1.1);
-}
-
-/* Nieve */
+/* NIEVE */
 .snowflake {
   position: fixed;
   top: -10px;
-  color: #fff;
-  font-size: 3vw;
-  user-select: none;
-  z-index: 999;
-  animation-name: fall;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  color: white;
+  font-size: 18px;
+  animation: fall linear infinite;
 }
 
 @keyframes fall {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(100vh) rotate(360deg); }
+  to { transform: translateY(100vh) rotate(360deg); }
 }
 </style>
 </head>
@@ -124,40 +113,28 @@ html, body {
 <body>
 
 <div class="boton-container">
-  <button id="musicBtn" class="boton">🎵 Música</button>
-  <button id="bgBtn" class="boton">🎨 Fondos</button>
-  <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
+  <button class="boton" id="musicBtn">🎵 Música</button>
+  <button class="boton" id="bgBtn">🎨 Fondos</button>
+  <button class="boton" id="playPauseBtn" style="display:none;">⏸ Pausar</button>
 </div>
 
-<div id="musicMenu" class="menu">
-  <button class="closeBtn" onclick="musicMenu.style.display='none'">X</button>
-  <div class="songBtn" onclick="cambiarMusica('musica/villancico.mp3')">🎶 Villancico 1</div>
-  <div class="songBtn" onclick="cambiarMusica('musica/navidad2.mp3')">🎶 Villancico 2</div>
-  <div class="songBtn" onclick="cambiarMusica('musica/navidad3.mp3')">🎶 Villancico 3</div>
+<div class="menu" id="musicMenu">
+  <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
+  <div class="songBtn" onclick="cambiarMusica('musica/villancico1.mp3')">Villancico 1</div>
+  <div class="songBtn" onclick="cambiarMusica('musica/villancico2.mp3')">Villancico 2</div>
+  <div class="songBtn" onclick="cambiarMusica('musica/villancico3.mp3')">Villancico 3</div>
 </div>
 
-<div id="bgMenu" class="menu">
-  <button class="closeBtn" onclick="bgMenu.style.display='none'">X</button>
-  <img src="fondos/fondo1.gif" onclick="cambiarFondo('fondos/fondo1.gif')">
-  <img src="fondos/fondo2.gif" onclick="cambiarFondo('fondos/fondo2.gif')">
-  <img src="fondos/fondo3.gif" onclick="cambiarFondo('fondos/fondo3.gif')">
+<div class="menu" id="bgMenu">
+  <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
+  <img src="fondos/fondo1.gif" onclick="cambiarFondo(this.src)">
+  <img src="fondos/fondo2.gif" onclick="cambiarFondo(this.src)">
+  <img src="fondos/fondo3.gif" onclick="cambiarFondo(this.src)">
 </div>
 
 <audio id="musica" loop></audio>
 
 <script>
-const snowCount = 50;
-for(let i=0;i<snowCount;i++){
-  const snow = document.createElement('div');
-  snow.className='snowflake';
-  snow.style.left=Math.random()*100+'vw';
-  snow.style.fontSize=(Math.random()*5+3)+'vw';
-  snow.style.animationDuration=(Math.random()*5+5)+'s';
-  snow.style.opacity=Math.random();
-  snow.innerHTML='❄';
-  document.body.appendChild(snow);
-}
-
 const musicBtn = document.getElementById('musicBtn');
 const bgBtn = document.getElementById('bgBtn');
 const musicMenu = document.getElementById('musicMenu');
@@ -165,40 +142,40 @@ const bgMenu = document.getElementById('bgMenu');
 const musica = document.getElementById('musica');
 const playPauseBtn = document.getElementById('playPauseBtn');
 
-musicBtn.addEventListener('click', ()=>{
-  musicMenu.style.display = musicMenu.style.display==='flex'?'none':'flex';
-  bgMenu.style.display='none';
-});
+musicBtn.onclick = () => {
+  musicMenu.style.display = 'flex';
+  bgMenu.style.display = 'none';
+};
 
-bgBtn.addEventListener('click', ()=>{
-  bgMenu.style.display = bgMenu.style.display==='flex'?'none':'flex';
-  musicMenu.style.display='none';
-});
+bgBtn.onclick = () => {
+  bgMenu.style.display = 'flex';
+  musicMenu.style.display = 'none';
+};
+
+let pausado = false;
 
 function cambiarMusica(ruta){
   musica.src = ruta;
   musica.play();
+  pausado = false;
   playPauseBtn.style.display = 'inline-block';
-  playPauseBtn.textContent = '⏯️ Pausar';
-  pausado=false;
+  playPauseBtn.textContent = '⏸ Pausar';
 }
+
+playPauseBtn.onclick = () => {
+  if(!pausado){
+    musica.pause();
+    playPauseBtn.textContent = '▶ Reanudar';
+  } else {
+    musica.play();
+    playPauseBtn.textContent = '⏸ Pausar';
+  }
+  pausado = !pausado;
+};
 
 function cambiarFondo(ruta){
   document.body.style.backgroundImage = `url('${ruta}')`;
 }
-
-let pausado = false;
-playPauseBtn.addEventListener('click', ()=>{
-  if(!pausado){
-    musica.pause();
-    playPauseBtn.textContent='⏯️ Reanudar';
-    pausado=true;
-  } else {
-    musica.play();
-    playPauseBtn.textContent='⏯️ Pausar';
-    pausado=false;
-  }
-});
 </script>
 
 </body>
