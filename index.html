@@ -5,43 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Navidad Interactiva 🎄</title>
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: url('fondos/fondo1.gif') no-repeat center center fixed;
-    background-size: cover;
-    overflow: hidden;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: url('fondos/fondo1.gif') no-repeat center center fixed;
+  background-size: cover;
+  overflow: hidden;
+}
 
-  /* Botones */
-  .boton {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    padding: 10px 20px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    margin-right: 10px;
-    transition: transform 0.2s;
-  }
+/* Botones adaptables */
+.boton-container {
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3vw;
+  z-index: 1000;
+}
 
-  .boton:hover {
-    transform: scale(1.1);
-  }
+.boton {
+  padding: 3vw 5vw;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 4vw;
+  transition: transform 0.2s;
+}
 
-  .boton-container {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    gap: 10px;
-  }
+.boton:hover {
+  transform: scale(1.1);
+}
+
+/* Nieve */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: #fff;
+  font-size: 3vw;
+  user-select: none;
+  z-index: 999;
+  animation-name: fall;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
 </style>
 </head>
 <body>
@@ -58,7 +76,7 @@
 </audio>
 
 <script>
-  // Botón de música
+  // ==== Música ====
   const musicBtn = document.getElementById('musicBtn');
   const musica = document.getElementById('musica');
   let musicaActiva = false;
@@ -75,15 +93,28 @@
     }
   });
 
-  // Botón para cambiar fondo
+  // ==== Cambiar fondo ====
   const bgBtn = document.getElementById('bgBtn');
-  const fondos = ['fondos/fondo1.gif', 'fondos/fondo2.gif'];
+  const fondos = ['fondos/fondo1.gif', 'fondos/fondo2.gif']; // agrega más GIFs si quieres
   let indiceFondo = 0;
 
   bgBtn.addEventListener('click', () => {
     indiceFondo = (indiceFondo + 1) % fondos.length;
     document.body.style.backgroundImage = `url('${fondos[indiceFondo]}')`;
   });
+
+  // ==== Nieve ====
+  const snowCount = 50; // cantidad de copos
+  for(let i=0; i<snowCount; i++){
+    const snow = document.createElement('div');
+    snow.className = 'snowflake';
+    snow.style.left = Math.random() * 100 + 'vw';
+    snow.style.fontSize = (Math.random()*5 + 3) + 'vw';
+    snow.style.animationDuration = (Math.random()*5 + 5) + 's';
+    snow.style.opacity = Math.random();
+    snow.innerHTML = '❄';
+    document.body.appendChild(snow);
+  }
 </script>
 
 </body>
