@@ -3,226 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Navidad Interactiva 🎄</title>
+
+<title>Navidad Especial</title>
+
 <style>
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  background: url('fondos/fondo1.gif') no-repeat center center fixed;
+  min-height: 100vh;
+  background-image: url("fondos/fondo1.gif");
   background-size: cover;
-  overflow: hidden;
-}
-
-/* Botón y contenedor */
-.boton-container {
-  position: fixed;
-  top: 2%;
-  left: 2%;
+  background-position: center;
+  font-family: Arial, sans-serif;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2vw;
-  z-index: 1000;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Botones navideños tonos oscuros */
+/* CONTENEDOR */
+.contenedor {
+  text-align: center;
+  background: rgba(10,15,10,0.6);
+  padding: 20px;
+  border-radius: 18px;
+}
+
+/* BOTONES PRINCIPALES */
 .boton {
-  padding: 2vw 4vw;
-  font-weight: bold;
-  font-size: 3.5vw;
-  border: 2px solid #fff;
+  padding: 8px 16px;
+  margin: 6px;
+  font-size: 14px;
+  color: #eee;
+  border: none;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(45deg, #8B0000, #006400, #B8860B, #2F4F4F, #8B4513);
-  background-size: 400% 400%;
-  color: white;
-  text-shadow: 1px 1px 2px black;
-  box-shadow: 0 0 6px #333, 0 0 12px #555;
-  animation: rainbowBG 8s ease infinite alternate, glow 2s ease-in-out infinite alternate;
-  transition: transform 0.2s;
+  background: linear-gradient(
+    120deg,
+    #1f3d2b,
+    #2e1f1f,
+    #3a2f1a
+  );
+  background-size: 300% 300%;
+  animation: navidad 10s ease infinite;
 }
 
-.boton:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 12px #333, 0 0 24px #555;
-}
-
-@keyframes rainbowBG {
+@keyframes navidad {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-@keyframes glow {
-  0% { box-shadow: 0 0 6px #333, 0 0 12px #555; }
-  100% { box-shadow: 0 0 12px #333, 0 0 24px #555; }
-}
-
-/* Menús de selección */
-.menu {
-  position: absolute;
-  display: none;
-  flex-wrap: wrap;
-  gap: 2vw;
-  top: 10vh;
-  left: 2vw;
-  background: rgba(0,0,0,0.7);
-  padding: 1vw;
-  border-radius: 10px;
-  z-index: 1001;
-}
-
-/* Botón cerrar */
-.closeBtn {
-  padding: 0.5vw 1vw;
-  font-size: 3vw;
-  border-radius: 10px;
-  border: none;
-  background: #8B0000;
-  color: white;
-  cursor: pointer;
-  margin-bottom: 1vw;
-}
-
-/* Botones de canciones */
-.songBtn {
-  padding: 1vw 2vw;
-  font-size: 3vw;
-  border-radius: 8px;
-  border: 1px solid #fff;
-  background: linear-gradient(45deg, #006400, #8B4513, #B8860B);
-  color: white;
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.songBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 6px #fff;
-}
-
-.menu img {
-  width: 20vw;
-  height: auto;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.menu img:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 8px #fff;
-}
-
-/* Nieve */
-.snowflake {
+/* PANEL */
+.panel {
   position: fixed;
-  top: -10px;
-  color: #fff;
-  font-size: 3vw;
-  user-select: none;
-  z-index: 999;
-  animation-name: fall;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  inset: 0;
+  background-image: url("fondos/panel-opciones.gif");
+  background-size: cover;
+  background-position: center;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
 }
 
-@keyframes fall {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(100vh) rotate(360deg); }
+.panel-contenido {
+  width: 90%;
+  max-width: 420px;
+  background: rgba(15,20,15,0.85);
+  border-radius: 16px;
+  padding: 16px;
+  color: #eee;
+}
+
+/* CERRAR */
+.cerrar {
+  background: linear-gradient(45deg, #5a0000, #1f4d2b);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  float: right;
+}
+
+/* OPCIONES */
+.opcion {
+  background: linear-gradient(
+    120deg,
+    #1f3d2b,
+    #2e1f1f,
+    #3a2f1a
+  );
+  background-size: 300% 300%;
+  animation: navidad 10s ease infinite;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* MINIATURAS */
+.fondos {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fondo-mini {
+  width: 80px;
+  height: 120px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255,255,255,0.3);
+  cursor: pointer;
 }
 </style>
 </head>
+
 <body>
 
-<div class="boton-container">
-  <button id="musicBtn" class="boton">🎵 Música</button>
-  <button id="bgBtn" class="boton">🎨 Fondos</button>
-  <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
+<div class="contenedor">
+  <h2>🎄 Navidad Especial 🎄</h2>
+  <button class="boton" onclick="abrirMusica()">🎵 Música</button>
+  <button class="boton" onclick="abrirFondos()">🎆 Fondos</button>
+  <br>
+  <button id="controlMusica" class="boton" style="display:none;" onclick="toggleMusica()">
+    ⏸ Pausar
+  </button>
 </div>
 
-<!-- Menú música -->
-<div id="musicMenu" class="menu">
-  <button class="closeBtn" onclick="musicMenu.style.display='none'">X</button>
-  <div class="songBtn" onclick="cambiarMusica('musica/villancico.mp3')">🎶 Villancico 1</div>
-  <div class="songBtn" onclick="cambiarMusica('musica/navidad2.mp3')">🎶 Villancico 2</div>
-  <div class="songBtn" onclick="cambiarMusica('musica/navidad3.mp3')">🎶 Villancico 3</div>
+<!-- PANEL -->
+<div class="panel" id="panel">
+  <div class="panel-contenido" id="contenidoPanel">
+    <button class="cerrar" onclick="cerrarPanel()">✖</button>
+    <div id="panelInterno"></div>
+  </div>
 </div>
 
-<!-- Menú fondos -->
-<div id="bgMenu" class="menu">
-  <button class="closeBtn" onclick="bgMenu.style.display='none'">X</button>
-  <img src="fondos/fondo1.gif" onclick="cambiarFondo('fondos/fondo1.gif')">
-  <img src="fondos/fondo2.gif" onclick="cambiarFondo('fondos/fondo2.gif')">
-  <img src="fondos/fondo3.gif" onclick="cambiarFondo('fondos/fondo3.gif')">
-</div>
-
-<!-- Música -->
-<audio id="musica" loop></audio>
+<audio id="audio"></audio>
 
 <script>
-  // ==== Nieve ====
-  const snowCount = 50;
-  for(let i=0;i<snowCount;i++){
-    const snow = document.createElement('div');
-    snow.className='snowflake';
-    snow.style.left=Math.random()*100+'vw';
-    snow.style.fontSize=(Math.random()*5+3)+'vw';
-    snow.style.animationDuration=(Math.random()*5+5)+'s';
-    snow.style.opacity=Math.random();
-    snow.innerHTML='❄';
-    document.body.appendChild(snow);
+const panel = document.getElementById("panel");
+const panelInterno = document.getElementById("panelInterno");
+const audio = document.getElementById("audio");
+const control = document.getElementById("controlMusica");
+
+/* ABRIR PANEL MUSICA */
+function abrirMusica() {
+  panel.style.display = "flex";
+  panelInterno.innerHTML = `
+    <h3>🎵 Elegir música</h3>
+
+    <div class="opcion">
+      <span>Villancico 1</span>
+      <button class="boton" onclick="seleccionarMusica('musica/villancico1.mp3')">Elegir</button>
+    </div>
+
+    <div class="opcion">
+      <span>Villancico 2</span>
+      <button class="boton" onclick="seleccionarMusica('musica/villancico2.mp3')">Elegir</button>
+    </div>
+  `;
+}
+
+/* ABRIR PANEL FONDOS */
+function abrirFondos() {
+  panel.style.display = "flex";
+  panelInterno.innerHTML = `
+    <h3>🎆 Elegir fondo</h3>
+    <div class="fondos">
+      <div class="fondo-mini" style="background-image:url('fondos/fondo1.gif')" onclick="cambiarFondo('fondos/fondo1.gif')"></div>
+      <div class="fondo-mini" style="background-image:url('fondos/fondo2.gif')" onclick="cambiarFondo('fondos/fondo2.gif')"></div>
+    </div>
+  `;
+}
+
+/* CERRAR PANEL */
+function cerrarPanel() {
+  panel.style.display = "none";
+}
+
+/* MUSICA */
+function seleccionarMusica(src) {
+  audio.src = src;
+  audio.loop = true;
+  audio.play();
+  control.style.display = "inline-block";
+  control.textContent = "⏸ Pausar";
+}
+
+/* PAUSA / REANUDAR */
+function toggleMusica() {
+  if (audio.paused) {
+    audio.play();
+    control.textContent = "⏸ Pausar";
+  } else {
+    audio.pause();
+    control.textContent = "▶ Reanudar";
   }
+}
 
-  // ==== Botones y menús ====
-  const musicBtn = document.getElementById('musicBtn');
-  const bgBtn = document.getElementById('bgBtn');
-  const musicMenu = document.getElementById('musicMenu');
-  const bgMenu = document.getElementById('bgMenu');
-  const musica = document.getElementById('musica');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-
-  musicBtn.addEventListener('click', ()=>{
-    musicMenu.style.display = musicMenu.style.display==='flex'?'none':'flex';
-    bgMenu.style.display='none';
-  });
-
-  bgBtn.addEventListener('click', ()=>{
-    bgMenu.style.display = bgMenu.style.display==='flex'?'none':'flex';
-    musicMenu.style.display='none';
-  });
-
-  // ==== Funciones ====
-  function cambiarMusica(ruta){
-    musica.src = ruta;
-    musica.play();
-    // Mostrar botón Pausar
-    playPauseBtn.style.display = 'inline-block';
-    playPauseBtn.textContent = '⏯️ Pausar';
-    pausado=false;
-  }
-
-  function cambiarFondo(ruta){
-    document.body.style.backgroundImage = `url('${ruta}')`;
-  }
-
-  // ==== Pausar/Reanudar música ====
-  let pausado = false;
-  playPauseBtn.addEventListener('click', ()=>{
-    if(!pausado){
-      musica.pause();
-      playPauseBtn.textContent='⏯️ Reanudar';
-      pausado=true;
-    } else {
-      musica.play();
-      playPauseBtn.textContent='⏯️ Pausar';
-      pausado=false;
-    }
-  });
+/* CAMBIAR FONDO */
+function cambiarFondo(src) {
+  document.body.style.backgroundImage = `url('${src}')`;
+}
 </script>
 
 </body>
