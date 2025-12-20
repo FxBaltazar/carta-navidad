@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carta Navideña Extravagante</title>
+<title>Carta Navideña Interactiva</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
 <style>
+  /* Estilo general */
   body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #ffe6b3, #ffd700);
-    text-align: center;
+    background: radial-gradient(circle at top, #fffae6, #ffd700, #ffb347);
     overflow-x: hidden;
+    text-align: center;
     position: relative;
   }
 
@@ -20,34 +21,42 @@
     color: #d9534f;
     font-size: 3em;
     margin: 20px 0;
-    text-shadow: 2px 2px 5px #fff;
+    text-shadow: 0 0 15px #fff, 0 0 30px #ff0, 0 0 45px #f00;
+    animation: glow 2s infinite alternate;
+  }
+
+  @keyframes glow {
+    0% { text-shadow: 0 0 5px #fff, 0 0 10px #ff0, 0 0 20px #f00; }
+    100% { text-shadow: 0 0 20px #fff, 0 0 40px #ff0, 0 0 60px #f00; }
   }
 
   .message {
-    background-color: rgba(255,255,255,0.9);
-    padding: 20px;
-    margin: 20px auto;
-    border-radius: 15px;
-    max-width: 600px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,250,240,0.95));
+    padding: 25px;
+    margin: 25px auto;
+    border-radius: 20px;
+    max-width: 650px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
   }
 
-  .message:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+  .message.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   img {
     max-width: 90%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 15px;
     margin: 15px 0;
     transition: transform 0.3s;
   }
 
   img:hover {
-    transform: scale(1.05) rotate(2deg);
+    transform: scale(1.08) rotate(2deg);
   }
 
   p {
@@ -55,7 +64,7 @@
     color: #333;
   }
 
-  /* Animación de nieve */
+  /* Nieve */
   .snowflake {
     position: fixed;
     top: -10px;
@@ -79,12 +88,9 @@
     position: fixed;
     width: 10px;
     height: 10px;
-    background-color: red;
-    top: 0;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.8;
     border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.9;
     animation: confettiFall linear infinite;
   }
 
@@ -93,26 +99,27 @@
     100% { transform: translateY(100vh) rotate(360deg); }
   }
 
-  /* Luces parpadeantes */
+  /* Luces parpadeantes de colores */
   .light {
     position: fixed;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background-color: yellow;
-    animation: blink 1.5s infinite;
+    animation: blink linear infinite;
   }
 
   @keyframes blink {
-    0%, 50%, 100% { opacity: 1; }
-    25%, 75% { opacity: 0; }
+    0%,50%,100% { opacity: 1; }
+    25%,75% { opacity: 0.2; }
   }
 
+  /* Responsive */
   @media (max-width: 600px) {
     h1 { font-size: 2.2em; }
-    .message { padding: 15px; }
+    .message { padding: 20px; }
     p { font-size: 1em; }
   }
+
 </style>
 </head>
 <body>
@@ -140,39 +147,51 @@
 
 <!-- Nieve -->
 <script>
-  const numFlakes = 40;
-  for(let i=0; i<numFlakes; i++){
+  // Nieve
+  const numFlakes = 50;
+  for(let i=0;i<numFlakes;i++){
     let snow = document.createElement('div');
     snow.classList.add('snowflake');
-    snow.style.left = Math.random() * 100 + 'vw';
-    snow.style.fontSize = (Math.random()*15+10) + 'px';
-    snow.style.animationDuration = (Math.random()*5+5) + 's';
+    snow.style.left = Math.random()*100 + 'vw';
+    snow.style.fontSize = (Math.random()*15+10)+'px';
+    snow.style.animationDuration = (Math.random()*5+5)+'s';
     snow.innerText = '❄';
     document.body.appendChild(snow);
   }
 
   // Confeti
-  const numConfetti = 30;
-  const colors = ['#ff0000','#00ff00','#0000ff','#ffff00','#ff00ff','#00ffff'];
-  for(let i=0; i<numConfetti; i++){
+  const numConfetti = 40;
+  const colors = ['#ff0000','#00ff00','#0000ff','#ffff00','#ff00ff','#00ffff','#ff8800'];
+  for(let i=0;i<numConfetti;i++){
     let conf = document.createElement('div');
     conf.classList.add('confetti');
-    conf.style.left = Math.random() * 100 + 'vw';
+    conf.style.left = Math.random()*100 + 'vw';
+    conf.style.width = conf.style.height = (Math.random()*10+5)+'px';
     conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-    conf.style.animationDuration = (Math.random()*5+3) + 's';
-    conf.style.width = conf.style.height = (Math.random()*8+5)+'px';
+    conf.style.animationDuration = (Math.random()*5+3)+'s';
     document.body.appendChild(conf);
   }
 
   // Luces parpadeantes
-  const numLights = 20;
-  for(let i=0; i<numLights; i++){
+  const numLights = 25;
+  for(let i=0;i<numLights;i++){
     let light = document.createElement('div');
     light.classList.add('light');
-    light.style.left = Math.random()*100 + 'vw';
-    light.style.top = Math.random()*100 + 'vh';
+    light.style.left = Math.random()*100+'vw';
+    light.style.top = Math.random()*100+'vh';
+    light.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+    light.style.animationDuration = (Math.random()*2+1)+'s';
     document.body.appendChild(light);
   }
+
+  // Mensajes aparecen uno por uno
+  const messages = document.querySelectorAll('.message');
+  let delay = 0;
+  messages.forEach(msg => {
+    setTimeout(()=>{ msg.classList.add('show'); }, delay);
+    delay += 800; // 0.8s entre mensajes
+  });
+
 </script>
 
 </body>
