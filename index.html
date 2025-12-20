@@ -27,7 +27,7 @@ html, body {
   z-index: 1000;
 }
 
-/* Botones navideños tonos oscuros */
+/* Botones navideños (se mantienen) */
 .boton {
   padding: 2vw 4vw;
   font-weight: bold;
@@ -46,7 +46,6 @@ html, body {
 
 .boton:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 12px #333, 0 0 24px #555;
 }
 
 @keyframes rainbowBG {
@@ -56,11 +55,11 @@ html, body {
 }
 
 @keyframes glow {
-  0% { box-shadow: 0 0 6px #333, 0 0 12px #555; }
-  100% { box-shadow: 0 0 12px #333, 0 0 24px #555; }
+  0% { box-shadow: 0 0 6px #333; }
+  100% { box-shadow: 0 0 12px #555; }
 }
 
-/* Menús de selección */
+/* ===== MENÚS CON GIF DE FONDO ===== */
 .menu {
   position: absolute;
   display: none;
@@ -68,10 +67,17 @@ html, body {
   gap: 2vw;
   top: 10vh;
   left: 2vw;
-  background: rgba(0,0,0,0.7);
-  padding: 1vw;
-  border-radius: 10px;
+
+  /* 🔥 TU GIF AQUÍ */
+  background: url('fondos/menu-opciones.gif') no-repeat center center;
+  background-size: cover;
+
+  padding: 2vw;
+  border-radius: 14px;
   z-index: 1001;
+
+  /* oscurece ligeramente sin tapar el GIF */
+  box-shadow: inset 0 0 0 9999px rgba(0,0,0,0.35);
 }
 
 /* Botón cerrar */
@@ -80,30 +86,31 @@ html, body {
   font-size: 3vw;
   border-radius: 10px;
   border: none;
-  background: #8B0000;
+  background: rgba(139,0,0,0.85);
   color: white;
   cursor: pointer;
   margin-bottom: 1vw;
 }
 
-/* Botones de canciones */
+/* ===== OPCIONES DE MÚSICA (SIN ARCOÍRIS) ===== */
 .songBtn {
   padding: 1vw 2vw;
   font-size: 3vw;
-  border-radius: 8px;
-  border: 1px solid #fff;
-  background: linear-gradient(45deg, #006400, #8B4513, #B8860B);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.8);
+  background: rgba(0,0,0,0.55);
   color: white;
   cursor: pointer;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, background 0.2s;
 }
 
 .songBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 6px #fff;
+  background: rgba(0,0,0,0.75);
 }
 
+/* Fondos miniatura */
 .menu img {
   width: 20vw;
   height: auto;
@@ -115,7 +122,6 @@ html, body {
 
 .menu img:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 8px #fff;
 }
 
 /* Nieve */
@@ -161,68 +167,62 @@ html, body {
   <img src="fondos/fondo3.gif" onclick="cambiarFondo('fondos/fondo3.gif')">
 </div>
 
-<!-- Música -->
 <audio id="musica" loop></audio>
 
 <script>
-  // ==== Nieve ====
-  const snowCount = 50;
-  for(let i=0;i<snowCount;i++){
-    const snow = document.createElement('div');
-    snow.className='snowflake';
-    snow.style.left=Math.random()*100+'vw';
-    snow.style.fontSize=(Math.random()*5+3)+'vw';
-    snow.style.animationDuration=(Math.random()*5+5)+'s';
-    snow.style.opacity=Math.random();
-    snow.innerHTML='❄';
-    document.body.appendChild(snow);
-  }
+const snowCount = 50;
+for(let i=0;i<snowCount;i++){
+  const snow = document.createElement('div');
+  snow.className='snowflake';
+  snow.style.left=Math.random()*100+'vw';
+  snow.style.fontSize=(Math.random()*5+3)+'vw';
+  snow.style.animationDuration=(Math.random()*5+5)+'s';
+  snow.style.opacity=Math.random();
+  snow.innerHTML='❄';
+  document.body.appendChild(snow);
+}
 
-  // ==== Botones y menús ====
-  const musicBtn = document.getElementById('musicBtn');
-  const bgBtn = document.getElementById('bgBtn');
-  const musicMenu = document.getElementById('musicMenu');
-  const bgMenu = document.getElementById('bgMenu');
-  const musica = document.getElementById('musica');
-  const playPauseBtn = document.getElementById('playPauseBtn');
+const musicBtn = document.getElementById('musicBtn');
+const bgBtn = document.getElementById('bgBtn');
+const musicMenu = document.getElementById('musicMenu');
+const bgMenu = document.getElementById('bgMenu');
+const musica = document.getElementById('musica');
+const playPauseBtn = document.getElementById('playPauseBtn');
 
-  musicBtn.addEventListener('click', ()=>{
-    musicMenu.style.display = musicMenu.style.display==='flex'?'none':'flex';
-    bgMenu.style.display='none';
-  });
+musicBtn.addEventListener('click', ()=>{
+  musicMenu.style.display = musicMenu.style.display==='flex'?'none':'flex';
+  bgMenu.style.display='none';
+});
 
-  bgBtn.addEventListener('click', ()=>{
-    bgMenu.style.display = bgMenu.style.display==='flex'?'none':'flex';
-    musicMenu.style.display='none';
-  });
+bgBtn.addEventListener('click', ()=>{
+  bgMenu.style.display = bgMenu.style.display==='flex'?'none':'flex';
+  musicMenu.style.display='none';
+});
 
-  // ==== Funciones ====
-  function cambiarMusica(ruta){
-    musica.src = ruta;
+function cambiarMusica(ruta){
+  musica.src = ruta;
+  musica.play();
+  playPauseBtn.style.display = 'inline-block';
+  playPauseBtn.textContent = '⏯️ Pausar';
+  pausado=false;
+}
+
+function cambiarFondo(ruta){
+  document.body.style.backgroundImage = `url('${ruta}')`;
+}
+
+let pausado = false;
+playPauseBtn.addEventListener('click', ()=>{
+  if(!pausado){
+    musica.pause();
+    playPauseBtn.textContent='⏯️ Reanudar';
+    pausado=true;
+  } else {
     musica.play();
-    // Mostrar botón Pausar
-    playPauseBtn.style.display = 'inline-block';
-    playPauseBtn.textContent = '⏯️ Pausar';
+    playPauseBtn.textContent='⏯️ Pausar';
     pausado=false;
   }
-
-  function cambiarFondo(ruta){
-    document.body.style.backgroundImage = `url('${ruta}')`;
-  }
-
-  // ==== Pausar/Reanudar música ====
-  let pausado = false;
-  playPauseBtn.addEventListener('click', ()=>{
-    if(!pausado){
-      musica.pause();
-      playPauseBtn.textContent='⏯️ Reanudar';
-      pausado=true;
-    } else {
-      musica.play();
-      playPauseBtn.textContent='⏯️ Pausar';
-      pausado=false;
-    }
-  });
+});
 </script>
 
 </body>
