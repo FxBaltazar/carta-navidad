@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carta Navideña Interactiva</title>
+<title>Carta Navideña Épica</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
 <style>
-  /* Estilo general */
   body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background: radial-gradient(circle at top, #fffae6, #ffd700, #ffb347);
-    overflow-x: hidden;
+    background: radial-gradient(circle at top, #fff6e6, #ffd700, #ffb347);
     text-align: center;
+    overflow-x: hidden;
     position: relative;
   }
 
@@ -113,18 +112,33 @@
     25%,75% { opacity: 0.2; }
   }
 
-  /* Responsive */
+  /* Botón para pausar/reproducir música */
+  .music-control {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    background-color: rgba(255,255,255,0.8);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    z-index: 10000;
+  }
+
   @media (max-width: 600px) {
     h1 { font-size: 2.2em; }
     .message { padding: 20px; }
     p { font-size: 1em; }
   }
-
 </style>
 </head>
 <body>
 
 <h1>¡Feliz Navidad! 🎄✨</h1>
+
+<button class="music-control" id="musicBtn">🎵 Pausar música</button>
+<audio id="music" src="audio/navidad.mp3" autoplay loop></audio>
 
 <div class="message">
   <p>Que esta Navidad esté llena de risas, chocolate y momentos mágicos 🍫✨</p>
@@ -145,7 +159,7 @@
   <p>¡Que los árboles brillen y los dulces lluevan! 🎄🍬</p>
 </div>
 
-<!-- Nieve -->
+<!-- Nieve, confeti y luces -->
 <script>
   // Nieve
   const numFlakes = 50;
@@ -184,14 +198,26 @@
     document.body.appendChild(light);
   }
 
-  // Mensajes aparecen uno por uno
+  // Mensajes animados
   const messages = document.querySelectorAll('.message');
   let delay = 0;
   messages.forEach(msg => {
     setTimeout(()=>{ msg.classList.add('show'); }, delay);
-    delay += 800; // 0.8s entre mensajes
+    delay += 800;
   });
 
+  // Control de música
+  const music = document.getElementById('music');
+  const musicBtn = document.getElementById('musicBtn');
+  musicBtn.addEventListener('click', ()=>{
+    if(music.paused){
+      music.play();
+      musicBtn.textContent = '🎵 Pausar música';
+    } else {
+      music.pause();
+      musicBtn.textContent = '🎵 Reproducir música';
+    }
+  });
 </script>
 
 </body>
