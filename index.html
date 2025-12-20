@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Navidad Especial</title>
 
 <style>
@@ -14,24 +13,25 @@ body {
   background-size: cover;
   background-position: center;
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-/* CONTENEDOR */
+/* CONTENEDOR PRINCIPAL */
 .contenedor {
   text-align: center;
   background: rgba(10,15,10,0.6);
   padding: 20px;
   border-radius: 18px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* BOTONES PRINCIPALES */
+/* BOTONES */
 .boton {
-  padding: 8px 16px;
-  margin: 6px;
-  font-size: 14px;
+  padding: 7px 14px;
+  margin: 5px;
+  font-size: 13px;
   color: #eee;
   border: none;
   border-radius: 12px;
@@ -56,25 +56,30 @@ body {
 .panel {
   position: fixed;
   inset: 0;
-  background-image: url("fondos/panel-opciones.gif");
+  background:
+    linear-gradient(rgba(5,10,5,0.65), rgba(5,10,5,0.65)),
+    url("fondos/panel-opciones.gif");
   background-size: cover;
   background-position: center;
   display: none;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* 🔹 ARRIBA */
+  padding-top: 40px;
+  overflow-y: auto;
   z-index: 20;
 }
 
+/* CONTENIDO PANEL */
 .panel-contenido {
-  width: 90%;
+  width: 92%;
   max-width: 420px;
-  background: rgba(15,20,15,0.85);
+  background: rgba(15,20,15,0.65); /* 🔹 MÁS TRANSPARENTE */
   border-radius: 16px;
   padding: 16px;
   color: #eee;
 }
 
-/* CERRAR */
+/* BOTÓN CERRAR */
 .cerrar {
   background: linear-gradient(45deg, #5a0000, #1f4d2b);
   border: none;
@@ -98,17 +103,17 @@ body {
   animation: navidad 10s ease infinite;
   border-radius: 12px;
   padding: 10px;
-  margin: 8px 0;
+  margin: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
 }
 
-/* MINIATURAS */
+/* MINI FONDOS */
 .fondos {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -119,7 +124,7 @@ body {
   border-radius: 12px;
   background-size: cover;
   background-position: center;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255,255,255,0.35);
   cursor: pointer;
 }
 </style>
@@ -128,7 +133,7 @@ body {
 <body>
 
 <div class="contenedor">
-  <h2>🎄 Navidad Especial 🎄</h2>
+  <h3>🎄 Navidad Especial 🎄</h3>
   <button class="boton" onclick="abrirMusica()">🎵 Música</button>
   <button class="boton" onclick="abrirFondos()">🎆 Fondos</button>
   <br>
@@ -139,7 +144,7 @@ body {
 
 <!-- PANEL -->
 <div class="panel" id="panel">
-  <div class="panel-contenido" id="contenidoPanel">
+  <div class="panel-contenido">
     <button class="cerrar" onclick="cerrarPanel()">✖</button>
     <div id="panelInterno"></div>
   </div>
@@ -153,7 +158,7 @@ const panelInterno = document.getElementById("panelInterno");
 const audio = document.getElementById("audio");
 const control = document.getElementById("controlMusica");
 
-/* ABRIR PANEL MUSICA */
+/* MÚSICA */
 function abrirMusica() {
   panel.style.display = "flex";
   panelInterno.innerHTML = `
@@ -171,7 +176,7 @@ function abrirMusica() {
   `;
 }
 
-/* ABRIR PANEL FONDOS */
+/* FONDOS */
 function abrirFondos() {
   panel.style.display = "flex";
   panelInterno.innerHTML = `
@@ -183,12 +188,11 @@ function abrirFondos() {
   `;
 }
 
-/* CERRAR PANEL */
 function cerrarPanel() {
   panel.style.display = "none";
 }
 
-/* MUSICA */
+/* AUDIO */
 function seleccionarMusica(src) {
   audio.src = src;
   audio.loop = true;
@@ -197,7 +201,6 @@ function seleccionarMusica(src) {
   control.textContent = "⏸ Pausar";
 }
 
-/* PAUSA / REANUDAR */
 function toggleMusica() {
   if (audio.paused) {
     audio.play();
