@@ -15,16 +15,17 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* BOTONERA PRINCIPAL */
 .contenedor {
-  text-align: center;
-  background: rgba(10,15,10,0.6);
-  padding: 20px;
-  border-radius: 18px;
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
+  background: rgba(10,15,10,0.65);
+  padding: 14px;
+  border-radius: 16px;
+  text-align: center;
+  z-index: 5;
 }
 
 /* BOTONES */
@@ -52,47 +53,56 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* PANEL */
+/* PANEL GENERAL */
 .panel {
   position: fixed;
   inset: 0;
-  background:
-    linear-gradient(rgba(5,10,5,0.65), rgba(5,10,5,0.65)),
-    url("fondos/panel-opciones.gif");
+  background-image: url("fondos/panel-opciones.gif");
   background-size: cover;
   background-position: center;
   display: none;
-  justify-content: center;
-  align-items: flex-start; /* 🔹 ARRIBA */
-  padding-top: 40px;
-  overflow-y: auto;
-  z-index: 20;
+  z-index: 10;
 }
 
-/* CONTENIDO PANEL */
+/* CAPA OSCURA */
+.panel-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(5,10,5,0.6);
+}
+
+/* CONTENIDO ARRIBA */
 .panel-contenido {
-  width: 92%;
-  max-width: 420px;
-  background: rgba(15,20,15,0.65); /* 🔹 MÁS TRANSPARENTE */
-  border-radius: 16px;
+  position: relative;
+  margin-top: 80px;
   padding: 16px;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(15,20,15,0.65);
+  border-radius: 16px;
   color: #eee;
 }
 
-/* BOTÓN CERRAR */
+/* CERRAR */
 .cerrar {
+  float: right;
   background: linear-gradient(45deg, #5a0000, #1f4d2b);
   border: none;
   color: white;
   padding: 6px 12px;
   border-radius: 10px;
-  font-size: 14px;
   cursor: pointer;
-  float: right;
 }
 
 /* OPCIONES */
 .opcion {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: linear-gradient(
     120deg,
     #1f3d2b,
@@ -101,21 +111,15 @@ body {
   );
   background-size: 300% 300%;
   animation: navidad 10s ease infinite;
-  border-radius: 12px;
-  padding: 10px;
-  margin: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
 }
 
-/* MINI FONDOS */
+/* MINIATURAS */
 .fondos {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
+  margin-top: 12px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .fondo-mini {
@@ -133,7 +137,6 @@ body {
 <body>
 
 <div class="contenedor">
-  <h3>🎄 Navidad Especial 🎄</h3>
   <button class="boton" onclick="abrirMusica()">🎵 Música</button>
   <button class="boton" onclick="abrirFondos()">🎆 Fondos</button>
   <br>
@@ -144,6 +147,7 @@ body {
 
 <!-- PANEL -->
 <div class="panel" id="panel">
+  <div class="panel-overlay"></div>
   <div class="panel-contenido">
     <button class="cerrar" onclick="cerrarPanel()">✖</button>
     <div id="panelInterno"></div>
@@ -158,17 +162,15 @@ const panelInterno = document.getElementById("panelInterno");
 const audio = document.getElementById("audio");
 const control = document.getElementById("controlMusica");
 
-/* MÚSICA */
+/* ABRIR MUSICA */
 function abrirMusica() {
-  panel.style.display = "flex";
+  panel.style.display = "block";
   panelInterno.innerHTML = `
     <h3>🎵 Elegir música</h3>
-
     <div class="opcion">
       <span>Villancico 1</span>
       <button class="boton" onclick="seleccionarMusica('musica/villancico1.mp3')">Elegir</button>
     </div>
-
     <div class="opcion">
       <span>Villancico 2</span>
       <button class="boton" onclick="seleccionarMusica('musica/villancico2.mp3')">Elegir</button>
@@ -176,9 +178,9 @@ function abrirMusica() {
   `;
 }
 
-/* FONDOS */
+/* ABRIR FONDOS */
 function abrirFondos() {
-  panel.style.display = "flex";
+  panel.style.display = "block";
   panelInterno.innerHTML = `
     <h3>🎆 Elegir fondo</h3>
     <div class="fondos">
@@ -188,12 +190,14 @@ function abrirFondos() {
   `;
 }
 
+/* CERRAR */
 function cerrarPanel() {
   panel.style.display = "none";
 }
 
-/* AUDIO */
+/* MUSICA (solo tras click, permitido por GitHub Pages) */
 function seleccionarMusica(src) {
+  audio.pause();
   audio.src = src;
   audio.loop = true;
   audio.play();
@@ -201,6 +205,7 @@ function seleccionarMusica(src) {
   control.textContent = "⏸ Pausar";
 }
 
+/* PAUSA / REANUDAR */
 function toggleMusica() {
   if (audio.paused) {
     audio.play();
