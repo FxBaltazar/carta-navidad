@@ -27,26 +27,26 @@ html, body {
   z-index: 1000;
 }
 
-/* Botones navideños con arcoíris y brillo */
+/* Botones navideños con arcoíris de colores navideños */
 .boton {
-  padding: 3vw 5vw;
+  padding: 2vw 4vw;
   font-weight: bold;
-  font-size: 4vw;
-  border: 3px solid #fff;
-  border-radius: 15px;
+  font-size: 3.5vw; /* más pequeño */
+  border: 2px solid #fff;
+  border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  background: linear-gradient(45deg, red, green, gold, white, orange, green, red);
   background-size: 400% 400%;
   color: white;
   text-shadow: 1px 1px 2px black;
-  box-shadow: 0 0 10px white, 0 0 20px #ff0, 0 0 30px #f0f, 0 0 40px #0ff;
+  box-shadow: 0 0 8px white, 0 0 16px #ff0, 0 0 24px #f0f, 0 0 32px #0ff;
   animation: rainbowBG 8s ease infinite, glow 2s ease-in-out infinite alternate;
   transition: transform 0.2s;
 }
 
 .boton:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 20px white, 0 0 40px #ff0, 0 0 60px #f0f, 0 0 80px #0ff;
+  transform: scale(1.1);
+  box-shadow: 0 0 16px white, 0 0 32px #ff0, 0 0 48px #f0f, 0 0 64px #0ff;
 }
 
 @keyframes rainbowBG {
@@ -56,8 +56,8 @@ html, body {
 }
 
 @keyframes glow {
-  0% { box-shadow: 0 0 10px white, 0 0 20px #ff0, 0 0 30px #f0f, 0 0 40px #0ff; }
-  100% { box-shadow: 0 0 20px white, 0 0 40px #ff0, 0 0 60px #f0f, 0 0 80px #0ff; }
+  0% { box-shadow: 0 0 8px white, 0 0 16px #ff0, 0 0 24px #f0f, 0 0 32px #0ff; }
+  100% { box-shadow: 0 0 16px white, 0 0 32px #ff0, 0 0 48px #f0f, 0 0 64px #0ff; }
 }
 
 /* Menús de selección */
@@ -88,11 +88,16 @@ html, body {
   box-shadow: 0 0 10px #fff;
 }
 
-.menu button {
-  padding: 1vw 2vw;
+/* Botón cerrar */
+.closeBtn {
+  padding: 0.5vw 1vw;
   font-size: 3vw;
   border-radius: 10px;
+  border: none;
+  background: red;
+  color: white;
   cursor: pointer;
+  margin-bottom: 1vw;
 }
 
 /* Nieve */
@@ -119,10 +124,12 @@ html, body {
 <div class="boton-container">
   <button id="musicBtn" class="boton">🎵 Música</button>
   <button id="bgBtn" class="boton">🎨 Fondos</button>
+  <button id="playPauseBtn" class="boton">⏯️ Pausar/Reanudar</button>
 </div>
 
 <!-- Menú música -->
 <div id="musicMenu" class="menu">
+  <button class="closeBtn" onclick="musicMenu.style.display='none'">X</button>
   <button onclick="cambiarMusica('musica/villancico.mp3')">🎶 Villancico</button>
   <button onclick="cambiarMusica('musica/navidad2.mp3')">🎶 Navidad 2</button>
   <button onclick="cambiarMusica('musica/navidad3.mp3')">🎶 Navidad 3</button>
@@ -130,6 +137,7 @@ html, body {
 
 <!-- Menú fondos -->
 <div id="bgMenu" class="menu">
+  <button class="closeBtn" onclick="bgMenu.style.display='none'">X</button>
   <img src="fondos/fondo1.gif" onclick="cambiarFondo('fondos/fondo1.gif')">
   <img src="fondos/fondo2.gif" onclick="cambiarFondo('fondos/fondo2.gif')">
   <img src="fondos/fondo3.gif" onclick="cambiarFondo('fondos/fondo3.gif')">
@@ -160,6 +168,7 @@ html, body {
   const musicMenu = document.getElementById('musicMenu');
   const bgMenu = document.getElementById('bgMenu');
   const musica = document.getElementById('musica');
+  const playPauseBtn = document.getElementById('playPauseBtn');
 
   musicBtn.addEventListener('click', () => {
     musicMenu.style.display = musicMenu.style.display === 'flex' ? 'none' : 'flex';
@@ -180,6 +189,20 @@ html, body {
   function cambiarFondo(ruta) {
     document.body.style.backgroundImage = `url('${ruta}')`;
   }
+
+  // ==== Botón pausar/reanudar música ====
+  let pausado = false;
+  playPauseBtn.addEventListener('click', () => {
+    if(!pausado){
+      musica.pause();
+      playPauseBtn.textContent = '⏯️ Reanudar';
+      pausado = true;
+    } else {
+      musica.play();
+      playPauseBtn.textContent = '⏯️ Pausar';
+      pausado = false;
+    }
+  });
 </script>
 
 </body>
