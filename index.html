@@ -16,31 +16,83 @@ html, body {
   overflow: hidden;
 }
 
-/* Botones adaptables */
+/* Botón y contenedor */
 .boton-container {
   position: fixed;
-  top: 5%;
-  left: 5%;
+  top: 2%;
+  left: 2%;
   display: flex;
   flex-wrap: wrap;
-  gap: 3vw;
+  gap: 2vw;
   z-index: 1000;
 }
 
+/* Botones navideños con arcoíris y brillo */
 .boton {
   padding: 3vw 5vw;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
   font-weight: bold;
   font-size: 4vw;
+  border: 3px solid #fff;
+  border-radius: 15px;
+  cursor: pointer;
+  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 400%;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  box-shadow: 0 0 10px white, 0 0 20px #ff0, 0 0 30px #f0f, 0 0 40px #0ff;
+  animation: rainbowBG 8s ease infinite, glow 2s ease-in-out infinite alternate;
   transition: transform 0.2s;
 }
 
 .boton:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 20px white, 0 0 40px #ff0, 0 0 60px #f0f, 0 0 80px #0ff;
+}
+
+@keyframes rainbowBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px white, 0 0 20px #ff0, 0 0 30px #f0f, 0 0 40px #0ff; }
+  100% { box-shadow: 0 0 20px white, 0 0 40px #ff0, 0 0 60px #f0f, 0 0 80px #0ff; }
+}
+
+/* Menús de selección */
+.menu {
+  position: absolute;
+  display: none;
+  flex-wrap: wrap;
+  gap: 2vw;
+  top: 10vh;
+  left: 2vw;
+  background: rgba(0,0,0,0.6);
+  padding: 1vw;
+  border-radius: 10px;
+  z-index: 1001;
+}
+
+.menu img {
+  width: 20vw;
+  height: auto;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.menu img:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 10px #fff;
+}
+
+.menu button {
+  padding: 1vw 2vw;
+  font-size: 3vw;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* Nieve */
@@ -65,46 +117,32 @@ html, body {
 <body>
 
 <div class="boton-container">
-  <button id="musicBtn" class="boton">🎵 Música ON</button>
-  <button id="bgBtn" class="boton">🎨 Cambiar Fondo</button>
+  <button id="musicBtn" class="boton">🎵 Música</button>
+  <button id="bgBtn" class="boton">🎨 Fondos</button>
+</div>
+
+<!-- Menú música -->
+<div id="musicMenu" class="menu">
+  <button onclick="cambiarMusica('musica/villancico.mp3')">🎶 Villancico</button>
+  <button onclick="cambiarMusica('musica/navidad2.mp3')">🎶 Navidad 2</button>
+  <button onclick="cambiarMusica('musica/navidad3.mp3')">🎶 Navidad 3</button>
+</div>
+
+<!-- Menú fondos -->
+<div id="bgMenu" class="menu">
+  <img src="fondos/fondo1.gif" onclick="cambiarFondo('fondos/fondo1.gif')">
+  <img src="fondos/fondo2.gif" onclick="cambiarFondo('fondos/fondo2.gif')">
+  <img src="fondos/fondo3.gif" onclick="cambiarFondo('fondos/fondo3.gif')">
 </div>
 
 <!-- Música -->
 <audio id="musica" loop>
-  <source src="música/villancico.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio.
+  <source src="musica/villancico.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  // ==== Música ====
-  const musicBtn = document.getElementById('musicBtn');
-  const musica = document.getElementById('musica');
-  let musicaActiva = false;
-
-  musicBtn.addEventListener('click', () => {
-    if (!musicaActiva) {
-      musica.play();
-      musicBtn.textContent = '🎵 Música OFF';
-      musicaActiva = true;
-    } else {
-      musica.pause();
-      musicBtn.textContent = '🎵 Música ON';
-      musicaActiva = false;
-    }
-  });
-
-  // ==== Cambiar fondo ====
-  const bgBtn = document.getElementById('bgBtn');
-  const fondos = ['fondos/fondo1.gif', 'fondos/fondo2.gif']; // agrega más GIFs si quieres
-  let indiceFondo = 0;
-
-  bgBtn.addEventListener('click', () => {
-    indiceFondo = (indiceFondo + 1) % fondos.length;
-    document.body.style.backgroundImage = `url('${fondos[indiceFondo]}')`;
-  });
-
   // ==== Nieve ====
-  const snowCount = 50; // cantidad de copos
+  const snowCount = 50;
   for(let i=0; i<snowCount; i++){
     const snow = document.createElement('div');
     snow.className = 'snowflake';
@@ -115,8 +153,34 @@ html, body {
     snow.innerHTML = '❄';
     document.body.appendChild(snow);
   }
+
+  // ==== Botones menús ====
+  const musicBtn = document.getElementById('musicBtn');
+  const bgBtn = document.getElementById('bgBtn');
+  const musicMenu = document.getElementById('musicMenu');
+  const bgMenu = document.getElementById('bgMenu');
+  const musica = document.getElementById('musica');
+
+  musicBtn.addEventListener('click', () => {
+    musicMenu.style.display = musicMenu.style.display === 'flex' ? 'none' : 'flex';
+    bgMenu.style.display = 'none';
+  });
+
+  bgBtn.addEventListener('click', () => {
+    bgMenu.style.display = bgMenu.style.display === 'flex' ? 'none' : 'flex';
+    musicMenu.style.display = 'none';
+  });
+
+  // ==== Funciones para cambiar música y fondo ====
+  function cambiarMusica(ruta) {
+    musica.src = ruta;
+    musica.play();
+  }
+
+  function cambiarFondo(ruta) {
+    document.body.style.backgroundImage = `url('${ruta}')`;
+  }
 </script>
 
 </body>
 </html>
-
