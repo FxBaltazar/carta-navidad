@@ -17,16 +17,18 @@ html, body {
   overflow: hidden;
 }
 
-/* ================= BOTONES ================= */
+/* Botón y contenedor */
 .boton-container {
   position: fixed;
   top: 2%;
   left: 2%;
   display: flex;
+  flex-wrap: wrap;
   gap: 2vw;
   z-index: 1000;
 }
 
+/* Botones */
 .boton {
   padding: 2vw 4vw;
   font-weight: bold;
@@ -34,150 +36,176 @@ html, body {
   border: 2px solid #ddd;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(45deg,#223D47,#6f8792,#445b66);
+  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
+  background-size: 400% 400%;
   color: white;
   text-shadow: 1px 1px 3px black;
+  box-shadow: 0 0 8px #111, 0 0 14px #222;
+  animation: rainbowBG 10s ease infinite alternate;
 }
 
-/* ================= MENÚS ================= */
+@keyframes rainbowBG {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Menús */
 .menu {
   position: absolute;
   display: none;
+  gap: 1vw;
   top: 10vh;
   left: 2vw;
   background: rgba(0,0,0,0.75);
   padding: 1vw;
   border-radius: 12px;
   z-index: 1001;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
+/* Menú música vertical */
 #musicMenu {
   flex-direction: column;
 }
 
 #bgMenu {
-  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   max-width: 100vw;
+  overflow: hidden;
 }
 
-.songBtn {
-  padding: 1vw 2vw;
-  font-size: 3vw;
-  margin-bottom: 1vw;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: #2b3a42;
-  color: white;
-  cursor: pointer;
-}
-
+/* Fondos miniaturas */
 #bgMenu img {
   width: 18vw;
   height: 18vw;
   object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid white;
+  cursor: pointer;
   margin: 1vw;
+  flex-shrink: 0;
+}
+
+/* Cerrar */
+.closeBtn {
+  padding: 0.8vw 1.4vw;
+  font-size: 3.5vw;
+  font-weight: bold;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #9999FF;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
+  align-self: flex-start;
+}
+
+/* Canciones */
+.songBtn {
+  padding: 1vw 2vw;
+  font-size: 3vw;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
+  color: white;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.songBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #fff;
+}
+
+/* Fondos */
+.menu img {
+  width: 20vw;
+  height: 15vw;
+  object-fit: cover;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
 }
 
-.closeBtn {
-  font-size: 3.5vw;
-  border-radius: 50%;
-  border: 2px solid white;
-  background: #444;
-  color: white;
-  margin-bottom: 1vw;
-  cursor: pointer;
-}
-
-/* ================= NIEVE ================= */
+/* Nieve */
 .snowflake {
   position: fixed;
   top: -10px;
   color: white;
   font-size: 3vw;
+  z-index: 999;
   animation: fall linear infinite;
-  z-index: 500;
 }
+
 @keyframes fall {
   to { transform: translateY(100vh) rotate(360deg); }
 }
 
-/* ================= KRAMPUS MODE ================= */
-#krampusOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  z-index: 600;
-  display: none;
-  animation: flicker 6s infinite;
-}
-
-@keyframes flicker {
-  0%,100% { opacity: 0.35; }
-  50% { opacity: 0.5; }
-}
-
-/* ================= BOLA DE NIEVE ================= */
+/* Krampus Snow Globe */
 #snowGlobe {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 70vw;
-  height: 70vw;
-  max-width: 420px;
-  max-height: 420px;
   transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vw;
+  max-width: 600px;
+  max-height: 600px;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at top, #555, #111 70%);
-  border: 6px solid rgba(200,200,255,0.6);
-  box-shadow:
-    0 0 40px rgba(200,200,255,0.4),
-    inset 0 0 40px rgba(0,0,0,0.8);
-  z-index: 700;
+  border: 5px solid rgba(255,255,255,0.6);
+  background: rgba(0,0,0,0.3);
+  box-shadow: 0 0 30px black inset;
   display: none;
+  z-index: 2000;
   overflow: hidden;
+  backdrop-filter: blur(4px);
 }
 
-/* ================= TEXTO ENDING ================= */
-#credits {
+#krampusOverlay {
   position: absolute;
-  bottom: -100%;
   width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffcc00;
+  font-size: 2vw;
   text-align: center;
-  color: #ddd;
-  font-size: 4vw;
-  line-height: 1.6;
-  animation: scrollCredits 22s linear infinite;
+  animation: flicker 0.1s infinite alternate;
 }
 
-@keyframes scrollCredits {
-  from { bottom: -100%; }
-  to { bottom: 120%; }
+@keyframes flicker {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
 }
 
-/* ================= ESTÁTICA ================= */
+/* Estática */
 #staticNoise {
-  position: fixed;
-  inset: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top:0; left:0;
+  pointer-events: none;
   background: repeating-linear-gradient(
     0deg,
-    rgba(255,255,255,0.03),
-    rgba(255,255,255,0.03) 1px,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.05) 1px,
     transparent 1px,
-    transparent 3px
+    transparent 2px
   );
-  z-index: 650;
-  display: none;
-  animation: noiseMove 0.4s infinite;
+  animation: noiseAnim 0.2s steps(2) infinite;
 }
 
-@keyframes noiseMove {
-  from { background-position: 0 0; }
-  to { background-position: 0 10px; }
+@keyframes noiseAnim {
+  0% { background-position: 0 0; }
+  100% { background-position: 100% 100%; }
 }
 </style>
 </head>
@@ -190,101 +218,98 @@ html, body {
   <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
 </div>
 
+<!-- Menú música -->
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
+  <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
+  <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
+  <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
+  <div class="songBtn" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
+  <div class="songBtn" onclick="cambiarMusica('bing_andrews_santa.mp3')">Bing Crosby, The Andrews Sisters - Santa Claus Is Comin' To Town</div>
   <div class="songBtn" onclick="cambiarMusica('karol_of_the_bells.mp3')">Karol of the Bells [Krampus]</div>
+  <div class="songBtn" onclick="cambiarMusica('new_soul_yael_naim.mp3')">New soul - Yael Naim</div>
+  <div class="songBtn" onclick="cambiarMusica('lennon_tonight.mp3')">The Lennon Sisters - Tonight You Belong To Me</div>
+  <div class="songBtn" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - death bed</div>
 </div>
 
+<!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
   <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
+  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
+  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
+  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
+  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
+</div>
+
+<!-- Krampus Snow Globe -->
+<div id="snowGlobe">
+  <div id="krampusOverlay">CRÉDITOS / ESTILO ENDING</div>
+  <div id="staticNoise"></div>
 </div>
 
 <audio id="musica" loop></audio>
 
-<!-- KRAMPUS ELEMENTOS -->
-<div id="krampusOverlay"></div>
-<div id="staticNoise"></div>
-
-<div id="snowGlobe">
-  <div id="credits">
-    La nieve cae…<br>
-    La música observa…<br><br>
-    Nada termina aquí<br><br>
-    Felices Fiestas
-  </div>
-</div>
-
 <script>
 // Nieve
-for(let i=0;i<40;i++){
+for(let i=0;i<50;i++){
   let s=document.createElement('div');
   s.className='snowflake';
   s.style.left=Math.random()*100+'vw';
   s.style.fontSize=(Math.random()*4+2)+'vw';
-  s.style.animationDuration=(Math.random()*6+6)+'s';
+  s.style.animationDuration=(Math.random()*5+5)+'s';
   s.innerHTML='❄';
   document.body.appendChild(s);
 }
 
 // Referencias
-const musicBtn = document.getElementById('musicBtn');
-const bgBtn = document.getElementById('bgBtn');
-const musicMenu = document.getElementById('musicMenu');
-const bgMenu = document.getElementById('bgMenu');
-const musica = document.getElementById('musica');
-const playPauseBtn = document.getElementById('playPauseBtn');
+const musicBtn=document.getElementById('musicBtn');
+const bgBtn=document.getElementById('bgBtn');
+const musicMenu=document.getElementById('musicMenu');
+const bgMenu=document.getElementById('bgMenu');
+const musica=document.getElementById('musica');
+const playPauseBtn=document.getElementById('playPauseBtn');
+const snowGlobe=document.getElementById('snowGlobe');
 
-const snowGlobe = document.getElementById('snowGlobe');
-const krampusOverlay = document.getElementById('krampusOverlay');
-const staticNoise = document.getElementById('staticNoise');
-
+// Botones
 musicBtn.onclick=()=>{
-  musicMenu.style.display = musicMenu.style.display==='flex'?'none':'flex';
+  musicMenu.style.display=musicMenu.style.display==='flex'?'none':'flex';
   bgMenu.style.display='none';
 };
-
 bgBtn.onclick=()=>{
-  bgMenu.style.display = bgMenu.style.display==='flex'?'none':'flex';
+  bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex';
   musicMenu.style.display='none';
 };
 
-function activarKrampus(){
-  snowGlobe.style.display='block';
-  krampusOverlay.style.display='block';
-  staticNoise.style.display='block';
-}
-
-function desactivarKrampus(){
-  snowGlobe.style.display='none';
-  krampusOverlay.style.display='none';
-  staticNoise.style.display='none';
-}
-
+// Cambiar música
 function cambiarMusica(ruta){
   musica.src=ruta;
+  musica.muted=false;
   musica.play();
   playPauseBtn.style.display='inline-block';
   playPauseBtn.textContent='⏯️ Pausar';
   pausado=false;
 
-  if(ruta === 'karol_of_the_bells.mp3'){
-    activarKrampus();
+  // Mostrar bola solo si es Krampus
+  if(ruta.includes('karol_of_the_bells')){
+    snowGlobe.style.display='block';
   } else {
-    desactivarKrampus();
+    snowGlobe.style.display='none';
   }
 }
 
+// Cambiar fondo
 function cambiarFondo(ruta){
   document.body.style.backgroundImage = `url('${ruta}')`;
 }
 
+// Pausar/Reanudar
 let pausado=false;
 playPauseBtn.onclick=()=>{
   if(pausado){
     musica.play();
     playPauseBtn.textContent='⏯️ Pausar';
-  } else {
+  }else{
     musica.pause();
     playPauseBtn.textContent='⏯️ Reanudar';
   }
