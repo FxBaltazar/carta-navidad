@@ -53,7 +53,6 @@ html, body {
 .menu {
   position: absolute;
   display: none;
-  flex-direction: column;
   gap: 1vw;
   top: 10vh;
   left: 2vw;
@@ -63,6 +62,16 @@ html, body {
   z-index: 1001;
   max-height: 80vh;
   overflow-y: auto;
+}
+
+/* Menú música vertical */
+#musicMenu {
+  flex-direction: column;
+}
+
+/* Menú fondos horizontal */
+#bgMenu {
+  flex-direction: row;
 }
 
 /* Cerrar */
@@ -99,6 +108,8 @@ html, body {
 /* Fondos */
 .menu img {
   width: 20vw;
+  height: 15vw;
+  object-fit: cover;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
