@@ -89,10 +89,17 @@ html, body {
 
 /* Fondos */
 .menu img {
-  width: 20vw;
+  width: 15vw; /* miniaturas más pequeñas */
+  height: auto;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px white;
 }
 
 /* Nieve */
@@ -123,6 +130,7 @@ html, body {
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
 
+  <!-- Canciones en orden -->
   <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
   <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
   <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
@@ -134,13 +142,14 @@ html, body {
   <div class="songBtn" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - death bed</div>
 </div>
 
+<!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <img src="fondos/fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
-  <img src="fondos/fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
-  <img src="fondos/fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
-  <img src="fondos/fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
-  <img src="fondos/fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
+  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
+  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
+  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
+  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
+  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
 </div>
 
 <audio id="musica" loop></audio>
@@ -203,11 +212,3 @@ playPauseBtn.onclick=()=>{
 
 </body>
 </html>
-
-
-
-
-
-
-
-
