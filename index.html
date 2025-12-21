@@ -69,9 +69,21 @@ html, body {
   flex-direction: column;
 }
 
-/* Menú fondos horizontal */
 #bgMenu {
   flex-direction: row;
+  flex-wrap: wrap; /* permite varias filas si no caben */
+  justify-content: center; /* centrado */
+  max-width: 100vw; /* no excede el ancho de la pantalla */
+  overflow: hidden; /* evita scroll horizontal */
+}
+  #bgMenu img {
+  width: 18vw; /* ajusta el tamaño para que entren las 5 en pantalla */
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid white;
+  cursor: pointer;
+  margin: 1vw; /* separación uniforme */
 }
 
 /* Cerrar */
@@ -224,3 +236,4 @@ playPauseBtn.onclick=()=>{
 
 </body>
 </html>
+
