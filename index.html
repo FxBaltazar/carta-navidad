@@ -53,14 +53,16 @@ html, body {
 .menu {
   position: absolute;
   display: none;
-  flex-wrap: wrap;
-  gap: 2vw;
+  flex-direction: column;
+  gap: 1vw;
   top: 10vh;
   left: 2vw;
   background: rgba(0,0,0,0.75);
   padding: 1vw;
   border-radius: 12px;
   z-index: 1001;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 /* Cerrar */
@@ -74,47 +76,24 @@ html, body {
   color: white;
   cursor: pointer;
   box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
+  align-self: flex-start;
 }
 
-/* Carrusel */
-.carousel-container {
-  position: relative;
-  width: 80vw;
-  height: 20vw;
-  margin: 2vw auto;
-  perspective: 1000px;
-  overflow: visible;
-}
-
-.carousel {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s;
-}
-
-.songCard {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 100%;
-  height: 100%;
+/* Canciones */
+.songBtn {
+  padding: 1vw 2vw;
+  font-size: 3vw;
+  border-radius: 8px;
+  border: 1px solid #ddd;
   background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
   color: white;
-  border-radius: 12px;
-  padding: 1vw;
-  text-align: center;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  transform-origin: center center -150px;
-  transition: transform 0.8s, opacity 0.8s;
-  opacity: 0.5;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
-.songCard.active {
-  opacity: 1;
-  transform: rotateY(0deg) translateZ(150px);
+.songBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #fff;
 }
 
 /* Fondos */
@@ -152,19 +131,15 @@ html, body {
 <!-- Menú música -->
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
-  <div class="carousel-container">
-    <div class="carousel" id="carousel">
-      <div class="songCard active" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
-      <div class="songCard" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
-      <div class="songCard" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
-      <div class="songCard" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
-      <div class="songCard" onclick="cambiarMusica('bing_andrews_santa.mp3')">Bing Crosby, The Andrews Sisters - Santa Claus Is Comin' To Town</div>
-      <div class="songCard" onclick="cambiarMusica('karol_of_the_bells.mp3')">Karol of the Bells [Krampus]</div>
-      <div class="songCard" onclick="cambiarMusica('new_soul_yael_naim.mp3')">New soul - Yael Naim</div>
-      <div class="songCard" onclick="cambiarMusica('lennon_tonight.mp3')">The Lennon Sisters - Tonight You Belong To Me</div>
-      <div class="songCard" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - death bed</div>
-    </div>
-  </div>
+  <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
+  <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
+  <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
+  <div class="songBtn" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
+  <div class="songBtn" onclick="cambiarMusica('bing_andrews_santa.mp3')">Bing Crosby, The Andrews Sisters - Santa Claus Is Comin' To Town</div>
+  <div class="songBtn" onclick="cambiarMusica('karol_of_the_bells.mp3')">Karol of the Bells [Krampus]</div>
+  <div class="songBtn" onclick="cambiarMusica('new_soul_yael_naim.mp3')">New soul - Yael Naim</div>
+  <div class="songBtn" onclick="cambiarMusica('lennon_tonight.mp3')">The Lennon Sisters - Tonight You Belong To Me</div>
+  <div class="songBtn" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - death bed</div>
 </div>
 
 <!-- Menú fondos -->
@@ -234,48 +209,6 @@ playPauseBtn.onclick=()=>{
   }
   pausado=!pausado;
 };
-
-// Carrusel
-const carousel=document.getElementById('carousel');
-const cards=carousel.querySelectorAll('.songCard');
-let activeIndex=0;
-
-function rotateCarousel(){
-  const n=cards.length;
-  for(let i=0;i<n;i++){
-    const offset=i-activeIndex;
-    cards[i].style.transform=`rotateY(${offset*30}deg) translateZ(150px)`;
-    cards[i].classList.remove('active');
-    cards[i].style.opacity=(i===activeIndex)?1:0.5;
-  }
-  cards[activeIndex].classList.add('active');
-}
-
-// Flechas táctiles/click
-document.addEventListener('keydown', (e)=>{
-  if(e.key==='ArrowRight'){
-    activeIndex=(activeIndex+1)%cards.length;
-    rotateCarousel();
-  }else if(e.key==='ArrowLeft'){
-    activeIndex=(activeIndex-1+cards.length)%cards.length;
-    rotateCarousel();
-  }
-});
-
-// Touch para celular
-let startX=null;
-carousel.addEventListener('touchstart', e=>{ startX=e.touches[0].clientX; });
-carousel.addEventListener('touchend', e=>{
-  if(startX!==null){
-    let endX=e.changedTouches[0].clientX;
-    if(endX-startX>30){ activeIndex=(activeIndex-1+cards.length)%cards.length; }
-    else if(startX-endX>30){ activeIndex=(activeIndex+1)%cards.length; }
-    rotateCarousel();
-    startX=null;
-  }
-});
-
-rotateCarousel();
 </script>
 
 </body>
