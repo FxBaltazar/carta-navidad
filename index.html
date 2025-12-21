@@ -17,18 +17,16 @@ html, body {
   overflow: hidden;
 }
 
-/* Botón y contenedor */
+/* ================= BOTONES ================= */
 .boton-container {
   position: fixed;
   top: 2%;
   left: 2%;
   display: flex;
-  flex-wrap: wrap;
   gap: 2vw;
   z-index: 1000;
 }
 
-/* Botones */
 .boton {
   padding: 2vw 4vw;
   font-weight: bold;
@@ -36,153 +34,150 @@ html, body {
   border: 2px solid #ddd;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
-  background-size: 400% 400%;
+  background: linear-gradient(45deg,#223D47,#6f8792,#445b66);
   color: white;
   text-shadow: 1px 1px 3px black;
-  box-shadow: 0 0 8px #111, 0 0 14px #222;
-  animation: rainbowBG 10s ease infinite alternate;
 }
 
-@keyframes rainbowBG {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-
-/* Menús */
+/* ================= MENÚS ================= */
 .menu {
   position: absolute;
   display: none;
-  gap: 1vw;
   top: 10vh;
   left: 2vw;
   background: rgba(0,0,0,0.75);
   padding: 1vw;
   border-radius: 12px;
   z-index: 1001;
-  max-height: 80vh;
-  overflow-y: auto;
 }
 
-/* Música vertical */
 #musicMenu {
   flex-direction: column;
 }
 
-/* Fondos */
 #bgMenu {
-  flex-direction: row;
+  display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   max-width: 100vw;
-  overflow: hidden;
+}
+
+.songBtn {
+  padding: 1vw 2vw;
+  font-size: 3vw;
+  margin-bottom: 1vw;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #2b3a42;
+  color: white;
+  cursor: pointer;
 }
 
 #bgMenu img {
   width: 18vw;
   height: 18vw;
   object-fit: cover;
+  margin: 1vw;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
-  margin: 1vw;
 }
 
-/* Cerrar */
 .closeBtn {
-  padding: 0.8vw 1.4vw;
   font-size: 3.5vw;
-  font-weight: bold;
   border-radius: 50%;
-  border: 2px solid #fff;
-  background: #9999FF;
+  border: 2px solid white;
+  background: #444;
   color: white;
+  margin-bottom: 1vw;
   cursor: pointer;
-  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
 }
 
-/* Canciones */
-.songBtn {
-  padding: 1vw 2vw;
-  font-size: 3vw;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
-  color: white;
-  cursor: pointer;
-  text-align: left;
-}
-
-/* Nieve exterior */
+/* ================= NIEVE ================= */
 .snowflake {
   position: fixed;
   top: -10px;
   color: white;
   font-size: 3vw;
-  z-index: 999;
   animation: fall linear infinite;
+  z-index: 500;
 }
-
 @keyframes fall {
   to { transform: translateY(100vh) rotate(360deg); }
 }
 
-/* ===== BOLA DE NIEVE CENTRAL ===== */
-#globeContainer{
+/* ================= KRAMPUS MODE ================= */
+#krampusOverlay {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 500;
+  background: rgba(0,0,0,0.35);
+  z-index: 600;
+  display: none;
+  animation: flicker 6s infinite;
 }
 
-#globe{
-  width: 45vw;
-  height: 45vw;
-  max-width: 320px;
-  max-height: 320px;
+@keyframes flicker {
+  0%,100% { opacity: 0.35; }
+  50% { opacity: 0.5; }
+}
+
+/* ================= BOLA DE NIEVE ================= */
+#snowGlobe {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 420px;
+  max-height: 420px;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(0,0,0,0.9)),
-    url('fondo1.gif') center/cover;
+    radial-gradient(circle at top, #555, #111 70%);
+  border: 6px solid rgba(200,200,255,0.6);
   box-shadow:
-    0 0 40px rgba(0,0,0,0.9),
-    inset 0 0 25px rgba(0,0,0,0.8);
+    0 0 40px rgba(200,200,255,0.4),
+    inset 0 0 40px rgba(0,0,0,0.8);
+  z-index: 700;
+  display: none;
   overflow: hidden;
-  position: relative;
 }
 
-#globeSnow span{
-  position:absolute;
-  top:-10%;
-  color:#fff;
-  opacity:0.85;
-  animation:globeFall linear infinite;
+/* ================= TEXTO ENDING ================= */
+#credits {
+  position: absolute;
+  bottom: -100%;
+  width: 100%;
+  text-align: center;
+  color: #ddd;
+  font-size: 4vw;
+  line-height: 1.6;
+  animation: scrollCredits 22s linear infinite;
 }
 
-@keyframes globeFall{
-  to{ transform:translateY(120%) rotate(360deg); }
+@keyframes scrollCredits {
+  from { bottom: -100%; }
+  to { bottom: 120%; }
 }
 
-#globeShadow{
-  position:absolute;
-  bottom:-12%;
-  left:50%;
-  width:60%;
-  height:12%;
-  transform:translateX(-50%);
-  background:radial-gradient(ellipse, rgba(0,0,0,0.7), transparent);
+/* ================= ESTÁTICA ================= */
+#staticNoise {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 650;
+  display: none;
+  animation: noiseMove 0.4s infinite;
 }
 
-.globePulse{
-  animation:pulse 0.6s infinite alternate;
-}
-
-@keyframes pulse{
-  from{ transform:scale(1); }
-  to{ transform:scale(1.03); }
+@keyframes noiseMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 10px; }
 }
 </style>
 </head>
@@ -195,59 +190,54 @@ html, body {
   <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
 </div>
 
-<!-- Menú música -->
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
-  <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
-  <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
-  <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
-  <div class="songBtn" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
-  <div class="songBtn" onclick="cambiarMusica('bing_andrews_santa.mp3')">Santa Claus Is Comin' To Town</div>
   <div class="songBtn" onclick="cambiarMusica('karol_of_the_bells.mp3')">Karol of the Bells [Krampus]</div>
-  <div class="songBtn" onclick="cambiarMusica('new_soul_yael_naim.mp3')">New Soul - Yael Naim</div>
-  <div class="songBtn" onclick="cambiarMusica('lennon_tonight.mp3')">Tonight You Belong To Me</div>
-  <div class="songBtn" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - Death Bed</div>
 </div>
 
-<!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
   <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
-  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
-  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
-  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
-  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
-</div>
-
-<!-- Bola de nieve -->
-<div id="globeContainer">
-  <div id="globe">
-    <div id="globeSnow"></div>
-    <div id="globeShadow"></div>
-  </div>
 </div>
 
 <audio id="musica" loop></audio>
 
+<!-- KRAMPUS ELEMENTOS -->
+<div id="krampusOverlay"></div>
+<div id="staticNoise"></div>
+
+<div id="snowGlobe">
+  <div id="credits">
+    La nieve cae…<br>
+    La música observa…<br><br>
+    Nada termina aquí<br><br>
+    Felices Fiestas
+  </div>
+</div>
+
 <script>
-// Nieve exterior
+// Nieve
 for(let i=0;i<40;i++){
   let s=document.createElement('div');
   s.className='snowflake';
   s.style.left=Math.random()*100+'vw';
   s.style.fontSize=(Math.random()*4+2)+'vw';
-  s.style.animationDuration=(Math.random()*5+5)+'s';
+  s.style.animationDuration=(Math.random()*6+6)+'s';
   s.innerHTML='❄';
   document.body.appendChild(s);
 }
 
 // Referencias
-const musicBtn=document.getElementById('musicBtn');
-const bgBtn=document.getElementById('bgBtn');
-const musicMenu=document.getElementById('musicMenu');
-const bgMenu=document.getElementById('bgMenu');
-const musica=document.getElementById('musica');
-const playPauseBtn=document.getElementById('playPauseBtn');
+const musicBtn = document.getElementById('musicBtn');
+const bgBtn = document.getElementById('bgBtn');
+const musicMenu = document.getElementById('musicMenu');
+const bgMenu = document.getElementById('bgMenu');
+const musica = document.getElementById('musica');
+const playPauseBtn = document.getElementById('playPauseBtn');
+
+const snowGlobe = document.getElementById('snowGlobe');
+const krampusOverlay = document.getElementById('krampusOverlay');
+const staticNoise = document.getElementById('staticNoise');
 
 musicBtn.onclick=()=>{
   musicMenu.style.display = musicMenu.style.display==='flex'?'none':'flex';
@@ -259,43 +249,47 @@ bgBtn.onclick=()=>{
   musicMenu.style.display='none';
 };
 
+function activarKrampus(){
+  snowGlobe.style.display='block';
+  krampusOverlay.style.display='block';
+  staticNoise.style.display='block';
+}
+
+function desactivarKrampus(){
+  snowGlobe.style.display='none';
+  krampusOverlay.style.display='none';
+  staticNoise.style.display='none';
+}
+
 function cambiarMusica(ruta){
   musica.src=ruta;
   musica.play();
   playPauseBtn.style.display='inline-block';
   playPauseBtn.textContent='⏯️ Pausar';
-  document.getElementById('globe').classList.add('globePulse');
+  pausado=false;
+
+  if(ruta === 'karol_of_the_bells.mp3'){
+    activarKrampus();
+  } else {
+    desactivarKrampus();
+  }
 }
 
 function cambiarFondo(ruta){
   document.body.style.backgroundImage = `url('${ruta}')`;
 }
 
-// Pausar / Reanudar
 let pausado=false;
 playPauseBtn.onclick=()=>{
   if(pausado){
     musica.play();
     playPauseBtn.textContent='⏯️ Pausar';
-    document.getElementById('globe').classList.add('globePulse');
-  }else{
+  } else {
     musica.pause();
     playPauseBtn.textContent='⏯️ Reanudar';
-    document.getElementById('globe').classList.remove('globePulse');
   }
   pausado=!pausado;
 };
-
-// Nieve interna bola
-const globeSnow=document.getElementById('globeSnow');
-for(let i=0;i<20;i++){
-  let f=document.createElement('span');
-  f.innerHTML='❄';
-  f.style.left=Math.random()*100+'%';
-  f.style.fontSize=(Math.random()*1.5+0.8)+'vw';
-  f.style.animationDuration=(Math.random()*4+3)+'s';
-  globeSnow.appendChild(f);
-}
 </script>
 
 </body>
