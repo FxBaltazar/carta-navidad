@@ -12,22 +12,9 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
+  background: url('fondo1.gif') no-repeat center center fixed;
+  background-size: cover;
   overflow: hidden;
-}
-
-/* Fondo completo */
-#bgContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-#bgContainer img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 /* Botón y contenedor */
@@ -56,12 +43,18 @@ html, body {
   box-shadow: 0 0 8px #111, 0 0 14px #222;
   animation: rainbowBG 10s ease infinite alternate;
 }
-@keyframes rainbowBG {0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; }}
+
+@keyframes rainbowBG {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
 
 /* Menús */
 .menu {
   position: absolute;
   display: none;
+  flex-wrap: wrap;
+  gap: 2vw;
   top: 10vh;
   left: 2vw;
   background: rgba(0,0,0,0.75);
@@ -83,82 +76,15 @@ html, body {
   box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
 }
 
-/* Miniaturas de fondos */
-.bg-thumbnails {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8vw;
-  margin-top: 1vw;
-}
-.bg-thumbnails img {
-  width: 16vw;
+/* Fondos miniatura */
+.menu img {
+  width: 12vw;
   height: 12vw;
+  object-fit: cover;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
-  object-fit: cover;
 }
-
-/* Carrusel de música estilo revista 3D */
-.music-carousel-container {
-  position: relative;
-  width: 90vw;
-  margin: 1vw auto;
-  perspective: 1200px;
-  height: 18vw;
-  overflow: visible;
-}
-.music-carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-}
-.songCard {
-  min-width: 20vw;
-  height: 16vw;
-  margin: 0 1vw;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
-  color: white;
-  border-radius: 12px;
-  padding: 1vw;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  flex-shrink: 0;
-  transition: transform 0.5s, opacity 0.5s;
-  opacity: 0.5;
-  transform: scale(0.8) rotateY(30deg);
-}
-.songCard.active {
-  opacity: 1;
-  transform: scale(1) rotateY(0deg);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-}
-.songCard.prev {
-  transform: scale(0.85) rotateY(25deg) translateX(-2vw);
-}
-.songCard.next {
-  transform: scale(0.85) rotateY(-25deg) translateX(2vw);
-}
-
-/* Flechas carrusel */
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 4vw;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  padding: 0.5vw 1vw;
-  cursor: pointer;
-  z-index: 2;
-}
-#prevBtn { left: -3vw; }
-#nextBtn { right: -3vw; }
 
 /* Nieve */
 .snowflake {
@@ -169,16 +95,65 @@ html, body {
   z-index: 999;
   animation: fall linear infinite;
 }
-@keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
 
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Carrusel tipo slider */
+.music-carousel-container {
+  position: relative;
+  width: 90vw;
+  margin: 1vw auto;
+  perspective: 1000px;
+  height: 18vw;
+  overflow: hidden;
+}
+.music-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease;
+}
+.songCard {
+  min-width: 30vw;
+  height: 16vw;
+  margin: 0 1vw;
+  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
+  color: white;
+  border-radius: 12px;
+  padding: 1vw;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+  opacity: 0.3;
+  transform: scale(0.8);
+  transition: transform 0.5s, opacity 0.5s;
+}
+.songCard.active {
+  opacity: 1;
+  transform: scale(1);
+}
+.carousel-btn {
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  font-size: 2vw;
+  cursor: pointer;
+  padding: 1vw;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1002;
+}
+#prevBtn { left: -2vw; }
+#nextBtn { right: -2vw; }
 </style>
 </head>
 
 <body>
-
-<div id="bgContainer">
-  <img src="fondo1.gif" id="bgImage">
-</div>
 
 <div class="boton-container">
   <button id="musicBtn" class="boton">🎵 Música</button>
@@ -209,13 +184,11 @@ html, body {
 <!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <div class="bg-thumbnails">
-    <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
-    <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
-    <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
-    <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
-    <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
-  </div>
+  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
+  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
+  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
+  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
+  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
 </div>
 
 <audio id="musica" loop></audio>
@@ -239,33 +212,6 @@ const musicMenu=document.getElementById('musicMenu');
 const bgMenu=document.getElementById('bgMenu');
 const musica=document.getElementById('musica');
 const playPauseBtn=document.getElementById('playPauseBtn');
-const bgImage=document.getElementById('bgImage');
-
-// Carrusel música estilo revista
-const carousel=document.getElementById('musicCarousel');
-let activeIndex=0;
-const cards=carousel.children;
-
-function updateCarousel(){
-  for(let i=0;i<cards.length;i++){
-    cards[i].classList.remove('active','prev','next');
-  }
-  const prevIndex=(activeIndex-1+cards.length)%cards.length;
-  const nextIndex=(activeIndex+1)%cards.length;
-  cards[activeIndex].classList.add('active');
-  cards[prevIndex].classList.add('prev');
-  cards[nextIndex].classList.add('next');
-}
-
-document.getElementById('nextBtn').onclick=()=>{
-  activeIndex=(activeIndex+1)%cards.length;
-  updateCarousel();
-};
-
-document.getElementById('prevBtn').onclick=()=>{
-  activeIndex=(activeIndex-1+cards.length)%cards.length;
-  updateCarousel();
-};
 
 musicBtn.onclick=()=>{
   musicMenu.style.display=musicMenu.style.display==='flex'?'none':'flex';
@@ -287,9 +233,13 @@ function cambiarMusica(ruta){
 }
 
 function cambiarFondo(ruta){
-  bgImage.src=ruta;
+  document.body.style.backgroundImage = `url('${ruta}')`;
+  document.body.style.backgroundSize='cover';
+  document.body.style.backgroundPosition='center center';
+  document.body.style.backgroundRepeat='no-repeat';
 }
 
+// Pausar/Reanudar música
 let pausado=false;
 playPauseBtn.onclick=()=>{
   if(pausado){
@@ -301,6 +251,29 @@ playPauseBtn.onclick=()=>{
   }
   pausado=!pausado;
 };
+
+// Carrusel de música
+const carousel=document.getElementById('musicCarousel');
+let activeIndex=0;
+const cards=carousel.children;
+
+function updateCarousel(){
+  for(let i=0;i<cards.length;i++){
+    cards[i].classList.remove('active');
+  }
+  cards[activeIndex].classList.add('active');
+}
+
+document.getElementById('nextBtn').onclick=()=>{
+  activeIndex=(activeIndex+1)%cards.length;
+  updateCarousel();
+};
+document.getElementById('prevBtn').onclick=()=>{
+  activeIndex=(activeIndex-1+cards.length)%cards.length;
+  updateCarousel();
+};
+updateCarousel();
 </script>
+
 </body>
 </html>
