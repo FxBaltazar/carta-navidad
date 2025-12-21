@@ -15,7 +15,7 @@ html, body {
   overflow: hidden;
 }
 
-/* Contenedor del fondo GIF */
+/* Fondo completo */
 #bgContainer {
   position: fixed;
   top: 0;
@@ -24,11 +24,10 @@ html, body {
   height: 100%;
   z-index: -1;
 }
-
 #bgContainer img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ajusta para mostrar todo o parte del GIF */
+  object-fit: cover; /* ajusta el GIF al fondo sin recortar */
 }
 
 /* Botón y contenedor */
@@ -57,11 +56,7 @@ html, body {
   box-shadow: 0 0 8px #111, 0 0 14px #222;
   animation: rainbowBG 10s ease infinite alternate;
 }
-
-@keyframes rainbowBG {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
+@keyframes rainbowBG {0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; }}
 
 /* Menús */
 .menu {
@@ -88,36 +83,54 @@ html, body {
   box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
 }
 
-/* Música - carrusel tipo tarjetas */
-.music-carousel-container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
+/* Miniaturas de fondos */
+.bg-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8vw;
   margin-top: 1vw;
 }
-
-.music-carousel {
-  display: flex;
-  gap: 1vw;
-  transition: transform 0.3s ease;
+.bg-thumbnails img {
+  width: 16vw;
+  height: 12vw;
+  border-radius: 10px;
+  border: 2px solid white;
+  cursor: pointer;
+  object-fit: cover;
 }
 
+/* Carrusel de música tipo tarjetas */
+.music-carousel-container {
+  position: relative;
+  width: 90vw;
+  margin: 1vw auto;
+  perspective: 1000px;
+}
+.music-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease;
+}
 .songCard {
-  min-width: 18vw;
+  min-width: 20vw;
+  margin: 0 1vw;
   background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
   color: white;
   border-radius: 12px;
   padding: 1vw;
   text-align: center;
   cursor: pointer;
-  flex-shrink: 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.5s, opacity 0.5s;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transform: scale(0.8);
 }
-
-.songCard:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+.songCard.active {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
 }
 
 /* Flechas carrusel */
@@ -134,26 +147,8 @@ html, body {
   cursor: pointer;
   z-index: 2;
 }
-
-#prevBtn { left: -2vw; }
-#nextBtn { right: -2vw; }
-
-/* Fondos - miniaturas */
-.bg-thumbnails {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8vw;
-  margin-top: 1vw;
-}
-
-.bg-thumbnails img {
-  width: 16vw;
-  height: 12vw;
-  border-radius: 10px;
-  border: 2px solid white;
-  cursor: pointer;
-  object-fit: cover;
-}
+#prevBtn { left: -3vw; }
+#nextBtn { right: -3vw; }
 
 /* Nieve */
 .snowflake {
@@ -164,10 +159,7 @@ html, body {
   z-index: 999;
   animation: fall linear infinite;
 }
-
-@keyframes fall {
-  to { transform: translateY(100vh) rotate(360deg); }
-}
+@keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
 </style>
 </head>
 
@@ -189,7 +181,7 @@ html, body {
   <div class="music-carousel-container">
     <button id="prevBtn" class="carousel-btn">&#8592;</button>
     <div class="music-carousel" id="musicCarousel">
-      <div class="songCard" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
+      <div class="songCard active" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
       <div class="songCard" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
       <div class="songCard" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
       <div class="songCard" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
@@ -238,15 +230,26 @@ const musica=document.getElementById('musica');
 const playPauseBtn=document.getElementById('playPauseBtn');
 const bgImage=document.getElementById('bgImage');
 
-// Carrusel música
-const musicCarousel=document.getElementById('musicCarousel');
-let scrollAmount=0;
-const scrollPerClick=200;
-document.getElementById('nextBtn').onclick=()=> {
-  musicCarousel.scrollBy({ left: scrollPerClick, behavior: 'smooth' });
+// Carrusel música tipo tarjetas
+const carousel=document.getElementById('musicCarousel');
+let activeIndex=0;
+const cards=carousel.children;
+
+function updateCarousel(){
+  for(let i=0;i<cards.length;i++){
+    cards[i].classList.remove('active');
+  }
+  cards[activeIndex].classList.add('active');
+}
+
+document.getElementById('nextBtn').onclick=()=>{
+  activeIndex=(activeIndex+1)%cards.length;
+  updateCarousel();
 };
-document.getElementById('prevBtn').onclick=()=> {
-  musicCarousel.scrollBy({ left: -scrollPerClick, behavior: 'smooth' });
+
+document.getElementById('prevBtn').onclick=()=>{
+  activeIndex=(activeIndex-1+cards.length)%cards.length;
+  updateCarousel();
 };
 
 musicBtn.onclick=()=>{
@@ -284,6 +287,5 @@ playPauseBtn.onclick=()=>{
   pausado=!pausado;
 };
 </script>
-
 </body>
 </html>
