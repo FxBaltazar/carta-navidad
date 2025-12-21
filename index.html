@@ -129,27 +129,29 @@ html, body {
 <!-- Menú música -->
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
-
-  <!-- Canciones en orden -->
-  <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
-  <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
-  <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
-  <div class="songBtn" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
-  <div class="songBtn" onclick="cambiarMusica('bing_andrews_santa.mp3')">Bing Crosby, The Andrews Sisters - Santa Claus Is Comin' To Town</div>
-  <div class="songBtn" onclick="cambiarMusica('karol_of_the_bells.mp3')">Karol of the Bells [Krampus]</div>
-  <div class="songBtn" onclick="cambiarMusica('new_soul_yael_naim.mp3')">New soul - Yael Naim</div>
-  <div class="songBtn" onclick="cambiarMusica('lennon_tonight.mp3')">The Lennon Sisters - Tonight You Belong To Me</div>
-  <div class="songBtn" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - death bed</div>
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1vw; margin-top:1vw;">
+    <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
+    <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
+    <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
+    <div class="songBtn" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
+    <div class="songBtn" onclick="cambiarMusica('bing_andrews_santa.mp3')">Bing Crosby, The Andrews Sisters - Santa Claus Is Comin' To Town</div>
+    <div class="songBtn" onclick="cambiarMusica('karol_of_the_bells.mp3')">Karol of the Bells [Krampus]</div>
+    <div class="songBtn" onclick="cambiarMusica('new_soul_yael_naim.mp3')">New soul - Yael Naim</div>
+    <div class="songBtn" onclick="cambiarMusica('lennon_tonight.mp3')">The Lennon Sisters - Tonight You Belong To Me</div>
+    <div class="songBtn" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - death bed</div>
+  </div>
 </div>
 
 <!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
-  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
-  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
-  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
-  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
+  <div style="display:flex; flex-wrap:wrap; gap:1vw; margin-top:1vw;">
+    <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')" style="width:18vw; height:auto;">
+    <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')" style="width:18vw; height:auto;">
+    <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')" style="width:18vw; height:auto;">
+    <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')" style="width:18vw; height:auto;">
+    <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')" style="width:18vw; height:auto;">
+  </div>
 </div>
 
 <audio id="musica" loop></audio>
@@ -212,3 +214,4 @@ playPauseBtn.onclick=()=>{
 
 </body>
 </html>
+
