@@ -13,7 +13,7 @@ html, body {
   height: 100%;
   font-family: Arial, sans-serif;
   background: url('fondo1.gif') no-repeat center center fixed;
-  background-size: cover;
+  background-size: contain; /* mostrar el gif completo */
   overflow: hidden;
 }
 
@@ -76,30 +76,48 @@ html, body {
   box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
 }
 
+/* Música - matriz */
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8vw;
+  margin-top: 1vw;
+}
+
 /* Canciones */
 .songBtn {
-  padding: 1vw 2vw;
-  font-size: 3vw;
-  border-radius: 8px;
+  padding: 0.8vw 1vw;
+  font-size: 2.8vw;
+  border-radius: 10px;
   border: 1px solid #ddd;
   background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
   color: white;
   cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-/* Fondos */
-.menu img {
-  width: 15vw; /* miniaturas más pequeñas */
+.songBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+/* Fondos - miniaturas */
+.bg-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8vw;
+  margin-top: 1vw;
+}
+
+.bg-thumbnails img {
+  width: 16vw;
   height: auto;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.menu img:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 12px white;
+  object-fit: cover;
 }
 
 /* Nieve */
@@ -129,7 +147,7 @@ html, body {
 <!-- Menú música -->
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
-  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1vw; margin-top:1vw;">
+  <div class="music-grid">
     <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
     <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
     <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
@@ -145,12 +163,12 @@ html, body {
 <!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <div style="display:flex; flex-wrap:wrap; gap:1vw; margin-top:1vw;">
-    <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')" style="width:18vw; height:auto;">
-    <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')" style="width:18vw; height:auto;">
-    <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')" style="width:18vw; height:auto;">
-    <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')" style="width:18vw; height:auto;">
-    <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')" style="width:18vw; height:auto;">
+  <div class="bg-thumbnails">
+    <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
+    <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
+    <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
+    <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
+    <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
   </div>
 </div>
 
@@ -214,4 +232,3 @@ playPauseBtn.onclick=()=>{
 
 </body>
 </html>
-
