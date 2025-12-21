@@ -76,11 +76,50 @@ html, body {
   box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
 }
 
-/* Fondos miniatura */
+/* Carrusel */
+.carousel-container {
+  position: relative;
+  width: 80vw;
+  height: 20vw;
+  margin: 2vw auto;
+  perspective: 1000px;
+  overflow: visible;
+}
+
+.carousel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.songCard {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
+  color: white;
+  border-radius: 12px;
+  padding: 1vw;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  transform-origin: center center -150px;
+  transition: transform 0.8s, opacity 0.8s;
+  opacity: 0.5;
+}
+
+.songCard.active {
+  opacity: 1;
+  transform: rotateY(0deg) translateZ(150px);
+}
+
+/* Fondos */
 .menu img {
-  width: 12vw;
-  height: 12vw;
-  object-fit: cover;
+  width: 20vw;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
@@ -99,63 +138,6 @@ html, body {
 @keyframes fall {
   to { transform: translateY(100vh) rotate(360deg); }
 }
-
-/* Carrusel circular */
-.carousel-container {
-  position: relative;
-  width: 90vw;
-  height: 20vw;
-  margin: 1vw auto;
-  perspective: 1000px;
-  overflow: visible;
-}
-
-.carousel {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s;
-}
-
-.songCard {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
-  color: white;
-  border-radius: 12px;
-  padding: 1vw;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  transform-origin: center center -300px;
-  transition: transform 0.8s, opacity 0.8s;
-  opacity: 0.5;
-}
-
-.songCard.active {
-  opacity: 1;
-  transform: rotateY(0deg) translateZ(300px);
-}
-
-.carousel-btn {
-  background: rgba(0,0,0,0.5);
-  color: white;
-  border: none;
-  font-size: 2vw;
-  cursor: pointer;
-  padding: 1vw;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1002;
-}
-#prevBtn { left: -5vw; }
-#nextBtn { right: -5vw; }
 </style>
 </head>
 
@@ -171,7 +153,6 @@ html, body {
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
   <div class="carousel-container">
-    <button id="prevBtn" class="carousel-btn">&#8592;</button>
     <div class="carousel" id="carousel">
       <div class="songCard active" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
       <div class="songCard" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
@@ -183,7 +164,6 @@ html, body {
       <div class="songCard" onclick="cambiarMusica('lennon_tonight.mp3')">The Lennon Sisters - Tonight You Belong To Me</div>
       <div class="songCard" onclick="cambiarMusica('powfu_death_bed.mp3')">Powfu - death bed</div>
     </div>
-    <button id="nextBtn" class="carousel-btn">&#8594;</button>
   </div>
 </div>
 
@@ -223,6 +203,7 @@ musicBtn.onclick=()=>{
   musicMenu.style.display=musicMenu.style.display==='flex'?'none':'flex';
   bgMenu.style.display='none';
 };
+
 bgBtn.onclick=()=>{
   bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex';
   musicMenu.style.display='none';
@@ -239,11 +220,9 @@ function cambiarMusica(ruta){
 
 function cambiarFondo(ruta){
   document.body.style.backgroundImage = `url('${ruta}')`;
-  document.body.style.backgroundSize='cover';
-  document.body.style.backgroundPosition='center center';
-  document.body.style.backgroundRepeat='no-repeat';
 }
 
+// Pausar/Reanudar
 let pausado=false;
 playPauseBtn.onclick=()=>{
   if(pausado){
@@ -256,36 +235,44 @@ playPauseBtn.onclick=()=>{
   pausado=!pausado;
 };
 
-// Carrusel rotatorio circular
+// Carrusel
 const carousel=document.getElementById('carousel');
-const cards=carousel.children;
+const cards=carousel.querySelectorAll('.songCard');
 let activeIndex=0;
 
 function rotateCarousel(){
-  for(let i=0;i<cards.length;i++){
-    const offset = i - activeIndex;
-    cards[i].style.transform = `rotateY(${offset*30}deg) translateZ(300px)`;
-    cards[i].style.opacity = (i === activeIndex) ? 1 : 0.5;
+  const n=cards.length;
+  for(let i=0;i<n;i++){
+    const offset=i-activeIndex;
+    cards[i].style.transform=`rotateY(${offset*30}deg) translateZ(150px)`;
+    cards[i].classList.remove('active');
+    cards[i].style.opacity=(i===activeIndex)?1:0.5;
   }
+  cards[activeIndex].classList.add('active');
 }
 
-document.getElementById('nextBtn').onclick = ()=>{
-  activeIndex=(activeIndex+1)%cards.length;
-  rotateCarousel();
-};
-document.getElementById('prevBtn').onclick = ()=>{
-  activeIndex=(activeIndex-1+cards.length)%cards.length;
-  rotateCarousel();
-};
+// Flechas táctiles/click
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowRight'){
+    activeIndex=(activeIndex+1)%cards.length;
+    rotateCarousel();
+  }else if(e.key==='ArrowLeft'){
+    activeIndex=(activeIndex-1+cards.length)%cards.length;
+    rotateCarousel();
+  }
+});
 
-// Touch para móviles
-let startX = 0;
-carousel.addEventListener('touchstart', e=>{ startX = e.touches[0].clientX; });
+// Touch para celular
+let startX=null;
+carousel.addEventListener('touchstart', e=>{ startX=e.touches[0].clientX; });
 carousel.addEventListener('touchend', e=>{
-  const endX = e.changedTouches[0].clientX;
-  if(endX < startX-30) activeIndex=(activeIndex+1)%cards.length;
-  if(endX > startX+30) activeIndex=(activeIndex-1+cards.length)%cards.length;
-  rotateCarousel();
+  if(startX!==null){
+    let endX=e.changedTouches[0].clientX;
+    if(endX-startX>30){ activeIndex=(activeIndex-1+cards.length)%cards.length; }
+    else if(startX-endX>30){ activeIndex=(activeIndex+1)%cards.length; }
+    rotateCarousel();
+    startX=null;
+  }
 });
 
 rotateCarousel();
