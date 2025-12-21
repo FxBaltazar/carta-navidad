@@ -13,7 +13,7 @@ html, body {
   height: 100%;
   font-family: Arial, sans-serif;
   background: url('fondo1.gif') no-repeat center center fixed;
-  background-size: contain; /* mostrar el gif completo */
+  background-size: cover; /* ahora ocupa toda la pantalla */
   overflow: hidden;
 }
 
@@ -53,8 +53,6 @@ html, body {
 .menu {
   position: absolute;
   display: none;
-  flex-wrap: wrap;
-  gap: 2vw;
   top: 10vh;
   left: 2vw;
   background: rgba(0,0,0,0.75);
@@ -76,17 +74,28 @@ html, body {
   box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
 }
 
-/* Música - matriz */
-.music-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.8vw;
+/* Música - carrusel */
+.music-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 1vw;
   margin-top: 1vw;
+  padding-bottom: 0.5vw;
+}
+
+.music-carousel::-webkit-scrollbar {
+  height: 0.6vw;
+}
+
+.music-carousel::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.5);
+  border-radius: 3px;
 }
 
 /* Canciones */
 .songBtn {
-  padding: 0.8vw 1vw;
+  min-width: 18vw;
+  padding: 1vw;
   font-size: 2.8vw;
   border-radius: 10px;
   border: 1px solid #ddd;
@@ -96,6 +105,7 @@ html, body {
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  flex-shrink: 0;
 }
 
 .songBtn:hover {
@@ -113,7 +123,7 @@ html, body {
 
 .bg-thumbnails img {
   width: 16vw;
-  height: auto;
+  height: 12vw;
   border-radius: 10px;
   border: 2px solid white;
   cursor: pointer;
@@ -147,7 +157,7 @@ html, body {
 <!-- Menú música -->
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
-  <div class="music-grid">
+  <div class="music-carousel">
     <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
     <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
     <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
