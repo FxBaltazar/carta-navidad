@@ -100,25 +100,30 @@ html, body {
   to { transform: translateY(100vh) rotate(360deg); }
 }
 
-/* Carrusel tipo slider */
-.music-carousel-container {
+/* Carrusel circular */
+.carousel-container {
   position: relative;
   width: 90vw;
+  height: 20vw;
   margin: 1vw auto;
   perspective: 1000px;
-  height: 18vw;
-  overflow: hidden;
+  overflow: visible;
 }
-.music-carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.5s ease;
+
+.carousel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
 }
+
 .songCard {
-  min-width: 30vw;
-  height: 16vw;
-  margin: 0 1vw;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 60%;
+  height: 100%;
   background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
   color: white;
   border-radius: 12px;
@@ -126,15 +131,16 @@ html, body {
   text-align: center;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  flex-shrink: 0;
-  opacity: 0.3;
-  transform: scale(0.8);
-  transition: transform 0.5s, opacity 0.5s;
+  transform-origin: center center -300px;
+  transition: transform 0.8s, opacity 0.8s;
+  opacity: 0.5;
 }
+
 .songCard.active {
   opacity: 1;
-  transform: scale(1);
+  transform: rotateY(0deg) translateZ(300px);
 }
+
 .carousel-btn {
   background: rgba(0,0,0,0.5);
   color: white;
@@ -148,8 +154,8 @@ html, body {
   transform: translateY(-50%);
   z-index: 1002;
 }
-#prevBtn { left: -2vw; }
-#nextBtn { right: -2vw; }
+#prevBtn { left: -5vw; }
+#nextBtn { right: -5vw; }
 </style>
 </head>
 
@@ -164,9 +170,9 @@ html, body {
 <!-- Menú música -->
 <div id="musicMenu" class="menu">
   <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
-  <div class="music-carousel-container">
+  <div class="carousel-container">
     <button id="prevBtn" class="carousel-btn">&#8592;</button>
-    <div class="music-carousel" id="musicCarousel">
+    <div class="carousel" id="carousel">
       <div class="songCard active" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
       <div class="songCard" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
       <div class="songCard" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
@@ -217,7 +223,6 @@ musicBtn.onclick=()=>{
   musicMenu.style.display=musicMenu.style.display==='flex'?'none':'flex';
   bgMenu.style.display='none';
 };
-
 bgBtn.onclick=()=>{
   bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex';
   musicMenu.style.display='none';
@@ -239,7 +244,6 @@ function cambiarFondo(ruta){
   document.body.style.backgroundRepeat='no-repeat';
 }
 
-// Pausar/Reanudar música
 let pausado=false;
 playPauseBtn.onclick=()=>{
   if(pausado){
@@ -252,27 +256,39 @@ playPauseBtn.onclick=()=>{
   pausado=!pausado;
 };
 
-// Carrusel de música
-const carousel=document.getElementById('musicCarousel');
-let activeIndex=0;
+// Carrusel rotatorio circular
+const carousel=document.getElementById('carousel');
 const cards=carousel.children;
+let activeIndex=0;
 
-function updateCarousel(){
+function rotateCarousel(){
   for(let i=0;i<cards.length;i++){
-    cards[i].classList.remove('active');
+    const offset = i - activeIndex;
+    cards[i].style.transform = `rotateY(${offset*30}deg) translateZ(300px)`;
+    cards[i].style.opacity = (i === activeIndex) ? 1 : 0.5;
   }
-  cards[activeIndex].classList.add('active');
 }
 
-document.getElementById('nextBtn').onclick=()=>{
+document.getElementById('nextBtn').onclick = ()=>{
   activeIndex=(activeIndex+1)%cards.length;
-  updateCarousel();
+  rotateCarousel();
 };
-document.getElementById('prevBtn').onclick=()=>{
+document.getElementById('prevBtn').onclick = ()=>{
   activeIndex=(activeIndex-1+cards.length)%cards.length;
-  updateCarousel();
+  rotateCarousel();
 };
-updateCarousel();
+
+// Touch para móviles
+let startX = 0;
+carousel.addEventListener('touchstart', e=>{ startX = e.touches[0].clientX; });
+carousel.addEventListener('touchend', e=>{
+  const endX = e.changedTouches[0].clientX;
+  if(endX < startX-30) activeIndex=(activeIndex+1)%cards.length;
+  if(endX > startX+30) activeIndex=(activeIndex-1+cards.length)%cards.length;
+  rotateCarousel();
+});
+
+rotateCarousel();
 </script>
 
 </body>
