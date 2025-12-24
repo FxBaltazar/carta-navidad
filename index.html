@@ -28,7 +28,7 @@ html, body {
   z-index: 1000;
 }
 
-/* Botones */
+/* Botones principales */
 .boton {
   padding: 2vw 4vw;
   font-weight: bold;
@@ -36,7 +36,7 @@ html, body {
   border: 2px solid #ddd;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
+  background: linear-gradient(45deg,#111,#333,#555,#222);
   background-size: 400% 400%;
   color: white;
   text-shadow: 1px 1px 3px black;
@@ -91,10 +91,10 @@ html, body {
   font-weight: bold;
   border-radius: 50%;
   border: 2px solid #fff;
-  background: #9999FF;
+  background: #555;
   color: white;
   cursor: pointer;
-  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
+  box-shadow: 0 0 12px black, 0 0 20px #333;
   align-self: flex-start;
 }
 
@@ -112,8 +112,8 @@ html, body {
   to { transform: translateY(100vh) rotate(360deg); }
 }
 
-/* Bola Krampus */
-#krampusEffect {
+/* Bola / Efectos */
+.effect-circle {
   position: fixed;
   width: 35vw;
   height: 35vw;
@@ -130,12 +130,20 @@ html, body {
   padding-top: 12vw;
   z-index: 1000;
 }
-#krampusEffect .label {
-  display: block;
-  margin-bottom: 0.5vw;
-  font-size: 2vw;
-  color: #FFD700;
-  text-shadow: 0 0 3px black;
+
+/* Botón efecto */
+#toggleEffect {
+  position: fixed;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3vw;
+  cursor: pointer;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  z-index: 1001;
 }
 </style>
 </head>
@@ -144,24 +152,27 @@ html, body {
 
 <div class="boton-container">
   <button id="bgBtn" class="boton">🎨 Fondos</button>
-  <button id="effectBtn" class="boton">👁️ Efecto</button>
   <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
 </div>
+
+<!-- Botón efecto -->
+<button id="toggleEffect">👁️</button>
 
 <!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif', 'sia_snowman.mp3')">
-  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif', 'cascanueces_marcha.mp3')">
-  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif', 'bing_crosby_beginning.mp3')">
-  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif', 'karol_of_the_bells.mp3')">
-  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif', 'krampus_music.mp3', true)">
+  <img src="fondo1.gif" onclick="cambiarFondo(0)">
+  <img src="fondo2.gif" onclick="cambiarFondo(1)">
+  <img src="fondo3.gif" onclick="cambiarFondo(2)">
+  <img src="fondo4.gif" onclick="cambiarFondo(3)">
+  <img src="fondo5.gif" onclick="cambiarFondo(4)">
+  <img src="fondo6.gif" onclick="cambiarFondo(5)">
+  <img src="fondo7.gif" onclick="cambiarFondo(6)">
+  <img src="fondo8.gif" onclick="cambiarFondo(7)">
 </div>
 
-<!-- Bola Krampus -->
-<div id="krampusEffect">
-  <span class="label">CRÉDITOS / ENDING KRAMPUS</span>
-</div>
+<!-- Efecto círculo -->
+<div id="effectCircle" class="effect-circle">CRÉDITOS / ENDING</div>
 
 <audio id="musica" loop></audio>
 
@@ -178,17 +189,19 @@ for(let i=0;i<50;i++){
 }
 
 // Referencias
-const bgBtn=document.getElementById('bgBtn');
-const effectBtn=document.getElementById('effectBtn');
-const bgMenu=document.getElementById('bgMenu');
-const musica=document.getElementById('musica');
-const playPauseBtn=document.getElementById('playPauseBtn');
-const krampusEffect=document.getElementById('krampusEffect');
+const bgBtn = document.getElementById('bgBtn');
+const bgMenu = document.getElementById('bgMenu');
+const musica = document.getElementById('musica');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const toggleEffect = document.getElementById('toggleEffect');
+const effectCircle = document.getElementById('effectCircle');
 
-bgBtn.onclick=()=>{ bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex'; };
+bgBtn.onclick = () => {
+  bgMenu.style.display = bgMenu.style.display === 'flex' ? 'none' : 'flex';
+};
 
-let pausado=false;
-playPauseBtn.onclick=()=>{
+let pausado = false;
+playPauseBtn.onclick = () => {
   if(pausado){
     musica.play();
     playPauseBtn.textContent='⏯️ Pausar';
@@ -199,33 +212,52 @@ playPauseBtn.onclick=()=>{
   pausado=!pausado;
 };
 
-// Cambiar fondo y música
-function cambiarFondo(fondo, cancion=null, krampus=false){
-  document.body.style.backgroundImage = `url('${fondo}')`;
-  if(cancion){
-    musica.src=cancion;
-    musica.play();
-    playPauseBtn.style.display='inline-block';
-    playPauseBtn.textContent='⏯️ Pausar';
-    pausado=false;
-  }
-  if(krampus){
-    krampusEffect.style.display='block';
-    effectBtn.textContent = '👁️ Efecto';
+// Fondos, músicas y efectos
+const fondos = [
+  {gif:'fondo1.gif', mp3:'sia_snowman.mp3', efecto:'nieve'},
+  {gif:'fondo2.gif', mp3:'cascanueces_marcha.mp3', efecto:'brillo'},
+  {gif:'fondo3.gif', mp3:'bing_crosby_beginning.mp3', efecto:'luces'},
+  {gif:'fondo4.gif', mp3:'karol_of_the_bells.mp3', efecto:'nieve_rapida'},
+  {gif:'fondo5.gif', mp3:'krampus_music.mp3', efecto:'krampus'},
+  {gif:'fondo6.gif', mp3:'wham_last_christmas.mp3', efecto:'corazones'},
+  {gif:'fondo7.gif', mp3:'powfu_death_bed.mp3', efecto:'lluvia'},
+  {gif:'fondo8.gif', mp3:'new_soul_yael_naim.mp3', efecto:'destellos'}
+];
+
+let efectoActivo = true;
+
+function cambiarFondo(index){
+  const fondo = fondos[index];
+  document.body.style.backgroundImage = `url('${fondo.gif}')`;
+  musica.src = fondo.mp3;
+  musica.play();
+  playPauseBtn.style.display='inline-block';
+  playPauseBtn.textContent='⏯️ Pausar';
+  pausado=false;
+
+  // Mostrar efecto según fondo
+  if(efectoActivo){
+    if(fondo.efecto === 'krampus'){
+      effectCircle.style.display='block';
+      effectCircle.textContent='CRÉDITOS / ENDING KRAMPUS';
+    } else {
+      effectCircle.style.display='block';
+      effectCircle.textContent='EFECTO: '+fondo.efecto.toUpperCase();
+    }
   } else {
-    krampusEffect.style.display='none';
-    effectBtn.textContent = '👁️/ Efecto';
+    effectCircle.style.display='none';
   }
 }
 
-// Activar / desactivar efecto desde el botón superior
-effectBtn.onclick=()=>{
-  if(krampusEffect.style.display === 'block'){
-    krampusEffect.style.display='none';
-    effectBtn.textContent = '👁️/ Efecto';
+// Mostrar/ocultar efecto
+toggleEffect.onclick = () => {
+  efectoActivo = !efectoActivo;
+  if(efectoActivo){
+    toggleEffect.textContent='👁️';
+    effectCircle.style.display='block';
   } else {
-    krampusEffect.style.display='block';
-    effectBtn.textContent = '👁️ Efecto';
+    toggleEffect.textContent='👁️/';
+    effectCircle.style.display='none';
   }
 };
 </script>
