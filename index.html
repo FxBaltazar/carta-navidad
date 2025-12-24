@@ -183,14 +183,10 @@ html, body {
   );
 }
 
-/* ===== ANIMACIONES ===== */
-@keyframes pulseSlow { 0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.05);} }
-@keyframes floatSoft {0%,100%{transform:translate(-50%,-55%);}50%{transform:translate(-50%,-45%);}}
-@keyframes drift {0%{transform:translate(-50%,-50%) rotate(0deg);}100%{transform:translate(-50%,-50%) rotate(360deg);}}
-
+/* ===== PARTICULAS ===== */
 .particle { position: fixed; pointer-events: none; z-index:1; }
-.heart, .star, .music-note, .emoji, .leaf, .rain { position: fixed; opacity:1; }
-.heart { animation: heartPop 1s ease forwards; font-size:24px; }
+.heart, .star, .music-note, .emoji, .leaf, .rain, .snowflake { position: fixed; opacity:1; }
+.heart { animation: heartPop 1.2s ease forwards; font-size:24px; }
 @keyframes heartPop {0%{transform:scale(0);opacity:1}50%{transform:scale(1.4);opacity:0.8}100%{transform:scale(1.8);opacity:0}}
 .music-note { animation: noteFall linear forwards; font-size:30px; }
 @keyframes noteFall {0%{transform:translateY(-20px);opacity:1}100%{transform:translateY(110vh);opacity:0}}
@@ -198,9 +194,11 @@ html, body {
 @keyframes starTwinkle {0%{transform:scale(0);opacity:0}50%{transform:scale(1.3);opacity:1;text-shadow:0 0 10px #fff,0 0 20px #ffd}100%{transform:scale(1.5);opacity:0}}
 .leaf { animation: leafFall linear forwards; font-size:24px; }
 @keyframes leafFall {0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
-.emoji { animation: emojiMove linear forwards; font-size:28px; }
+.emoji { font-size:28px; }
 .rain { width:2px; background:rgba(200,200,255,0.7); animation-name:rainFall; animation-timing-function:linear; animation-iteration-count:infinite;}
 @keyframes rainFall {0%{transform:translateY(-20px);opacity:0}10%{opacity:1}100%{transform:translateY(110vh);opacity:0}}
+.snowflake { font-size:18px; animation-name:snowFall; animation-timing-function:linear; animation-iteration-count:infinite; }
+@keyframes snowFall {0%{transform:translateY(-20px)}100%{transform:translateY(110vh)}}
 .fog { position: fixed; inset:0; background: radial-gradient(circle, rgba(255,255,255,0.08), rgba(0,0,0,0.4)); animation:fogMove 12s infinite alternate; z-index:1; }
 @keyframes fogMove { from{opacity:0.2} to{opacity:0.5} }
 .moon { position: fixed; top:15%; right:10%; width:120px; height:120px; border-radius:50%; background: radial-gradient(circle,#fff,#ccc); box-shadow:0 0 40px rgba(255,255,255,.6); z-index:1;}
@@ -246,30 +244,32 @@ const musica=document.getElementById('musica');
 
 let pausado=false;
 let efectoActivo=true;
+let activeIntervals=[];
 
 bgBtn.onclick=()=>{bgMenu.style.display=bgMenu.style.display==='block'?'none':'block'};
 effectBtn.onclick=()=>{efectoActivo=!efectoActivo; effect.style.display=efectoActivo?'flex':'none'; effectBtn.innerHTML=efectoActivo?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>'};
 playPauseBtn.onclick=()=>{if(pausado){musica.play();playPauseBtn.innerHTML='<i class="fas fa-pause"></i>'}else{musica.pause();playPauseBtn.innerHTML='<i class="fas fa-play"></i>'}pausado=!pausado};
 
-// Guardar todos los intervalos activos
-let activeIntervals = [];
-
 function clearBackgroundEffects(){
-  // Limpiar intervalos
   activeIntervals.forEach(i=>clearInterval(i));
   activeIntervals=[];
-  // Eliminar partículas, luna, niebla
   document.querySelectorAll('.particle,.fog,.moon').forEach(e=>e.remove());
 }
 
-// Efectos exclusivos
-function spawnHearts(){ activeIntervals.push(setInterval(()=>{const h=document.createElement('div'); h.className='particle heart'; h.textContent='❤️'; h.style.left=Math.random()*100+'vw'; h.style.top=Math.random()*100+'vh'; h.style.fontSize=(Math.random()*30+20)+'px'; document.body.appendChild(h); setTimeout(()=>h.remove(),1200);},100)); }
-function spawnMusicNotes(){ activeIntervals.push(setInterval(()=>{const n=document.createElement('div'); n.className='particle music-note'; n.textContent='🎵'; n.style.left=Math.random()*100+'vw'; n.style.fontSize=(Math.random()*40+25)+'px'; n.style.animationDuration=(Math.random()*6+4)+'s'; document.body.appendChild(n); setTimeout(()=>n.remove(),10000);},300)); }
-function spawnStars(){ activeIntervals.push(setInterval(()=>{const s=document.createElement('div'); s.className='particle star'; s.textContent='⭐'; s.style.left=Math.random()*100+'vw'; s.style.top=Math.random()*100+'vh'; s.style.fontSize=(Math.random()*25+20)+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),1600);},200)); }
-function spawnSnow(){ activeIntervals.push(setInterval(()=>{const s=document.createElement('div'); s.className='particle snow'; s.textContent='❄️'; s.style.left=Math.random()*100+'vw'; s.style.fontSize=(Math.random()*20+12)+'px'; s.style.animationDuration=(Math.random()*10+6)+'s'; document.body.appendChild(s); setTimeout(()=>s.remove(),12000);},100)); }
-function spawnEmojis(){ activeIntervals.push(setInterval(()=>{const e=document.createElement('div'); e.className='particle emoji'; e.textContent='😄'; let pos=Math.floor(Math.random()*4); switch(pos){case 0:e.style.top='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break; case 1:e.style.bottom='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break; case 2:e.style.left='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break; case 3:e.style.right='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break;} document.body.appendChild(e); setTimeout(()=>e.remove(),10000);},300)); }
-function spawnLeaves(){ activeIntervals.push(setInterval(()=>{const l=document.createElement('div'); l.className='particle leaf'; l.textContent='🍂'; l.style.left=Math.random()*100+'vw'; l.style.fontSize=(Math.random()*25+15)+'px'; l.style.animationDuration=(Math.random()*10+8)+'s'; document.body.appendChild(l); setTimeout(()=>l.remove(),12000);},300)); }
-function spawnRain(){ activeIntervals.push(setInterval(()=>{const r=document.createElement('div'); r.className='particle rain'; r.style.left=Math.random()*100+'vw'; r.style.height=(Math.random()*15+10)+'px'; r.style.animationDuration=(Math.random()*0.5+0.3)+'s'; document.body.appendChild(r); setTimeout(()=>r.remove(),500);},50)); }
+// EFECTOS EXCLUSIVOS REALISTAS
+function spawnHearts(){activeIntervals.push(setInterval(()=>{const h=document.createElement('div'); h.className='particle heart'; h.textContent='❤️'; h.style.left=Math.random()*100+'vw'; h.style.top=Math.random()*100+'vh'; h.style.fontSize=(Math.random()*30+20)+'px'; document.body.appendChild(h); setTimeout(()=>h.remove(),1200);},120)); }
+
+function spawnMusicNotes(){activeIntervals.push(setInterval(()=>{const n=document.createElement('div'); n.className='particle music-note'; n.textContent='🎵'; n.style.left=Math.random()*100+'vw'; n.style.fontSize=(Math.random()*40+25)+'px'; n.style.animationDuration=(Math.random()*6+4)+'s'; document.body.appendChild(n); setTimeout(()=>n.remove(),10000);},300)); }
+
+function spawnStars(){activeIntervals.push(setInterval(()=>{const s=document.createElement('div'); s.className='particle star'; s.textContent='⭐'; s.style.left=Math.random()*100+'vw'; s.style.top=Math.random()*100+'vh'; s.style.fontSize=(Math.random()*25+20)+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),1600);},200)); }
+
+function spawnSnow(){activeIntervals.push(setInterval(()=>{const s=document.createElement('div'); s.className='particle snowflake'; s.textContent='❄️'; s.style.left=Math.random()*100+'vw'; s.style.fontSize=(Math.random()*20+12)+'px'; s.style.animationDuration=(Math.random()*10+6)+'s'; document.body.appendChild(s); setTimeout(()=>s.remove(),12000);},80)); }
+
+function spawnEmojis(){activeIntervals.push(setInterval(()=>{const e=document.createElement('div'); e.className='particle emoji'; e.textContent='😄'; const pos=Math.floor(Math.random()*4); const dur=Math.random()*6+4; switch(pos){case 0:e.style.top='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${dur}s linear forwards`; break; case 1:e.style.bottom='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${dur}s linear reverse forwards`; break; case 2:e.style.left='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${dur}s linear forwards`; break; case 3:e.style.right='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${dur}s linear reverse forwards`; break;} document.body.appendChild(e); setTimeout(()=>e.remove(),dur*1000);},200)); }
+
+function spawnLeaves(){activeIntervals.push(setInterval(()=>{const l=document.createElement('div'); l.className='particle leaf'; l.textContent='🍂'; l.style.left=Math.random()*100+'vw'; l.style.fontSize=(Math.random()*25+15)+'px'; l.style.animationDuration=(Math.random()*10+8)+'s'; document.body.appendChild(l); setTimeout(()=>l.remove(),12000);},300)); }
+
+function spawnRain(){activeIntervals.push(setInterval(()=>{const r=document.createElement('div'); r.className='particle rain'; r.style.left=Math.random()*100+'vw'; r.style.height=(Math.random()*15+10)+'px'; r.style.animationDuration=(Math.random()*0.5+0.3)+'s'; document.body.appendChild(r); setTimeout(()=>r.remove(),500);},50)); }
 
 function setBackground(fondo,musicaFile,forma,texto,mood){
   document.body.style.background=`url('${fondo}') center/cover no-repeat fixed`;
