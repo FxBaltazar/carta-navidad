@@ -199,110 +199,43 @@ html, body {
   100% { transform: translate(-50%,-50%) rotate(360deg); }
 }
 
-/* ===== EFECTOS DE FONDO REALISTAS ===== */
-.particle {
-  position: fixed;
-  pointer-events: none;
-  z-index: 1;
-}
+/* ===== PARTICULAS EFECTOS REALISTAS ===== */
+.particle { position: fixed; pointer-events: none; z-index:1; }
+.heart, .star, .music-note, .emoji, .leaf, .rain { position: fixed; opacity:1; }
 
-.heart, .star, .music-note, .emoji, .leaf {
-  position: fixed;
-  opacity: 0;
-}
+/* Corazones */
+.heart { animation: heartPop 1s ease forwards; font-size:24px; }
+@keyframes heartPop { 0%{transform:scale(0);opacity:1}50%{transform:scale(1.4);opacity:0.8}100%{transform:scale(1.8);opacity:0} }
 
-.heart {
-  animation: heartPop 1s ease forwards;
-  font-size: 24px;
-}
+/* Notas */
+.music-note { animation: noteFall linear forwards; font-size:30px; }
+@keyframes noteFall {0%{transform:translateY(-20px);opacity:1}100%{transform:translateY(110vh);opacity:0}}
 
-@keyframes heartPop {
-  0% { transform: scale(0); opacity:1; }
-  50% { transform: scale(1.4); opacity:0.8; }
-  100% { transform: scale(1.8); opacity:0; }
-}
+/* Estrellas */
+.star { animation: starTwinkle 1.5s ease forwards; font-size:26px; }
+@keyframes starTwinkle {0%{transform:scale(0);opacity:0}50%{transform:scale(1.3);opacity:1;text-shadow:0 0 10px #fff,0 0 20px #ffd}100%{transform:scale(1.5);opacity:0}}
 
-.star {
-  animation: starTwinkle 1.5s ease forwards;
-  font-size: 26px;
-}
+/* Hojas */
+.leaf { animation: leafFall linear forwards; font-size:24px; }
+@keyframes leafFall {0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
 
-@keyframes starTwinkle {
-  0% { transform: scale(0); opacity:0; }
-  50% { transform: scale(1.3); opacity:1; text-shadow:0 0 10px #fff,0 0 20px #ffd; }
-  100% { transform: scale(1.5); opacity:0; }
-}
+/* Emojis */
+.emoji { animation: emojiMove linear forwards; font-size:28px; }
 
-.music-note {
-  animation: noteFall linear forwards;
-  font-size: 30px;
-}
+/* Lluvia */
+.rain { width:2px; background:rgba(200,200,255,0.7); animation-name:rainFall; animation-timing-function:linear; animation-iteration-count:infinite;}
+@keyframes rainFall {0%{transform:translateY(-20px);opacity:0}10%{opacity:1}100%{transform:translateY(110vh);opacity:0}}
 
-@keyframes noteFall {
-  0% { transform: translateY(-20px); opacity:1; }
-  100% { transform: translateY(110vh); opacity:0; }
-}
+/* Niebla */
+.fog { position: fixed; inset:0; background: radial-gradient(circle, rgba(255,255,255,0.08), rgba(0,0,0,0.4)); animation:fogMove 12s infinite alternate; z-index:1; }
+@keyframes fogMove { from{opacity:0.2} to{opacity:0.5} }
 
-.rain {
-  width: 2px;
-  height: 12px;
-  background: rgba(200,200,255,0.7);
-  animation-name: rainFall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
+/* Luna */
+.moon { position: fixed; top:15%; right:10%; width:120px; height:120px; border-radius:50%; background: radial-gradient(circle,#fff,#ccc); box-shadow:0 0 40px rgba(255,255,255,.6); z-index:1;}
 
-@keyframes rainFall {
-  0% { transform: translateY(-20px); opacity:0; }
-  10% { opacity:1; }
-  100% { transform: translateY(110vh); opacity:0; }
-}
-
-.fog {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.08), rgba(0,0,0,0.4));
-  animation: fogMove 12s infinite alternate;
-  z-index: 1;
-}
-
-@keyframes fogMove {
-  from { opacity: 0.2; }
-  to { opacity: 0.5; }
-}
-
-.moon {
-  position: fixed;
-  top: 15%;
-  right: 10%;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff, #ccc);
-  box-shadow: 0 0 40px rgba(255,255,255,.6);
-  z-index: 1;
-}
-
-.leaf {
-  animation: leafFall linear forwards;
-  font-size: 24px;
-}
-
-@keyframes leafFall {
-  0% { transform: translateY(-10px) rotate(0deg); opacity:1; }
-  100% { transform: translateY(110vh) rotate(360deg); opacity:0; }
-}
-
-.emoji {
-  animation: emojiMove linear forwards;
-  font-size: 28px;
-}
-
-/* Movimiento desordenado emoji se aplica en JS */
 audio { display:none; }
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">
@@ -316,7 +249,6 @@ audio { display:none; }
     <button class="closeBtn" onclick="bgMenu.style.display='none'">✕</button>
     <div class="bg-title">Fondos</div>
   </div>
-
   <div class="bg-grid">
     <img src="fondo1.gif" onclick="setBackground('fondo1.gif','enamorado_tuyo.mp3','heart-soft','Enamorado Tuyo','warm')">
     <img src="fondo2.gif" onclick="setBackground('fondo2.gif','nuestra_cancion.mp3','music','Nuestra Canción','nostalgia')">
@@ -325,175 +257,56 @@ audio { display:none; }
     <img src="fondo5.gif" onclick="setBackground('fondo5.gif','funny_day.mp3','sun','Funny Day','happy')">
     <img src="fondo6.gif" onclick="setBackground('fondo6.gif','tonight_you_belong_to_me.mp3','moon','Tonight You Belong To Me','night')">
     <img src="fondo7.gif" onclick="setBackground('fondo7.gif','perfect_day_lou_reed.mp3','flower','Perfect Day','calm')">
-    <img src="fondo8.gif" onclick="setBackground('fondo8.gif','powfu_death_bed.mp3','tear','death bed','sad')">
+    <img src="fondo8.gif" onclick="setBackground('fondo8.gif','powfu_death_bed.mp3','tear','Death Bed','sad')">
   </div>
 </div>
 
-<div class="effect shape-circle" id="effect">
-  <span></span>
-</div>
-
+<div class="effect shape-circle" id="effect"><span></span></div>
 <audio id="musica" loop></audio>
 
 <script>
-const bgBtn = document.getElementById('bgBtn');
-const bgMenu = document.getElementById('bgMenu');
-const effectBtn = document.getElementById('effectBtn');
-const effect = document.getElementById('effect');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const musica = document.getElementById('musica');
+const bgBtn=document.getElementById('bgBtn');
+const bgMenu=document.getElementById('bgMenu');
+const effectBtn=document.getElementById('effectBtn');
+const effect=document.getElementById('effect');
+const playPauseBtn=document.getElementById('playPauseBtn');
+const musica=document.getElementById('musica');
 
-let pausado = false;
-let efectoActivo = true;
+let pausado=false;
+let efectoActivo=true;
 
-bgBtn.onclick = () => {
-  bgMenu.style.display = bgMenu.style.display === 'block' ? 'none' : 'block';
-};
+bgBtn.onclick=()=>{bgMenu.style.display=bgMenu.style.display==='block'?'none':'block'};
+effectBtn.onclick=()=>{efectoActivo=!efectoActivo; effect.style.display=efectoActivo?'flex':'none'; effectBtn.innerHTML=efectoActivo?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>'};
+playPauseBtn.onclick=()=>{if(pausado){musica.play();playPauseBtn.innerHTML='<i class="fas fa-pause"></i>'}else{musica.pause();playPauseBtn.innerHTML='<i class="fas fa-play"></i>'}pausado=!pausado};
 
-effectBtn.onclick = () => {
-  efectoActivo = !efectoActivo;
-  effect.style.display = efectoActivo ? 'flex' : 'none';
-  effectBtn.innerHTML = efectoActivo
-    ? '<i class="fas fa-eye"></i>'
-    : '<i class="fas fa-eye-slash"></i>';
-};
+function clearBackgroundEffects(){document.querySelectorAll('.particle,.fog,.moon').forEach(e=>e.remove())}
 
-playPauseBtn.onclick = () => {
-  if(pausado){
-    musica.play();
-    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  } else {
-    musica.pause();
-    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-  }
-  pausado = !pausado;
-};
+// Efectos exclusivos
+function spawnHearts(){setInterval(()=>{const h=document.createElement('div'); h.className='particle heart'; h.textContent='❤️'; h.style.left=Math.random()*100+'vw'; h.style.top=Math.random()*100+'vh'; h.style.fontSize=(Math.random()*30+20)+'px'; document.body.appendChild(h); setTimeout(()=>h.remove(),1200);},100)}
+function spawnMusicNotes(){setInterval(()=>{const n=document.createElement('div'); n.className='particle music-note'; n.textContent='🎵'; n.style.left=Math.random()*100+'vw'; n.style.fontSize=(Math.random()*40+25)+'px'; n.style.animationDuration=(Math.random()*6+4)+'s'; document.body.appendChild(n); setTimeout(()=>n.remove(),10000);},300)}
+function spawnStars(){setInterval(()=>{const s=document.createElement('div'); s.className='particle star'; s.textContent='⭐'; s.style.left=Math.random()*100+'vw'; s.style.top=Math.random()*100+'vh'; s.style.fontSize=(Math.random()*25+20)+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),1600);},200)}
+function spawnSnow(){setInterval(()=>{const s=document.createElement('div'); s.className='particle snow'; s.textContent='❄️'; s.style.left=Math.random()*100+'vw'; s.style.fontSize=(Math.random()*20+12)+'px'; s.style.animationDuration=(Math.random()*10+6)+'s'; document.body.appendChild(s); setTimeout(()=>s.remove(),12000);},100)}
+function spawnEmojis(){setInterval(()=>{const e=document.createElement('div'); e.className='particle emoji'; e.textContent='😄'; let pos=Math.floor(Math.random()*4); switch(pos){case 0:e.style.top='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break; case 1:e.style.bottom='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break; case 2:e.style.left='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break; case 3:e.style.right='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break;} document.body.appendChild(e); setTimeout(()=>e.remove(),10000);},300)}
+function spawnLeaves(){setInterval(()=>{const l=document.createElement('div'); l.className='particle leaf'; l.textContent='🍂'; l.style.left=Math.random()*100+'vw'; l.style.fontSize=(Math.random()*25+15)+'px'; l.style.animationDuration=(Math.random()*10+8)+'s'; document.body.appendChild(l); setTimeout(()=>l.remove(),12000);},300)}
+function spawnRain(){setInterval(()=>{const r=document.createElement('div'); r.className='particle rain'; r.style.left=Math.random()*100+'vw'; r.style.height=(Math.random()*15+10)+'px'; r.style.animationDuration=(Math.random()*0.5+0.3)+'s'; document.body.appendChild(r); setTimeout(()=>r.remove(),500);},50)}
 
-function clearBackgroundEffects(){
-  document.querySelectorAll('.particle, .fog, .moon').forEach(e => e.remove());
-}
+function setBackground(fondo,musicaFile,forma,texto,mood){
+document.body.style.background=`url('${fondo}') center/cover no-repeat fixed`;
+effect.className='effect shape-'+forma;
+effect.querySelector('span').textContent=texto;
+effect.style.animation='none';
+clearBackgroundEffects();
 
-function spawnHearts(count){
-  setInterval(()=>{
-    const h = document.createElement('div');
-    h.className='particle heart';
-    h.textContent='❤️';
-    h.style.left=Math.random()*100+'vw';
-    h.style.fontSize=(Math.random()*20+20)+'px';
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),1200);
-  },100);
-}
+if(mood==='warm') spawnHearts();
+if(mood==='nostalgia') spawnMusicNotes();
+if(mood==='light') spawnStars();
+if(mood==='cold') spawnSnow();
+if(mood==='happy') spawnEmojis();
+if(mood==='night'){const moonEl=document.createElement('div'); moonEl.className='moon'; const fogEl=document.createElement('div'); fogEl.className='fog'; document.body.appendChild(moonEl); document.body.appendChild(fogEl);}
+if(mood==='calm') spawnLeaves();
+if(mood==='sad') spawnRain();
 
-function spawnStars(count){
-  setInterval(()=>{
-    const s = document.createElement('div');
-    s.className='particle star';
-    s.textContent='⭐';
-    s.style.left=Math.random()*100+'vw';
-    s.style.fontSize=(Math.random()*20+15)+'px';
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),1600);
-  },200);
-}
-
-function spawnMusicNotes(count){
-  setInterval(()=>{
-    const n = document.createElement('div');
-    n.className='particle music-note';
-    n.textContent='🎵';
-    n.style.left=Math.random()*100+'vw';
-    n.style.fontSize=(Math.random()*25+20)+'px';
-    n.style.animationDuration=(Math.random()*6+4)+'s';
-    document.body.appendChild(n);
-    setTimeout(()=>n.remove(),10000);
-  },300);
-}
-
-function spawnSnow(count){
-  setInterval(()=>{
-    const s = document.createElement('div');
-    s.className='particle snow';
-    s.textContent='❄️';
-    s.style.left=Math.random()*100+'vw';
-    s.style.fontSize=(Math.random()*15+12)+'px';
-    s.style.animationDuration=(Math.random()*10+6)+'s';
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),12000);
-  },100);
-}
-
-function spawnEmojis(count){
-  setInterval(()=>{
-    const e = document.createElement('div');
-    e.className='particle emoji';
-    e.textContent='😄';
-    let pos = Math.floor(Math.random()*4); // 0=top,1=bottom,2=left,3=right
-    switch(pos){
-      case 0: e.style.top='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break;
-      case 1: e.style.bottom='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break;
-      case 2: e.style.left='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break;
-      case 3: e.style.right='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break;
-    }
-    document.body.appendChild(e);
-    setTimeout(()=>e.remove(),10000);
-  },300);
-}
-
-function spawnLeaves(count){
-  setInterval(()=>{
-    const l = document.createElement('div');
-    l.className='particle leaf';
-    l.textContent='🍂';
-    l.style.left=Math.random()*100+'vw';
-    l.style.fontSize=(Math.random()*20+15)+'px';
-    l.style.animationDuration=(Math.random()*10+8)+'s';
-    document.body.appendChild(l);
-    setTimeout(()=>l.remove(),12000);
-  },300);
-}
-
-function spawnRain(count){
-  setInterval(()=>{
-    const r = document.createElement('div');
-    r.className='particle rain';
-    r.style.left=Math.random()*100+'vw';
-    r.style.height=(Math.random()*15+10)+'px';
-    r.style.animationDuration=(Math.random()*0.5+0.3)+'s';
-    document.body.appendChild(r);
-    setTimeout(()=>r.remove(),500);
-  },50);
-}
-
-function setBackground(fondo, musicaFile, forma, texto, mood){
-  document.body.style.background =
-    `url('${fondo}') center/cover no-repeat fixed`;
-
-  effect.className = 'effect shape-' + forma;
-  effect.querySelector('span').textContent = texto;
-  effect.style.animation = 'none';
-
-  clearBackgroundEffects();
-
-  if(mood==='warm') spawnHearts(30);
-  if(mood==='nostalgia') spawnMusicNotes(20);
-  if(mood==='light') spawnStars(25);
-  if(mood==='cold') spawnSnow(50);
-  if(mood==='happy') spawnEmojis(25);
-  if(mood==='night'){
-    const moonEl = document.createElement('div'); moonEl.className='moon';
-    const fogEl = document.createElement('div'); fogEl.className='fog';
-    document.body.appendChild(moonEl);
-    document.body.appendChild(fogEl);
-  }
-  if(mood==='calm') spawnLeaves(25);
-  if(mood==='sad') spawnRain(60);
-
-  musica.src = musicaFile;
-  musica.play();
-  pausado = false;
-  playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  bgMenu.style.display = 'none';
+musica.src=musicaFile; musica.play(); pausado=false; playPauseBtn.innerHTML='<i class="fas fa-pause"></i>'; bgMenu.style.display='none';
 }
 </script>
 
