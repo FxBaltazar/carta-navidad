@@ -1,221 +1,281 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Fondos & Música</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navidad Interactiva 🎄</title>
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
   height: 100%;
-  overflow: hidden;
   font-family: Arial, sans-serif;
+  background: url('fondo1.jpg') center/cover no-repeat fixed;
+  overflow: hidden;
 }
 
-/* Fondo principal */
-#background {
+/* Barra superior */
+.top-bar {
   position: fixed;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 1000;
 }
 
-/* Capa de efectos */
-.effect-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Botón abrir menú */
-#openMenu {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 4;
-  padding: 10px 14px;
-  cursor: pointer;
-}
-
-/* Menú */
-#menu {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  z-index: 3;
-  display: none;
-  flex-direction: column;
-}
-
-/* Cabecera menú */
-.menu-header {
-  position: relative;
-  padding: 20px;
-  text-align: center;
-  color: #fff;
+.top-bar button {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg,#240046,#3c096c,#5a189a,#7209b7);
+  color: white;
   font-size: 22px;
-}
-
-#closeMenu {
-  position: absolute;
-  left: 20px;
-  top: 20px;
   cursor: pointer;
-  font-size: 24px;
+  box-shadow: 0 0 18px rgba(160,0,255,.5);
 }
 
-/* Grid de miniaturas */
-.thumbs {
-  padding: 20px;
+/* ===== MENÚ FONDOS ===== */
+#bgMenu {
+  display: none;
+  position: fixed;
+  top: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 94vw;
+  max-height: 75vh;
+  background: rgba(0,0,0,0.88);
+  border-radius: 14px;
+  padding: 14px;
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+/* Encabezado */
+.bg-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.closeBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #ff4d4d;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.bg-title {
+  text-align: center;
+  color: white;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-shadow: 0 0 6px #000;
+  margin-right: 34px;
+}
+
+/* Matriz 4xN */
+.bg-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 12px;
 }
 
-.thumb {
-  aspect-ratio: 3 / 4;
-  background-size: cover;
-  background-position: center;
+.bg-grid img {
+  width: 100%;
+  height: 26vw;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid white;
   cursor: pointer;
-  border-radius: 8px;
-  border: 2px solid rgba(255,255,255,0.3);
 }
 
-/* ================= EFECTOS ================= */
-
-/* 1 Enamorado tuyo */
-.effect-love {
-  background: radial-gradient(circle, rgba(255,120,180,0.3), rgba(0,0,0,0.8));
-  animation: pulse 6s infinite alternate;
+/* ===== EFECTO ===== */
+.effect {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: all 1s ease;
 }
 
-/* 2 Nuestra canción */
-.effect-memories {
-  background: linear-gradient(120deg, rgba(255,200,120,0.3), rgba(0,0,0,0.85));
-  animation: hue 10s infinite linear;
+.effect span {
+  text-align: center;
+  padding: 22px;
+  font-size: 1.1em;
 }
 
-/* 3 New Soul */
-.effect-soul {
-  background: radial-gradient(circle, rgba(255,255,255,0.35), rgba(0,0,0,0.9));
-  animation: fade 8s infinite;
+/* Formas */
+.shape-circle { border-radius: 50%; }
+
+.shape-star {
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%,
+    79% 91%, 50% 70%, 21% 91%, 32% 57%,
+    2% 35%, 39% 35%
+  );
 }
 
-/* 4 Snowman */
-.effect-snow {
-  background: linear-gradient(rgba(200,230,255,0.35), rgba(0,0,40,0.9));
-  animation: cold 7s infinite alternate;
+.shape-heart {
+  clip-path: polygon(
+    50% 15%, 61% 25%, 70% 35%, 75% 50%,
+    70% 65%, 50% 85%, 30% 65%, 25% 50%,
+    30% 35%, 39% 25%
+  );
 }
 
-/* 5 Funny Day */
-.effect-funny {
-  background: linear-gradient(45deg, rgba(255,255,0,0.25), rgba(0,0,0,0.85));
-  animation: jitter 1.2s infinite;
+/* ===== ANIMACIONES ===== */
+@keyframes pulseSlow {
+  0%,100% { transform: translate(-50%,-50%) scale(1); }
+  50% { transform: translate(-50%,-50%) scale(1.05); }
 }
 
-/* 6 You Belong To Me */
-.effect-belong {
-  background: radial-gradient(circle, rgba(255,220,200,0.35), rgba(0,0,0,0.9));
+@keyframes floatSoft {
+  0%,100% { transform: translate(-50%,-55%); }
+  50% { transform: translate(-50%,-45%); }
 }
 
-/* 7 Perfect Day */
-.effect-perfect {
-  background: linear-gradient(rgba(255,240,200,0.35), rgba(40,30,10,0.9));
-  animation: flicker 5s infinite;
+@keyframes drift {
+  0% { transform: translate(-50%,-50%) rotate(0deg); }
+  100% { transform: translate(-50%,-50%) rotate(360deg); }
 }
 
-/* 8 Death Bed */
-.effect-deathbed {
-  background: linear-gradient(rgba(80,80,100,0.45), rgba(0,0,0,0.95));
-  animation: slowFade 9s infinite alternate;
-}
-
-/* Animaciones */
-@keyframes pulse { from{opacity:.6} to{opacity:1} }
-@keyframes hue { from{filter:hue-rotate(0)} to{filter:hue-rotate(25deg)} }
-@keyframes fade { 0%,100%{opacity:.6} 50%{opacity:1} }
-@keyframes cold { from{opacity:.7} to{opacity:1} }
-@keyframes jitter { 0%{transform:translate(0)}50%{transform:translate(2px,1px)}100%{transform:translate(0)} }
-@keyframes flicker { 0%,100%{opacity:.85}50%{opacity:1} }
-@keyframes slowFade { from{opacity:.6} to{opacity:1} }
-
+audio { display:none; }
 </style>
 </head>
 
 <body>
 
-<div id="background"></div>
-<div class="effect-layer"></div>
-
-<button id="openMenu">Fondos</button>
-
-<div id="menu">
-  <div class="menu-header">
-    <span id="closeMenu">✕</span>
-    Fondos
-  </div>
-
-  <div class="thumbs" id="thumbs"></div>
+<div class="top-bar">
+  <button id="bgBtn"><i class="fas fa-image"></i></button>
+  <button id="effectBtn"><i class="fas fa-eye"></i></button>
+  <button id="playPauseBtn"><i class="fas fa-pause"></i></button>
 </div>
 
-<audio id="player"></audio>
+<div id="bgMenu">
+  <div class="bg-header">
+    <button class="closeBtn" onclick="bgMenu.style.display='none'">✕</button>
+    <div class="bg-title">Fondos</div>
+  </div>
+
+  <div class="bg-grid">
+    <img src="fondo1.gif" onclick="setBackground('fondo1.gif','enamorado_tuyo.mp3','heart','Enamorado Tuyo','warm')">
+    <img src="fondo2.gif" onclick="setBackground('fondo2.gif','nuestra_cancion.mp3','circle','Nuestra Canción','nostalgia')">
+    <img src="fondo3.gif" onclick="setBackground('fondo3.gif','new_soul.mp3','circle','New Soul','light')">
+    <img src="fondo4.gif" onclick="setBackground('fondo4.gif','sia_snowman.mp3','star','Snowman','cold')">
+    <img src="fondo5.gif" onclick="setBackground('fondo5.gif','funny_day.mp3','circle','Funny Day','happy')">
+    <img src="fondo6.gif" onclick="setBackground('fondo6.gif','tonight_you_belong_to_me.mp3','heart','Tonight You Belong To Me','night')">
+    <img src="fondo7.gif" onclick="setBackground('fondo7.gif','perfect_day_lou_reed.mp3','circle','Perfect Day','calm')">
+    <img src="fondo8.gif" onclick="setBackground('fondo8.gif','powfu_death_bed.mp3','circle','death bed','sad')">
+  </div>
+</div>
+
+<div class="effect shape-circle" id="effect">
+  <span></span>
+</div>
+
+<audio id="musica" loop></audio>
 
 <script>
-const backgrounds = [
-  'fondo1.jpg','fondo2.jpg','fondo3.jpg','fondo4.jpg',
-  'fondo5.jpg','fondo6.jpg','fondo7.jpg','fondo8.jpg'
-];
+const bgBtn = document.getElementById('bgBtn');
+const bgMenu = document.getElementById('bgMenu');
+const effectBtn = document.getElementById('effectBtn');
+const effect = document.getElementById('effect');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const musica = document.getElementById('musica');
 
-const musics = [
-  'music1.mp3','music2.mp3','music3.mp3','music4.mp3',
-  'music5.mp3','music6.mp3','music7.mp3','music8.mp3'
-];
+let pausado = false;
+let efectoActivo = true;
 
-const effects = [
-  'effect-love',
-  'effect-memories',
-  'effect-soul',
-  'effect-snow',
-  'effect-funny',
-  'effect-belong',
-  'effect-perfect',
-  'effect-deathbed'
-];
+bgBtn.onclick = () => {
+  bgMenu.style.display = bgMenu.style.display === 'block' ? 'none' : 'block';
+};
 
-const bg = document.getElementById('background');
-const player = document.getElementById('player');
-const effectLayer = document.querySelector('.effect-layer');
-const thumbs = document.getElementById('thumbs');
-const menu = document.getElementById('menu');
+effectBtn.onclick = () => {
+  efectoActivo = !efectoActivo;
+  effect.style.display = efectoActivo ? 'flex' : 'none';
+  effectBtn.innerHTML = efectoActivo
+    ? '<i class="fas fa-eye"></i>'
+    : '<i class="fas fa-eye-slash"></i>';
+};
 
-backgrounds.forEach((img, i) => {
-  const t = document.createElement('div');
-  t.className = 'thumb';
-  t.style.backgroundImage = `url(${img})`;
-  t.onclick = () => selectItem(i);
-  thumbs.appendChild(t);
-});
+playPauseBtn.onclick = () => {
+  if(pausado){
+    musica.play();
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  } else {
+    musica.pause();
+    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+  }
+  pausado = !pausado;
+};
 
-function selectItem(i){
-  bg.style.backgroundImage = `url(${backgrounds[i]})`;
-  player.src = musics[i];
-  player.play();
+function setBackground(fondo, musicaFile, forma, texto, mood){
+  document.body.style.background =
+    `url('${fondo}') center/cover no-repeat fixed`;
 
-  effectLayer.className = 'effect-layer ' + effects[i];
-  menu.style.display = 'none';
+  effect.className = 'effect shape-' + forma;
+  effect.querySelector('span').textContent = texto;
+  effect.style.animation = 'none';
+
+  if(mood === 'warm'){
+    effect.style.background = 'radial-gradient(circle, rgba(255,120,120,.3), rgba(0,0,0,.9))';
+    effect.style.animation = 'pulseSlow 3s infinite';
+  }
+  if(mood === 'nostalgia'){
+    effect.style.background = 'radial-gradient(circle, rgba(255,200,120,.25), rgba(0,0,0,.9))';
+    effect.style.animation = 'floatSoft 6s infinite';
+  }
+  if(mood === 'light'){
+    effect.style.background = 'radial-gradient(circle, rgba(200,255,220,.25), rgba(0,0,0,.85))';
+    effect.style.animation = 'floatSoft 4s infinite';
+  }
+  if(mood === 'cold'){
+    effect.style.background = 'radial-gradient(circle, rgba(200,220,255,.25), rgba(0,0,0,.9))';
+    effect.style.animation = 'drift 12s linear infinite';
+  }
+  if(mood === 'happy'){
+    effect.style.background = 'radial-gradient(circle, rgba(255,255,180,.35), rgba(0,0,0,.85))';
+    effect.style.animation = 'pulseSlow 2s infinite';
+  }
+  if(mood === 'night'){
+    effect.style.background = 'radial-gradient(circle, rgba(120,160,255,.25), rgba(0,0,0,.9))';
+    effect.style.animation = 'floatSoft 7s infinite';
+  }
+  if(mood === 'calm'){
+    effect.style.background = 'radial-gradient(circle, rgba(200,180,150,.25), rgba(0,0,0,.9))';
+    effect.style.animation = 'floatSoft 8s infinite';
+  }
+  if(mood === 'sad'){
+    effect.style.background = 'radial-gradient(circle, rgba(180,180,200,.18), rgba(0,0,0,.92))';
+    effect.style.animation = 'pulseSlow 6s infinite';
+  }
+
+  musica.src = musicaFile;
+  musica.play();
+  pausado = false;
+  playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  bgMenu.style.display = 'none';
 }
-
-document.getElementById('openMenu').onclick = () => {
-  menu.style.display = 'flex';
-};
-
-document.getElementById('closeMenu').onclick = () => {
-  menu.style.display = 'none';
-};
 </script>
 
 </body>
