@@ -31,13 +31,13 @@ html, body {
 }
 
 .top-bar button {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   border: none;
   background: linear-gradient(135deg,#240046,#3c096c,#5a189a,#7209b7);
   color: white;
-  font-size: 24px;
+  font-size: 22px;
   cursor: pointer;
   box-shadow: 0 0 18px rgba(160,0,255,.5);
 }
@@ -49,31 +49,24 @@ html, body {
   top: 85px;
   left: 50%;
   transform: translateX(-50%);
-  width: 92vw;
+  width: 94vw;
   max-height: 75vh;
   background: rgba(0,0,0,0.88);
   border-radius: 14px;
-  padding: 16px;
+  padding: 14px;
   z-index: 1001;
   overflow-y: auto;
 }
 
-/* Encabezado del menú */
+/* Encabezado */
 .bg-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
-.bg-title {
-  color: white;
-  font-size: 1.4em;
-  font-weight: bold;
-  text-shadow: 0 0 6px #000;
-}
-
-/* Botón cerrar */
+/* Botón cerrar a la izquierda */
 .closeBtn {
   width: 34px;
   height: 34px;
@@ -85,18 +78,28 @@ html, body {
   cursor: pointer;
 }
 
-/* Matriz 4xN */
+/* Título centrado */
+.bg-title {
+  text-align: center;
+  color: white;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-shadow: 0 0 6px #000;
+  margin-right: 34px; /* compensa el botón X */
+}
+
+/* ===== MATRIZ 4xN ===== */
 .bg-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
-/* Miniaturas alargadas */
+/* Miniaturas */
 .bg-grid img {
   width: 100%;
-  height: 28vw;
-  max-height: 180px;
+  height: 26vw;
+  max-height: 160px;
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid white;
@@ -114,8 +117,9 @@ html, body {
   background: radial-gradient(circle at top,
     rgba(255,255,255,0.18),
     rgba(0,0,0,0.9));
-  box-shadow: inset 0 0 30px rgba(255,255,255,.2),
-              0 0 40px rgba(180,0,0,.7);
+  box-shadow:
+    inset 0 0 30px rgba(255,255,255,.2),
+    0 0 40px rgba(180,0,0,.7);
   z-index: 5;
   display: flex;
   align-items: center;
@@ -160,11 +164,11 @@ audio { display:none; }
   <button id="playPauseBtn"><i class="fas fa-pause"></i></button>
 </div>
 
-<!-- Menú de fondos -->
+<!-- Menú fondos -->
 <div id="bgMenu">
   <div class="bg-header">
-    <div class="bg-title">Fondos</div>
     <button class="closeBtn" onclick="bgMenu.style.display='none'">✕</button>
+    <div class="bg-title">Fondos</div>
   </div>
 
   <div class="bg-grid">
@@ -172,6 +176,7 @@ audio { display:none; }
     <img src="fondo2.gif" onclick="setBackground('fondo2.gif','cascanueces_marcha.mp3','star','Cascanueces')">
     <img src="fondo3.gif" onclick="setBackground('fondo3.gif','bing_crosby_beginning.mp3','heart','Christmas')">
     <img src="fondo4.gif" onclick="setBackground('fondo4.gif','wham_last_christmas.mp3','circle','Last Christmas')">
+
     <img src="fondo5.gif" onclick="setBackground('fondo5.gif','bing_andrews_santa.mp3','star','Santa Claus')">
     <img src="fondo6.gif" onclick="setBackground('fondo6.gif','karol_of_the_bells.mp3','heart','Krampus')">
     <img src="fondo7.gif" onclick="setBackground('fondo7.gif','new_soul_yael_naim.mp3','circle','New Soul')">
