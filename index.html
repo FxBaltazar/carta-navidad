@@ -206,16 +206,41 @@ html, body {
   z-index: 1;
 }
 
+.heart, .star, .music-note, .emoji, .leaf {
+  position: fixed;
+  opacity: 0;
+}
+
 .heart {
   animation: heartPop 1s ease forwards;
   font-size: 24px;
-  opacity: 0;
 }
 
 @keyframes heartPop {
   0% { transform: scale(0); opacity:1; }
   50% { transform: scale(1.4); opacity:0.8; }
   100% { transform: scale(1.8); opacity:0; }
+}
+
+.star {
+  animation: starTwinkle 1.5s ease forwards;
+  font-size: 26px;
+}
+
+@keyframes starTwinkle {
+  0% { transform: scale(0); opacity:0; }
+  50% { transform: scale(1.3); opacity:1; text-shadow:0 0 10px #fff,0 0 20px #ffd; }
+  100% { transform: scale(1.5); opacity:0; }
+}
+
+.music-note {
+  animation: noteFall linear forwards;
+  font-size: 30px;
+}
+
+@keyframes noteFall {
+  0% { transform: translateY(-20px); opacity:1; }
+  100% { transform: translateY(110vh); opacity:0; }
 }
 
 .rain {
@@ -258,6 +283,22 @@ html, body {
   z-index: 1;
 }
 
+.leaf {
+  animation: leafFall linear forwards;
+  font-size: 24px;
+}
+
+@keyframes leafFall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity:1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity:0; }
+}
+
+.emoji {
+  animation: emojiMove linear forwards;
+  font-size: 28px;
+}
+
+/* Movimiento desordenado emoji se aplica en JS */
 audio { display:none; }
 </style>
 </head>
@@ -328,32 +369,100 @@ playPauseBtn.onclick = () => {
   pausado = !pausado;
 };
 
-/* ===== EFECTOS DE FONDO REALISTAS ===== */
 function clearBackgroundEffects(){
   document.querySelectorAll('.particle, .fog, .moon').forEach(e => e.remove());
 }
 
 function spawnHearts(count){
-  for(let i=0;i<count;i++){
+  setInterval(()=>{
     const h = document.createElement('div');
     h.className='particle heart';
     h.textContent='❤️';
-    h.style.left = Math.random()*100+'vw';
-    h.style.fontSize = (Math.random()*20+20)+'px';
-    h.style.animationDelay = (Math.random()*1)+'s';
+    h.style.left=Math.random()*100+'vw';
+    h.style.fontSize=(Math.random()*20+20)+'px';
     document.body.appendChild(h);
-  }
+    setTimeout(()=>h.remove(),1200);
+  },100);
+}
+
+function spawnStars(count){
+  setInterval(()=>{
+    const s = document.createElement('div');
+    s.className='particle star';
+    s.textContent='⭐';
+    s.style.left=Math.random()*100+'vw';
+    s.style.fontSize=(Math.random()*20+15)+'px';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1600);
+  },200);
+}
+
+function spawnMusicNotes(count){
+  setInterval(()=>{
+    const n = document.createElement('div');
+    n.className='particle music-note';
+    n.textContent='🎵';
+    n.style.left=Math.random()*100+'vw';
+    n.style.fontSize=(Math.random()*25+20)+'px';
+    n.style.animationDuration=(Math.random()*6+4)+'s';
+    document.body.appendChild(n);
+    setTimeout(()=>n.remove(),10000);
+  },300);
+}
+
+function spawnSnow(count){
+  setInterval(()=>{
+    const s = document.createElement('div');
+    s.className='particle snow';
+    s.textContent='❄️';
+    s.style.left=Math.random()*100+'vw';
+    s.style.fontSize=(Math.random()*15+12)+'px';
+    s.style.animationDuration=(Math.random()*10+6)+'s';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),12000);
+  },100);
+}
+
+function spawnEmojis(count){
+  setInterval(()=>{
+    const e = document.createElement('div');
+    e.className='particle emoji';
+    e.textContent='😄';
+    let pos = Math.floor(Math.random()*4); // 0=top,1=bottom,2=left,3=right
+    switch(pos){
+      case 0: e.style.top='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break;
+      case 1: e.style.bottom='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break;
+      case 2: e.style.left='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear forwards`; break;
+      case 3: e.style.right='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${Math.random()*6+4}s linear reverse forwards`; break;
+    }
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),10000);
+  },300);
+}
+
+function spawnLeaves(count){
+  setInterval(()=>{
+    const l = document.createElement('div');
+    l.className='particle leaf';
+    l.textContent='🍂';
+    l.style.left=Math.random()*100+'vw';
+    l.style.fontSize=(Math.random()*20+15)+'px';
+    l.style.animationDuration=(Math.random()*10+8)+'s';
+    document.body.appendChild(l);
+    setTimeout(()=>l.remove(),12000);
+  },300);
 }
 
 function spawnRain(count){
-  for(let i=0;i<count;i++){
+  setInterval(()=>{
     const r = document.createElement('div');
     r.className='particle rain';
-    r.style.left = Math.random()*100+'vw';
-    r.style.height = (Math.random()*15+10)+'px';
-    r.style.animationDuration = (Math.random()*1+0.5)+'s';
+    r.style.left=Math.random()*100+'vw';
+    r.style.height=(Math.random()*15+10)+'px';
+    r.style.animationDuration=(Math.random()*0.5+0.3)+'s';
     document.body.appendChild(r);
-  }
+    setTimeout(()=>r.remove(),500);
+  },50);
 }
 
 function setBackground(fondo, musicaFile, forma, texto, mood){
@@ -366,39 +475,25 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
 
   clearBackgroundEffects();
 
-  if(mood==='warm') spawnHearts(20);
-  if(mood==='nostalgia') spawnParticles('🎶',16,8,14);
-  if(mood==='light') spawnParticles('✨',22,6,12);
-  if(mood==='cold') spawnParticles('❄️',30,5,10,12,24);
-  if(mood==='happy') spawnParticles('😄',18,6,12);
+  if(mood==='warm') spawnHearts(30);
+  if(mood==='nostalgia') spawnMusicNotes(20);
+  if(mood==='light') spawnStars(25);
+  if(mood==='cold') spawnSnow(50);
+  if(mood==='happy') spawnEmojis(25);
   if(mood==='night'){
     const moonEl = document.createElement('div'); moonEl.className='moon';
     const fogEl = document.createElement('div'); fogEl.className='fog';
     document.body.appendChild(moonEl);
     document.body.appendChild(fogEl);
   }
-  if(mood==='calm') spawnParticles('🍂',14,8,16);
-  if(mood==='sad') spawnRain(40);
+  if(mood==='calm') spawnLeaves(25);
+  if(mood==='sad') spawnRain(60);
 
   musica.src = musicaFile;
   musica.play();
   pausado = false;
   playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
   bgMenu.style.display = 'none';
-}
-
-/* efecto general auxiliar para otras partículas */
-function spawnParticles(icon, count, speedMin, speedMax, sizeMin=16, sizeMax=30){
-  for(let i=0;i<count;i++){
-    const p = document.createElement('div');
-    p.className='particle';
-    p.textContent=icon;
-    p.style.left=Math.random()*100+'vw';
-    p.style.fontSize=(Math.random()*(sizeMax-sizeMin)+sizeMin)+'px';
-    p.style.animationDuration=(Math.random()*(speedMax-speedMin)+speedMin)+'s';
-    p.style.opacity=(Math.random()*0.5+0.5);
-    document.body.appendChild(p);
-  }
 }
 </script>
 
