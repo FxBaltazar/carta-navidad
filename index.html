@@ -137,18 +137,6 @@ html, body {
   color: #FFD700;
   text-shadow: 0 0 3px black;
 }
-#krampusEffect button {
-  position: absolute;
-  top: 5%;
-  right: 5%;
-  font-size: 2.5vw; /* tamaño uniforme */
-  cursor: pointer;
-  background: rgba(255,255,255,0.2);
-  border: none;
-  border-radius: 50%;
-  color: white;
-  text-shadow: 0 0 3px black;
-}
 </style>
 </head>
 
@@ -156,6 +144,7 @@ html, body {
 
 <div class="boton-container">
   <button id="bgBtn" class="boton">🎨 Fondos</button>
+  <button id="effectBtn" class="boton">👁️ Efecto</button>
   <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
 </div>
 
@@ -171,9 +160,7 @@ html, body {
 
 <!-- Bola Krampus -->
 <div id="krampusEffect">
-  <span class="label">Efecto</span>
-  CRÉDITOS / ENDING KRAMPUS
-  <button id="toggleEffect">👁️</button>
+  <span class="label">CRÉDITOS / ENDING KRAMPUS</span>
 </div>
 
 <audio id="musica" loop></audio>
@@ -192,11 +179,11 @@ for(let i=0;i<50;i++){
 
 // Referencias
 const bgBtn=document.getElementById('bgBtn');
+const effectBtn=document.getElementById('effectBtn');
 const bgMenu=document.getElementById('bgMenu');
 const musica=document.getElementById('musica');
 const playPauseBtn=document.getElementById('playPauseBtn');
 const krampusEffect=document.getElementById('krampusEffect');
-const toggleEffect=document.getElementById('toggleEffect');
 
 bgBtn.onclick=()=>{ bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex'; };
 
@@ -224,21 +211,21 @@ function cambiarFondo(fondo, cancion=null, krampus=false){
   }
   if(krampus){
     krampusEffect.style.display='block';
-    toggleEffect.textContent = '👁️';
+    effectBtn.textContent = '👁️ Efecto';
   } else {
     krampusEffect.style.display='none';
-    toggleEffect.textContent = '👁️/';
+    effectBtn.textContent = '👁️/ Efecto';
   }
 }
 
-// Mostrar/ocultar efecto con icono uniforme
-toggleEffect.onclick=()=>{
+// Activar / desactivar efecto desde el botón superior
+effectBtn.onclick=()=>{
   if(krampusEffect.style.display === 'block'){
     krampusEffect.style.display='none';
-    toggleEffect.textContent = '👁️/';
+    effectBtn.textContent = '👁️/ Efecto';
   } else {
     krampusEffect.style.display='block';
-    toggleEffect.textContent = '👁️';
+    effectBtn.textContent = '👁️ Efecto';
   }
 };
 </script>
