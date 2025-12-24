@@ -2,239 +2,249 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<title>Tarjeta Interactiva de Navidad</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Navidad Interactiva 🎄</title>
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-html, body {
+* {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  background: url('fondo1.gif') no-repeat center center fixed;
-  background-size: cover;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: url("krampus_fondo.gif") center/cover no-repeat fixed;
   overflow: hidden;
 }
 
-/* Botones arriba en horizontal */
-.boton-container {
+body::before {
+  content: "";
   position: fixed;
-  top: 2%;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0,0,0,.3), rgba(0,0,0,.85));
+  z-index: 0;
+}
+
+/* EFECTO CENTRAL */
+.effect {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at top, rgba(255,255,255,.15), rgba(0,0,0,.9));
+  box-shadow: inset 0 0 30px rgba(255,255,255,.2), 0 0 40px rgba(180,0,0,.7);
+  z-index: 5;
+  transition: all .6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.effect span {
+  color: #ffdede;
+  font-size: 15px;
+  text-align: center;
+  text-shadow: 0 0 10px crimson;
+}
+
+/* BARRA SUPERIOR */
+.top-bar {
+  position: fixed;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 1vw;
-  z-index: 1000;
+  align-items: center;
+  gap: 10px;
+  background: rgba(30,30,30,0.85);
+  padding: 10px 15px;
+  border-radius: 10px;
+  z-index: 20;
 }
 
-/* Botones */
-.boton {
-  padding: 1.5vw 3vw;
-  font-weight: bold;
-  font-size: 3vw;
-  border: 2px solid #ddd;
-  border-radius: 12px;
+.top-bar .btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
   cursor: pointer;
-  background: linear-gradient(45deg,#0f1a20,#1a2b33,#2e3f4d,#1a2b33);
-  background-size: 400% 400%;
+  font-size: 22px;
   color: white;
-  text-shadow: 1px 1px 3px black;
-  box-shadow: 0 0 8px #111, 0 0 14px #222;
-  animation: darkRainbowBG 10s ease infinite alternate;
-}
-@keyframes darkRainbowBG {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  background: linear-gradient(135deg,
+    #240046, #3c096c, #5a189a, #7209b7);
+  box-shadow: 0 0 20px rgba(160,0,255,.5);
+  transition: transform .3s;
 }
 
-/* Menú fondos miniaturas */
-.menu {
+.top-bar .btn:hover {
+  transform: scale(1.15);
+}
+
+/* MENU DESPLEGABLE DE FONDOS HORIZONTAL */
+#fondosMenu {
   position: absolute;
-  display: none;
-  gap: 1vw;
-  top: 10vh;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.75);
-  padding: 1vw;
-  border-radius: 12px;
-  z-index: 1001;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-#bgMenu {
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 100vw;
-  overflow: hidden;
-}
-
-/* Fondos miniaturas */
-#bgMenu img {
-  width: 18vw;
-  height: 18vw;
-  object-fit: cover;
+  display: none;
+  gap: 12px;
+  background: rgba(40,40,40,0.95);
+  padding: 10px;
   border-radius: 10px;
-  border: 2px solid white;
+  z-index: 25;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.menu-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
   cursor: pointer;
-  margin: 1vw;
-  flex-shrink: 0;
+  color: #fff;
+  margin-right: 8px;
 }
 
-/* Cerrar */
-.closeBtn {
-  padding: 0.8vw 1.4vw;
-  font-size: 3.5vw;
-  font-weight: bold;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  background: #9999FF;
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
-  align-self: flex-start;
+.menu-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,.3);
+  margin-bottom: 4px;
+  transition: transform .3s;
 }
 
-/* Bola Krampus / efecto */
-#krampusEffect {
-  position: fixed;
-  width: 35vw;
-  height: 35vw;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.8);
-  box-shadow: 0 0 25px #ff0000, inset 0 0 15px #660000;
-  display: none;
-  color: white;
-  font-size: 3vw;
-  text-align: center;
-  padding-top: 12vw;
-  z-index: 1000;
+.menu-item img:hover {
+  transform: scale(1.1);
 }
 
-/* Otros efectos por fondo */
-.effectContainer {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  z-index: 1000;
+/* FORMAS EFECTO CENTRAL */
+.shape-circle { border-radius: 50%; }
+.shape-star {
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+    50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+}
+.shape-heart {
+  clip-path: polygon(
+    50% 15%, 61% 25%, 70% 35%, 75% 50%, 70% 65%,
+    50% 85%, 30% 65%, 25% 50%, 30% 35%, 39% 25%
+  );
 }
 
-/* Ejemplo efecto texto */
-.effectText {
-  font-size: 3vw;
-  color: #ffdd00;
-  text-align: center;
-  text-shadow: 2px 2px 6px black;
-}
+/* AUDIO */
+audio { display: none; }
+
 </style>
 </head>
 
 <body>
 
-<div class="boton-container">
-  <button id="bgBtn" class="boton">🎨 Fondos</button>
-  <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
-  <button id="effectBtn" class="boton">✨ Efectos</button>
+<!-- BARRA SUPERIOR -->
+<div class="top-bar">
+  <button class="btn" id="pauseBtn"><i class="fas fa-pause"></i></button>
+  <button class="btn" id="effectBtn"><i class="fas fa-eye"></i></button>
+  <button class="btn" id="showFondosBtn">Fondos</button>
 </div>
 
-<!-- Menú fondos -->
-<div id="bgMenu" class="menu">
-  <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif', 'sia_snowman.mp3', 'snow')">
-  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif', 'cascanueces_marcha.mp3', 'musicNotes')">
-  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif', 'bing_crosby_beginning.mp3', 'stars')">
-  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif', 'karol_of_the_bells.mp3', 'lights')">
-  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif', 'krampus_music.mp3', 'krampus')">
-  <img src="fondo6.gif" onclick="cambiarFondo('fondo6.gif', 'wham_last_christmas.mp3', 'snow2')">
-  <img src="fondo7.gif" onclick="cambiarFondo('fondo7.gif', 'bing_andrews_santa.mp3', 'confetti')">
-  <img src="fondo8.gif" onclick="cambiarFondo('fondo8.gif', 'powfu_death_bed.mp3', 'hearts')">
+<!-- MENU DESPLEGABLE DE FONDOS -->
+<div id="fondosMenu">
+  <div class="menu-item" onclick="setBackground('krampus_fondo.gif','karol_of_the_bells.mp3','krampus_inside.png','Krampus is coming!','circle')">
+    <img src="thumb1.gif" alt="Krampus">
+    <span>Krampus</span>
+  </div>
+  <div class="menu-item" onclick="setBackground('fondo2.gif','sia_snowman.mp3','efecto2.png','Sia - Snowman','star')">
+    <img src="thumb2.gif" alt="Snowman">
+    <span>Snowman</span>
+  </div>
+  <div class="menu-item" onclick="setBackground('fondo3.gif','cascanueces_marcha.mp3','efecto3.png','Cascanueces Marcha','heart')">
+    <img src="thumb3.gif" alt="Cascanueces">
+    <span>Cascanueces</span>
+  </div>
 </div>
 
-<!-- Efectos -->
-<div id="krampusEffect">
-  CRÉDITOS / ENDING KRAMPUS
-</div>
-<div id="snow" class="effectContainer">
-  <div class="effectText">❄ Nieve Suave ❄</div>
-</div>
-<div id="musicNotes" class="effectContainer">
-  <div class="effectText">🎵 Notas Musicales 🎵</div>
-</div>
-<div id="stars" class="effectContainer">
-  <div class="effectText">⭐ Brillo Estelar ⭐</div>
-</div>
-<div id="lights" class="effectContainer">
-  <div class="effectText">✨ Luces ✨</div>
-</div>
-<div id="snow2" class="effectContainer">
-  <div class="effectText">❄ Copos Intensos ❄</div>
-</div>
-<div id="confetti" class="effectContainer">
-  <div class="effectText">🎉 Confeti 🎉</div>
-</div>
-<div id="hearts" class="effectContainer">
-  <div class="effectText">❤️ Corazones ❤️</div>
+<!-- EFECTO CENTRAL -->
+<div class="effect shape-circle" id="effect">
+  <span>He knows when you are afraid</span>
 </div>
 
-<audio id="musica" loop></audio>
+<audio id="music" loop></audio>
 
 <script>
-const bgBtn=document.getElementById('bgBtn');
-const effectBtn=document.getElementById('effectBtn');
-const bgMenu=document.getElementById('bgMenu');
-const musica=document.getElementById('musica');
-const playPauseBtn=document.getElementById('playPauseBtn');
+const music = document.getElementById("music");
+const pauseBtn = document.getElementById("pauseBtn");
+const effectBtn = document.getElementById("effectBtn");
+const effect = document.getElementById("effect");
+const showFondosBtn = document.getElementById("showFondosBtn");
+const fondosMenu = document.getElementById("fondosMenu");
 
-// Efectos
-const krampusEffect=document.getElementById('krampusEffect');
-const effects=document.querySelectorAll('.effectContainer');
+let paused = false;
+let effectOn = true;
 
-bgBtn.onclick=()=>{ bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex'; };
+/* PLAY AUTOMATICO */
+window.addEventListener("click", () => {
+  if (music.src) music.play();
+}, { once: true });
 
-let pausado=false;
-playPauseBtn.onclick=()=>{
-  if(pausado){ musica.play(); playPauseBtn.textContent='⏯️ Pausar'; } 
-  else { musica.pause(); playPauseBtn.textContent='⏯️ Reanudar'; }
-  pausado=!pausado;
+/* PAUSA / REANUDAR */
+pauseBtn.onclick = () => {
+  if (paused) {
+    music.play();
+    pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  } else {
+    music.pause();
+    pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+  }
+  paused = !paused;
 };
 
-// Activar/Desactivar efectos
-let effectVisible=true;
-effectBtn.onclick=()=>{
-  effectVisible = !effectVisible;
-  effects.forEach(e=>e.style.display=effectVisible?'block':'none');
-  if(krampusEffect) krampusEffect.style.display = effectVisible && krampusEffect.dataset.active==='true'?'block':'none';
+/* MOSTRAR / OCULTAR EFECTO */
+effectBtn.onclick = () => {
+  effectOn = !effectOn;
+  if (effectOn) {
+    effect.style.display = 'flex';
+    effectBtn.innerHTML = '<i class="fas fa-eye"></i>';
+  } else {
+    effect.style.display = 'none';
+    effectBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+  }
 };
 
-// Cambiar fondo, música y efecto
-function cambiarFondo(fondo, cancion=null, effectID=null){
-  document.body.style.backgroundImage=`url('${fondo}')`;
-  effects.forEach(e=>e.style.display='none'); // Oculta todos
-  krampusEffect.style.display='none';
-  krampusEffect.dataset.active='false';
+/* MOSTRAR / OCULTAR MENU DE FONDOS */
+showFondosBtn.onclick = () => {
+  fondosMenu.style.display = fondosMenu.style.display === "flex" ? "none" : "flex";
+};
+
+/* CAMBIO DE FONDO + MUSICA + EFECTO + FORMA + TEXTO */
+function setBackground(bg, song, effectImg, text, shape) {
+  document.body.style.background = `url('${bg}') center/cover no-repeat fixed`;
+
+  effect.style.background = `radial-gradient(circle at top, rgba(255,255,255,.15), rgba(0,0,0,.9)),
+    url('${effectImg}') center/cover no-repeat`;
   
-  if(cancion){
-    musica.src=cancion;
-    musica.play();
-    playPauseBtn.style.display='inline-block';
-    playPauseBtn.textContent='⏯️ Pausar';
-    pausado=false;
-  }
-  if(effectID==='krampus'){
-    krampusEffect.style.display=effectVisible?'block':'none';
-    krampusEffect.dataset.active='true';
-  } else if(effectID){
-    const e = document.getElementById(effectID);
-    if(e) e.style.display=effectVisible?'block':'none';
-  }
+  // Cambiar forma
+  effect.className = 'effect';
+  if(shape === 'circle') effect.classList.add('shape-circle');
+  else if(shape === 'star') effect.classList.add('shape-star');
+  else if(shape === 'heart') effect.classList.add('shape-heart');
+
+  effect.querySelector("span").textContent = text;
+
+  music.src = song;
+  music.play();
+  paused = false;
+  pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+  fondosMenu.style.display = "none"; // Cierra el menú al seleccionar
 }
 </script>
 
