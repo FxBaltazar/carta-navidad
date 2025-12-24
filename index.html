@@ -58,7 +58,6 @@ html, body {
   overflow-y: auto;
 }
 
-/* Encabezado */
 .bg-header {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -86,7 +85,6 @@ html, body {
   margin-right: 34px;
 }
 
-/* Matriz 4xN */
 .bg-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -116,12 +114,14 @@ html, body {
   justify-content: center;
   z-index: 5;
   transition: all 1s ease;
+  backdrop-filter: blur(2px);
 }
 
 .effect span {
   text-align: center;
   padding: 22px;
   font-size: 1.1em;
+  color: white;
 }
 
 /* Formas */
@@ -146,7 +146,7 @@ html, body {
 /* ===== ANIMACIONES ===== */
 @keyframes pulseSlow {
   0%,100% { transform: translate(-50%,-50%) scale(1); }
-  50% { transform: translate(-50%,-50%) scale(1.05); }
+  50% { transform: translate(-50%,-50%) scale(1.08); }
 }
 
 @keyframes floatSoft {
@@ -155,8 +155,13 @@ html, body {
 }
 
 @keyframes drift {
-  0% { transform: translate(-50%,-50%) rotate(0deg); }
-  100% { transform: translate(-50%,-50%) rotate(360deg); }
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to { transform: translate(-50%,-50%) rotate(360deg); }
+}
+
+@keyframes slowFade {
+  0%,100% { opacity: .7; }
+  50% { opacity: 1; }
 }
 
 audio { display:none; }
@@ -237,37 +242,38 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
   effect.querySelector('span').textContent = texto;
   effect.style.animation = 'none';
 
+  /* EFECTOS AJUSTADOS POR CANCIÓN */
   if(mood === 'warm'){
-    effect.style.background = 'radial-gradient(circle, rgba(255,120,120,.3), rgba(0,0,0,.9))';
+    effect.style.background = 'radial-gradient(circle, rgba(255,120,150,.35), rgba(0,0,0,.9))';
     effect.style.animation = 'pulseSlow 3s infinite';
   }
   if(mood === 'nostalgia'){
-    effect.style.background = 'radial-gradient(circle, rgba(255,200,120,.25), rgba(0,0,0,.9))';
+    effect.style.background = 'radial-gradient(circle, rgba(255,200,120,.28), rgba(0,0,0,.92))';
     effect.style.animation = 'floatSoft 6s infinite';
   }
   if(mood === 'light'){
-    effect.style.background = 'radial-gradient(circle, rgba(200,255,220,.25), rgba(0,0,0,.85))';
+    effect.style.background = 'radial-gradient(circle, rgba(230,255,240,.3), rgba(0,0,0,.85))';
     effect.style.animation = 'floatSoft 4s infinite';
   }
   if(mood === 'cold'){
-    effect.style.background = 'radial-gradient(circle, rgba(200,220,255,.25), rgba(0,0,0,.9))';
-    effect.style.animation = 'drift 12s linear infinite';
+    effect.style.background = 'radial-gradient(circle, rgba(200,230,255,.25), rgba(0,0,40,.95))';
+    effect.style.animation = 'drift 14s linear infinite';
   }
   if(mood === 'happy'){
-    effect.style.background = 'radial-gradient(circle, rgba(255,255,180,.35), rgba(0,0,0,.85))';
+    effect.style.background = 'radial-gradient(circle, rgba(255,255,180,.38), rgba(0,0,0,.85))';
     effect.style.animation = 'pulseSlow 2s infinite';
   }
   if(mood === 'night'){
-    effect.style.background = 'radial-gradient(circle, rgba(120,160,255,.25), rgba(0,0,0,.9))';
+    effect.style.background = 'radial-gradient(circle, rgba(140,170,255,.25), rgba(0,0,0,.93))';
     effect.style.animation = 'floatSoft 7s infinite';
   }
   if(mood === 'calm'){
-    effect.style.background = 'radial-gradient(circle, rgba(200,180,150,.25), rgba(0,0,0,.9))';
+    effect.style.background = 'radial-gradient(circle, rgba(220,200,160,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'floatSoft 8s infinite';
   }
   if(mood === 'sad'){
-    effect.style.background = 'radial-gradient(circle, rgba(180,180,200,.18), rgba(0,0,0,.92))';
-    effect.style.animation = 'pulseSlow 6s infinite';
+    effect.style.background = 'radial-gradient(circle, rgba(170,170,200,.18), rgba(0,0,0,.95))';
+    effect.style.animation = 'slowFade 6s infinite';
   }
 
   musica.src = musicaFile;
