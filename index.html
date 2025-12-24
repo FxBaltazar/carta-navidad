@@ -2,242 +2,236 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Tarjeta Oscura de Navidad</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet"
- href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Navidad Interactiva 🎄</title>
 
 <style>
-* {
+html, body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
-
-body {
-  height: 100vh;
-  background: url("krampus_fondo.gif") center/cover no-repeat fixed;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: url('fondo1.gif') no-repeat center center fixed;
+  background-size: cover;
   overflow: hidden;
 }
 
-body::before {
-  content: "";
+/* Botón y contenedor */
+.boton-container {
   position: fixed;
-  inset: 0;
-  background: radial-gradient(circle, rgba(0,0,0,.3), rgba(0,0,0,.85));
-  z-index: 0;
-}
-
-/* EFECTO CENTRAL */
-.effect {
-  position: fixed;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,.15), rgba(0,0,0,.9)),
-    url("krampus_inside.png") center/cover no-repeat;
-  box-shadow:
-    inset 0 0 30px rgba(255,255,255,.2),
-    0 0 40px rgba(180,0,0,.7);
-  z-index: 5;
-  transition: opacity .6s ease, background-image .6s ease;
-}
-
-.effect.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.effect span {
-  position: absolute;
-  bottom: 18px;
-  width: 100%;
-  text-align: center;
-  color: #ffdede;
-  font-size: 15px;
-  text-shadow: 0 0 10px crimson;
-}
-
-/* BARRA SUPERIOR */
-.top-bar {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 2%;
+  left: 2%;
   display: flex;
-  align-items: center;
-  gap: 15px;
-  background: rgba(30,30,30,0.85);
-  padding: 10px 15px;
-  border-radius: 10px;
-  z-index: 20;
+  flex-wrap: wrap;
+  gap: 2vw;
+  z-index: 1000;
 }
 
-/* BOTONES ESTILO ANTERIOR */
-.top-bar .btn {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: none;
+/* Botones */
+.boton {
+  padding: 2vw 4vw;
+  font-weight: bold;
+  font-size: 3.5vw;
+  border: 2px solid #ddd;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 22px;
+  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
+  background-size: 400% 400%;
   color: white;
-  background: linear-gradient(135deg,
-    #240046, #3c096c, #5a189a, #7209b7);
-  box-shadow: 0 0 20px rgba(160,0,255,.5);
-  transition: transform .3s;
+  text-shadow: 1px 1px 3px black;
+  box-shadow: 0 0 8px #111, 0 0 14px #222;
+  animation: rainbowBG 10s ease infinite alternate;
 }
 
-.top-bar .btn:hover {
-  transform: scale(1.15);
+@keyframes rainbowBG {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
-/* MENU DESPLEGABLE DE FONDOS */
-#fondosMenu {
+/* Menú fondos miniaturas */
+.menu {
   position: absolute;
-  top: 70px;
-  left: 50%;
-  transform: translateX(-50%);
   display: none;
+  gap: 1vw;
+  top: 10vh;
+  left: 2vw;
+  background: rgba(0,0,0,0.75);
+  padding: 1vw;
+  border-radius: 12px;
+  z-index: 1001;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#bgMenu {
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
-  background: rgba(40,40,40,0.95);
-  padding: 10px;
-  border-radius: 10px;
-  z-index: 25;
+  max-width: 100vw;
+  overflow: hidden;
 }
 
-.menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  color: #fff;
-}
-
-.menu-item img {
-  width: 60px;
-  height: 60px;
+/* Fondos miniaturas */
+#bgMenu img {
+  width: 18vw;
+  height: 18vw;
   object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid rgba(255,255,255,.3);
-  margin-bottom: 4px;
-  transition: transform .3s;
+  border-radius: 10px;
+  border: 2px solid white;
+  cursor: pointer;
+  margin: 1vw;
+  flex-shrink: 0;
 }
 
-.menu-item img:hover {
-  transform: scale(1.1);
+/* Cerrar */
+.closeBtn {
+  padding: 0.8vw 1.4vw;
+  font-size: 3.5vw;
+  font-weight: bold;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: #9999FF;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
+  align-self: flex-start;
 }
 
-/* AUDIO */
-audio { display: none; }
+/* Nieve */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  font-size: 3vw;
+  z-index: 999;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(360deg); }
+}
+
+/* Bola Krampus */
+#krampusEffect {
+  position: fixed;
+  width: 35vw;
+  height: 35vw;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.8);
+  box-shadow: 0 0 25px #ff0000, inset 0 0 15px #660000;
+  display: none;
+  color: white;
+  font-size: 3vw;
+  text-align: center;
+  padding-top: 12vw;
+  z-index: 1000;
+}
+#krampusEffect button {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  font-size: 2vw;
+  cursor: pointer;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  border-radius: 50%;
+  color: white;
+}
 </style>
 </head>
 
 <body>
 
-<!-- BARRA SUPERIOR -->
-<div class="top-bar">
-  <button class="btn" id="pauseBtn"><i class="fas fa-pause"></i></button>
-  <button class="btn" id="effectBtn"><i class="fas fa-eye"></i></button>
-  <button class="btn" id="showFondosBtn">Fondos</button>
+<div class="boton-container">
+  <button id="bgBtn" class="boton">🎨 Fondos</button>
+  <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
 </div>
 
-<!-- MENU DESPLEGABLE DE FONDOS -->
-<div id="fondosMenu">
-  <div class="menu-item" onclick="setBackground('krampus_fondo.gif','karol_of_the_bells.mp3','krampus_inside.png','Krampus is coming!')">
-    <img src="thumb1.gif" alt="Krampus">
-    <span>Krampus</span>
-  </div>
-  <div class="menu-item" onclick="setBackground('fondo2.gif','sia_snowman.mp3','efecto2.png','Sia - Snowman')">
-    <img src="thumb2.gif" alt="Snowman">
-    <span>Snowman</span>
-  </div>
-  <div class="menu-item" onclick="setBackground('fondo3.gif','cascanueces_marcha.mp3','efecto3.png','Cascanueces Marcha')">
-    <img src="thumb3.gif" alt="Cascanueces">
-    <span>Cascanueces</span>
-  </div>
-  <div class="menu-item" onclick="setBackground('fondo4.gif','wham_last_christmas.mp3','efecto4.png','Wham! - Last Christmas')">
-    <img src="thumb4.gif" alt="Last Christmas">
-    <span>Last Christmas</span>
-  </div>
-  <div class="menu-item" onclick="setBackground('fondo5.gif','bing_andrews_santa.mp3','efecto5.png','Santa Claus Is Comin\' To Town')">
-    <img src="thumb5.gif" alt="Santa">
-    <span>Santa</span>
-  </div>
+<!-- Menú fondos -->
+<div id="bgMenu" class="menu">
+  <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
+  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif', 'sia_snowman.mp3')">
+  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif', 'cascanueces_marcha.mp3')">
+  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif', 'bing_crosby_beginning.mp3')">
+  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif', 'karol_of_the_bells.mp3')">
+  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif', 'krampus_music.mp3', true)">
 </div>
 
-<!-- EFECTO CENTRAL -->
-<div class="effect" id="effect">
-  <span>He knows when you are afraid</span>
+<!-- Bola Krampus -->
+<div id="krampusEffect">
+  CRÉDITOS / ENDING KRAMPUS
+  <button id="toggleEffect">👁️</button>
 </div>
 
-<audio id="music" loop></audio>
+<audio id="musica" loop></audio>
 
 <script>
-const music = document.getElementById("music");
-const pauseBtn = document.getElementById("pauseBtn");
-const effectBtn = document.getElementById("effectBtn");
-const effect = document.getElementById("effect");
-const showFondosBtn = document.getElementById("showFondosBtn");
-const fondosMenu = document.getElementById("fondosMenu");
-
-let paused = false;
-let effectOn = true;
-
-/* PLAY AUTOMATICO */
-window.addEventListener("click", () => {
-  if (music.src) music.play();
-}, { once: true });
-
-/* PAUSA / REANUDAR */
-pauseBtn.onclick = () => {
-  if (paused) {
-    music.play();
-    pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  } else {
-    music.pause();
-    pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-  }
-  paused = !paused;
-};
-
-/* MOSTRAR / OCULTAR EFECTO */
-effectBtn.onclick = () => {
-  effectOn = !effectOn;
-  if (effectOn) {
-    effect.classList.remove("hidden");
-    effectBtn.innerHTML = '<i class="fas fa-eye"></i>';
-  } else {
-    effect.classList.add("hidden");
-    effectBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
-  }
-};
-
-/* MOSTRAR / OCULTAR MENU DE FONDOS */
-showFondosBtn.onclick = () => {
-  fondosMenu.style.display = fondosMenu.style.display === "flex" ? "none" : "flex";
-};
-
-/* CAMBIO DE FONDO + MUSICA + EFECTO + TEXTO */
-function setBackground(bg, song, effectImg, text) {
-  document.body.style.background = `url('${bg}') center/cover no-repeat fixed`;
-  effect.style.background = `radial-gradient(circle at top, rgba(255,255,255,.15), rgba(0,0,0,.9)),
-    url('${effectImg}') center/cover no-repeat`;
-  effect.querySelector("span").textContent = text;
-  music.src = song;
-  music.play();
-  paused = false;
-  pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  fondosMenu.style.display = "none"; // Cierra el menú al seleccionar un fondo
+// Nieve
+for(let i=0;i<50;i++){
+  let s=document.createElement('div');
+  s.className='snowflake';
+  s.style.left=Math.random()*100+'vw';
+  s.style.fontSize=(Math.random()*4+2)+'vw';
+  s.style.animationDuration=(Math.random()*5+5)+'s';
+  s.innerHTML='❄';
+  document.body.appendChild(s);
 }
+
+// Referencias
+const bgBtn=document.getElementById('bgBtn');
+const bgMenu=document.getElementById('bgMenu');
+const musica=document.getElementById('musica');
+const playPauseBtn=document.getElementById('playPauseBtn');
+const krampusEffect=document.getElementById('krampusEffect');
+const toggleEffect=document.getElementById('toggleEffect');
+
+bgBtn.onclick=()=>{
+  bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex';
+};
+
+let pausado=false;
+playPauseBtn.onclick=()=>{
+  if(pausado){
+    musica.play();
+    playPauseBtn.textContent='⏯️ Pausar';
+  } else {
+    musica.pause();
+    playPauseBtn.textContent='⏯️ Reanudar';
+  }
+  pausado=!pausado;
+};
+
+// Cambiar fondo y música
+function cambiarFondo(fondo, cancion=null, krampus=false){
+  document.body.style.backgroundImage = `url('${fondo}')`;
+  if(cancion){
+    musica.src=cancion;
+    musica.play();
+    playPauseBtn.style.display='inline-block';
+    playPauseBtn.textContent='⏯️ Pausar';
+    pausado=false;
+  }
+  if(krampus){
+    krampusEffect.style.display='block';
+  } else {
+    krampusEffect.style.display='none';
+  }
+}
+
+// Mostrar/ocultar efecto
+toggleEffect.onclick=()=>{
+  if(krampusEffect.style.display === 'block'){
+    krampusEffect.style.display='none';
+    toggleEffect.textContent = '👁️/';
+  } else {
+    krampusEffect.style.display='block';
+    toggleEffect.textContent = '👁️';
+  }
+};
 </script>
 
 </body>
