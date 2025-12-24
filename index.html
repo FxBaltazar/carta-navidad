@@ -19,7 +19,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Barra superior */
 .top-bar {
   position: fixed;
   top: 10px;
@@ -42,7 +41,6 @@ html, body {
   box-shadow: 0 0 18px rgba(160,0,255,.5);
 }
 
-/* ===== MENÚ FONDOS ===== */
 #bgMenu {
   display: none;
   position: fixed;
@@ -58,7 +56,6 @@ html, body {
   overflow-y: auto;
 }
 
-/* Encabezado */
 .bg-header {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -86,7 +83,6 @@ html, body {
   margin-right: 34px;
 }
 
-/* Matriz 4xN */
 .bg-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -103,7 +99,6 @@ html, body {
   cursor: pointer;
 }
 
-/* ===== EFECTO ===== */
 .effect {
   position: fixed;
   width: 300px;
@@ -124,10 +119,8 @@ html, body {
   font-size: 1.1em;
 }
 
-/* Formas base */
 .shape-circle { border-radius: 50%; }
 
-/* Nuevas figuras */
 .shape-heart-soft {
   clip-path: polygon(
     50% 15%, 65% 5%, 85% 20%, 85% 45%,
@@ -183,7 +176,6 @@ html, body {
   );
 }
 
-/* Animaciones */
 @keyframes pulseSlow {
   0%,100% { transform: translate(-50%,-50%) scale(1); }
   50% { transform: translate(-50%,-50%) scale(1.05); }
@@ -199,7 +191,6 @@ html, body {
   100% { transform: translate(-50%,-50%) rotate(360deg); }
 }
 
-/* Partículas dinámicas */
 .particle {
   position: fixed;
   pointer-events: none;
@@ -218,7 +209,6 @@ html, body {
 audio { display:none; }
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">
@@ -301,12 +291,12 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
   effect.querySelector('span').textContent = texto;
   effect.style.animation = 'none';
 
-  // Ajustes por mood
+  // Ejecutar el efecto específico del fondo
   if(mood === 'warm'){ spawnHearts(); }
   if(mood === 'nostalgia'){ spawnNotes(); }
-  if(mood === 'light'){ /* diamantes solo efecto de forma */ }
+  if(mood === 'light'){ /* diamantes sin partículas */ }
   if(mood === 'cold'){ spawnSnow(); }
-  if(mood === 'happy'){ spawnEmojis(true); } // gira más lento
+  if(mood === 'happy'){ spawnEmojis(); }
   if(mood === 'night'){ spawnLeaves(); }
   if(mood === 'calm'){ /* flor solo forma */ }
   if(mood === 'sad'){ spawnRain(); }
@@ -390,7 +380,7 @@ function spawnRain(){
   },50));
 }
 
-function spawnEmojis(slow=false){
+function spawnEmojis(){
   activeIntervals.push(setInterval(()=>{
     const e=document.createElement('div');
     e.className='particle emoji';
@@ -415,7 +405,7 @@ function spawnEmojis(slow=false){
       const t=Math.min(elapsed/duration,1);
       const x=startX+(endX-startX)*t;
       const y=startY+(endY-startY)*t;
-      const rotation=(slow?180:360)*t*(Math.random()>0.5?1:-1);
+      const rotation=180*t*(Math.random()>0.5?1:-1); // giro más lento
       e.style.transform=`translate(-50%, -50%) translate(${x}px,${y}px) rotate(${rotation}deg)`;
       if(t<1) requestAnimationFrame(animate); else e.remove();
     }
