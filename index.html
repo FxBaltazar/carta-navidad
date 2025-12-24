@@ -15,7 +15,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
-  background: url('fondo1.gif') center/contain no-repeat fixed;
+  background: url('fondo1.gif') center/cover no-repeat fixed;
   overflow: hidden;
 }
 
@@ -51,23 +51,23 @@ html, body {
 #bgMenu {
   display: none;
   position: fixed;
-  top: 80px;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.85);
-  padding: 12px;
+  padding: 20px 15px 15px 15px;
   border-radius: 12px;
   z-index: 1001;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  max-height: 70vh;
+  gap: 12px;
+  max-height: 75vh;
   overflow-y: auto;
 }
 
-/* Miniaturas de fondos más grandes */
+/* Miniaturas más grandes */
 #bgMenu img {
-  width: 22vw;
+  width: 24vw;
   aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 10px;
@@ -78,12 +78,12 @@ html, body {
 
 #bgMenu img:hover { transform: scale(1.05); }
 
-/* Botón cerrar pequeño con X en esquina */
+/* Botón cerrar pequeño con X dentro del menú */
 .closeBtn {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  padding: 5px 8px;
+  top: 8px;
+  left: 8px;
+  padding: 5px 10px;
   font-size: 1em;
   border-radius: 50%;
   border: none;
@@ -195,8 +195,8 @@ playPauseBtn.onclick = () => {
 
 // Cambiar fondo + música + efecto + texto
 function setBackground(fondo,musicFile,shape,text){
-  document.body.style.background = `url('${fondo}') center/contain no-repeat fixed`;
-  document.body.style.backgroundSize = 'contain';
+  document.body.style.background = `url('${fondo}') center/cover no-repeat fixed`;
+  document.body.style.backgroundSize = 'cover';
   
   // Cambiar efecto
   effect.className = 'effect';
