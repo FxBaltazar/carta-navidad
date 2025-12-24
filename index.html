@@ -15,7 +15,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
-  background: url('fondo1.gif') center/cover no-repeat fixed;
+  background: url('fondo1.gif') center/contain no-repeat fixed;
   overflow: hidden;
 }
 
@@ -55,18 +55,19 @@ html, body {
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.85);
-  padding: 15px;
+  padding: 12px;
   border-radius: 12px;
   z-index: 1001;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 10px;
   max-height: 70vh;
   overflow-y: auto;
 }
 
+/* Miniaturas de fondos más grandes */
 #bgMenu img {
-  width: 100%;
+  width: 22vw;
   aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 10px;
@@ -77,17 +78,19 @@ html, body {
 
 #bgMenu img:hover { transform: scale(1.05); }
 
-/* Cerrar */
+/* Botón cerrar pequeño con X en esquina */
 .closeBtn {
-  grid-column: span 4;
-  padding: 0.6em 1em;
-  font-size: 1.2em;
-  border-radius: 12px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  padding: 5px 8px;
+  font-size: 1em;
+  border-radius: 50%;
   border: none;
   background: #ff4d4d;
   color: white;
   cursor: pointer;
-  margin-bottom: 10px;
+  z-index: 1002;
 }
 
 /* EFECTO CENTRAL */
@@ -145,7 +148,7 @@ audio { display:none; }
 
 <!-- Menú de fondos -->
 <div id="bgMenu">
-  <button class="closeBtn" onclick="bgMenu.style.display='none'">Cerrar</button>
+  <button class="closeBtn" onclick="bgMenu.style.display='none'">X</button>
   <img src="fondo1.gif" onclick="setBackground('fondo1.gif','sia_snowman.mp3','circle','Sia - Snowman')">
   <img src="fondo2.gif" onclick="setBackground('fondo2.gif','cascanueces_marcha.mp3','star','Cascanueces Marcha')">
   <img src="fondo3.gif" onclick="setBackground('fondo3.gif','bing_crosby_beginning.mp3','heart','It's Beginning To Look A Lot Like Christmas')">
@@ -192,7 +195,8 @@ playPauseBtn.onclick = () => {
 
 // Cambiar fondo + música + efecto + texto
 function setBackground(fondo,musicFile,shape,text){
-  document.body.style.background = `url('${fondo}') center/cover no-repeat fixed`;
+  document.body.style.background = `url('${fondo}') center/contain no-repeat fixed`;
+  document.body.style.backgroundSize = 'contain';
   
   // Cambiar efecto
   effect.className = 'effect';
