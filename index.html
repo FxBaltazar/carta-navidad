@@ -265,7 +265,60 @@ function spawnStars(){activeIntervals.push(setInterval(()=>{const s=document.cre
 
 function spawnSnow(){activeIntervals.push(setInterval(()=>{const s=document.createElement('div'); s.className='particle snowflake'; s.textContent='❄️'; s.style.left=Math.random()*100+'vw'; s.style.fontSize=(Math.random()*20+12)+'px'; s.style.animationDuration=(Math.random()*10+6)+'s'; document.body.appendChild(s); setTimeout(()=>s.remove(),12000);},80)); }
 
-function spawnEmojis(){activeIntervals.push(setInterval(()=>{const e=document.createElement('div'); e.className='particle emoji'; e.textContent='😄'; const pos=Math.floor(Math.random()*4); const dur=Math.random()*6+4; switch(pos){case 0:e.style.top='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${dur}s linear forwards`; break; case 1:e.style.bottom='0'; e.style.left=Math.random()*100+'vw'; e.style.animation=`emojiMove ${dur}s linear reverse forwards`; break; case 2:e.style.left='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${dur}s linear forwards`; break; case 3:e.style.right='0'; e.style.top=Math.random()*100+'vh'; e.style.animation=`emojiMove ${dur}s linear reverse forwards`; break;} document.body.appendChild(e); setTimeout(()=>e.remove(),dur*1000);},200)); }
+// MODIFICADO: spawnEmojis con giro más lento, movimiento más rápido y aparición más frecuente
+function spawnEmojis(){
+  activeIntervals.push(setInterval(()=>{
+    const e=document.createElement('div');
+    e.className='particle emoji';
+    e.textContent='😄';
+    const size=Math.random()*20+28;
+    e.style.fontSize=size+'px';
+
+    // Posición inicial y final
+    let startX, startY, endX, endY;
+    const side=Math.floor(Math.random()*4);
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+
+    switch(side){
+      case 0: // arriba
+        startX = Math.random()*screenW;
+        startY = -50;
+        endX = screenW/2;
+        endY = screenH;
+        break;
+      case 1: // abajo
+        startX = Math.random()*screenW;
+        startY = screenH+50;
+        endX = screenW/2;
+        endY = 0;
+        break;
+      case 2: // izquierda
+        startX = -50;
+        startY = Math.random()*screenH;
+        endX = screenW;
+        endY = screenH/2;
+        break;
+      case 3: // derecha
+        startX = screenW+50;
+        startY = Math.random()*screenH;
+        endX = 0;
+        endY = screenH/2;
+        break;
+    }
+
+    e.style.left = startX + 'px';
+    e.style.top = startY + 'px';
+    e.style.setProperty('--dx', (endX - startX) + 'px');
+    e.style.setProperty('--dy', (endY - startY) + 'px');
+
+    const dur = Math.random()*3 + 2; // más rápido
+    e.style.animation = `emojiMove ${dur}s linear forwards`;
+
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(), dur*1000);
+  },100)); // aparecen más seguidas
+}
 
 function spawnLeaves(){activeIntervals.push(setInterval(()=>{const l=document.createElement('div'); l.className='particle leaf'; l.textContent='🍂'; l.style.left=Math.random()*100+'vw'; l.style.fontSize=(Math.random()*25+15)+'px'; l.style.animationDuration=(Math.random()*10+8)+'s'; document.body.appendChild(l); setTimeout(()=>l.remove(),12000);},300)); }
 
@@ -290,6 +343,14 @@ function setBackground(fondo,musicaFile,forma,texto,mood){
   musica.src=musicaFile; musica.play(); pausado=false; playPauseBtn.innerHTML='<i class="fas fa-pause"></i>'; bgMenu.style.display='none';
 }
 </script>
+
+<style>
+/* Animación de las caritas: giro más lento pero movimiento rápido */
+@keyframes emojiMove {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(360deg); } /* giro más lento */
+}
+</style>
 
 </body>
 </html>
