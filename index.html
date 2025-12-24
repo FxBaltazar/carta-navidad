@@ -22,7 +22,6 @@ body {
   overflow: hidden;
 }
 
-/* OSCURECER */
 body::before {
   content: "";
   position: fixed;
@@ -31,7 +30,6 @@ body::before {
   z-index: 0;
 }
 
-/* ===== EFECTO CENTRAL ===== */
 .effect {
   position: fixed;
   width: 320px;
@@ -47,7 +45,7 @@ body::before {
     inset 0 0 30px rgba(255,255,255,.2),
     0 0 40px rgba(180,0,0,.7);
   z-index: 5;
-  transition: opacity .6s ease;
+  transition: opacity .6s ease, background-image .6s ease;
 }
 
 .effect.hidden {
@@ -65,7 +63,6 @@ body::before {
   text-shadow: 0 0 10px crimson;
 }
 
-/* ===== CONTROLES ===== */
 .controls {
   position: fixed;
   bottom: 110px;
@@ -103,7 +100,6 @@ body::before {
   transform: scale(1.15);
 }
 
-/* ===== MINIATURAS ===== */
 .thumbs {
   position: fixed;
   bottom: 20px;
@@ -129,21 +125,17 @@ body::before {
   object-fit: cover;
 }
 
-/* AUDIO */
 audio { display: none; }
 </style>
 </head>
 
 <body>
 
-<!-- EFECTO -->
 <div class="effect" id="effect">
   <span>He knows when you are afraid</span>
 </div>
 
-<!-- CONTROLES -->
 <div class="controls">
-
   <div class="control">
     <button class="btn" id="pauseBtn">
       <i class="fas fa-pause"></i>
@@ -157,25 +149,35 @@ audio { display: none; }
     </button>
     <span>EFECTO</span>
   </div>
-
 </div>
 
-<!-- MINIATURAS -->
 <div class="thumbs">
-  <div class="thumb" onclick="setBackground('krampus_fondo.gif','krampus_music.mp3')">
+  <div class="thumb"
+    onclick="setBackground('krampus_fondo.gif','karol_of_the_bells.mp3','krampus_inside.png','Krampus is coming!')">
     <img src="thumb1.gif">
   </div>
 
-  <div class="thumb" onclick="setBackground('fondo2.gif','musica2.mp3')">
+  <div class="thumb"
+    onclick="setBackground('fondo2.gif','sia_snowman.mp3','efecto2.png','Sia - Snowman')">
     <img src="thumb2.gif">
   </div>
 
-  <div class="thumb" onclick="setBackground('fondo3.gif','musica3.mp3')">
+  <div class="thumb"
+    onclick="setBackground('fondo3.gif','cascanueces_marcha.mp3','efecto3.png','Cascanueces Marcha')">
     <img src="thumb3.gif">
+  </div>
+
+  <div class="thumb"
+    onclick="setBackground('fondo4.gif','wham_last_christmas.mp3','efecto4.png','Wham! - Last Christmas')">
+    <img src="thumb4.gif">
+  </div>
+
+  <div class="thumb"
+    onclick="setBackground('fondo5.gif','bing_andrews_santa.mp3','efecto5.png','Santa Claus Is Comin\' To Town')">
+    <img src="thumb5.gif">
   </div>
 </div>
 
-<!-- MUSICA -->
 <audio id="music" loop></audio>
 
 <script>
@@ -187,7 +189,6 @@ const effect = document.getElementById("effect");
 let paused = false;
 let effectOn = true;
 
-/* PLAY AUTOMATICO */
 window.addEventListener("click", () => {
   if (music.src) music.play();
 }, { once: true });
@@ -203,7 +204,6 @@ pauseBtn.onclick = () => {
   paused = !paused;
 };
 
-/* TOGGLE EFECTO */
 effectBtn.onclick = () => {
   effectOn = !effectOn;
   if (effectOn) {
@@ -215,13 +215,19 @@ effectBtn.onclick = () => {
   }
 };
 
-/* CAMBIO DE FONDO + MUSICA */
-function setBackground(bg, song) {
+function setBackground(bg, song, effectImg, text) {
   document.body.style.background =
     `url('${bg}') center/cover no-repeat fixed`;
 
+  effect.style.background =
+    `radial-gradient(circle at top, rgba(255,255,255,.15), rgba(0,0,0,.9)),
+     url('${effectImg}') center/cover no-repeat`;
+
+  effect.querySelector("span").textContent = text;
+
   music.src = song;
   music.play();
+
   paused = false;
   pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
