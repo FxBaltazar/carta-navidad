@@ -79,19 +79,31 @@ body::before {
   z-index: 20;
 }
 
+/* BOTONES ESTILO ANTERIOR */
 .top-bar .btn {
-  width: 50px;
-  height: 50px;
-  font-size: 20px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: white;
+  background: linear-gradient(135deg,
+    #240046, #3c096c, #5a189a, #7209b7);
+  box-shadow: 0 0 20px rgba(160,0,255,.5);
+  transition: transform .3s;
+}
+
+.top-bar .btn:hover {
+  transform: scale(1.15);
 }
 
 /* MENU DESPLEGABLE DE FONDOS */
 #fondosMenu {
   position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  margin: auto;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
   display: none;
   flex-wrap: wrap;
   justify-content: center;
