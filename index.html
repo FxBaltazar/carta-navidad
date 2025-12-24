@@ -199,22 +199,38 @@ html, body {
   100% { transform: translate(-50%,-50%) rotate(360deg); }
 }
 
-/* ===== EFECTOS DE FONDO ===== */
+/* ===== EFECTOS DE FONDO REALISTAS ===== */
 .particle {
   position: fixed;
-  top: -10%;
-  font-size: 22px;
   pointer-events: none;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  opacity: 0.8;
   z-index: 1;
 }
 
-@keyframes fall {
-  0% { transform: translateY(-10vh) rotate(0deg); }
-  100% { transform: translateY(120vh) rotate(360deg); }
+.heart {
+  animation: heartPop 1s ease forwards;
+  font-size: 24px;
+  opacity: 0;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(0); opacity:1; }
+  50% { transform: scale(1.4); opacity:0.8; }
+  100% { transform: scale(1.8); opacity:0; }
+}
+
+.rain {
+  width: 2px;
+  height: 12px;
+  background: rgba(200,200,255,0.7);
+  animation-name: rainFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rainFall {
+  0% { transform: translateY(-20px); opacity:0; }
+  10% { opacity:1; }
+  100% { transform: translateY(110vh); opacity:0; }
 }
 
 .fog {
@@ -312,21 +328,31 @@ playPauseBtn.onclick = () => {
   pausado = !pausado;
 };
 
-/* ===== EFECTOS DE FONDO ===== */
+/* ===== EFECTOS DE FONDO REALISTAS ===== */
 function clearBackgroundEffects(){
   document.querySelectorAll('.particle, .fog, .moon').forEach(e => e.remove());
 }
 
-function spawnParticles(icon, count, speedMin, speedMax, sizeMin=16, sizeMax=30){
+function spawnHearts(count){
   for(let i=0;i<count;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.textContent = icon;
-    p.style.left = Math.random()*100 + 'vw';
-    p.style.fontSize = (Math.random()*(sizeMax-sizeMin)+sizeMin)+'px';
-    p.style.animationDuration = (Math.random()*(speedMax-speedMin)+speedMin)+'s';
-    p.style.opacity = (Math.random()*0.5+0.5);
-    document.body.appendChild(p);
+    const h = document.createElement('div');
+    h.className='particle heart';
+    h.textContent='❤️';
+    h.style.left = Math.random()*100+'vw';
+    h.style.fontSize = (Math.random()*20+20)+'px';
+    h.style.animationDelay = (Math.random()*1)+'s';
+    document.body.appendChild(h);
+  }
+}
+
+function spawnRain(count){
+  for(let i=0;i<count;i++){
+    const r = document.createElement('div');
+    r.className='particle rain';
+    r.style.left = Math.random()*100+'vw';
+    r.style.height = (Math.random()*15+10)+'px';
+    r.style.animationDuration = (Math.random()*1+0.5)+'s';
+    document.body.appendChild(r);
   }
 }
 
@@ -340,25 +366,39 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
 
   clearBackgroundEffects();
 
-  if(mood === 'warm') spawnParticles('❤️', 20, 6, 12);
-  if(mood === 'nostalgia') spawnParticles('🎶', 16, 8, 14);
-  if(mood === 'light') spawnParticles('✨', 22, 6, 12);
-  if(mood === 'cold') spawnParticles('❄️', 30, 5, 10, 12, 24);
-  if(mood === 'happy') spawnParticles('😄', 18, 6, 12);
-  if(mood === 'night'){
+  if(mood==='warm') spawnHearts(20);
+  if(mood==='nostalgia') spawnParticles('🎶',16,8,14);
+  if(mood==='light') spawnParticles('✨',22,6,12);
+  if(mood==='cold') spawnParticles('❄️',30,5,10,12,24);
+  if(mood==='happy') spawnParticles('😄',18,6,12);
+  if(mood==='night'){
     const moonEl = document.createElement('div'); moonEl.className='moon';
     const fogEl = document.createElement('div'); fogEl.className='fog';
     document.body.appendChild(moonEl);
     document.body.appendChild(fogEl);
   }
-  if(mood === 'calm') spawnParticles('🍂', 14, 8, 16);
-  if(mood === 'sad') spawnParticles('💧', 30, 3, 6, 8, 18); // lluvia rápida solo gotas
+  if(mood==='calm') spawnParticles('🍂',14,8,16);
+  if(mood==='sad') spawnRain(40);
 
   musica.src = musicaFile;
   musica.play();
   pausado = false;
   playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
   bgMenu.style.display = 'none';
+}
+
+/* efecto general auxiliar para otras partículas */
+function spawnParticles(icon, count, speedMin, speedMax, sizeMin=16, sizeMax=30){
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    p.textContent=icon;
+    p.style.left=Math.random()*100+'vw';
+    p.style.fontSize=(Math.random()*(sizeMax-sizeMin)+sizeMin)+'px';
+    p.style.animationDuration=(Math.random()*(speedMax-speedMin)+speedMin)+'s';
+    p.style.opacity=(Math.random()*0.5+0.5);
+    document.body.appendChild(p);
+  }
 }
 </script>
 
