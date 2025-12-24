@@ -30,7 +30,7 @@ body::before {
   z-index: 0;
 }
 
-/* ===== EFECTO CENTRAL ===== */
+/* EFECTO CENTRAL */
 .effect {
   position: fixed;
   width: 320px;
@@ -64,56 +64,42 @@ body::before {
   text-shadow: 0 0 10px crimson;
 }
 
-/* ===== CONTROLES ===== */
-.controls {
-  position: fixed;
-  bottom: 110px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 22px;
-  z-index: 10;
-}
-
-.control {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  color: #ddd;
-  font-size: 12px;
-}
-
-.btn {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 22px;
-  color: white;
-  background: linear-gradient(135deg,
-    #240046, #3c096c, #5a189a, #7209b7);
-  box-shadow: 0 0 20px rgba(160,0,255,.5);
-  transition: transform .3s;
-}
-
-.btn:hover {
-  transform: scale(1.15);
-}
-
-/* ===== MENÚ DESPLEGABLE DE FONDOS ===== */
-#menuFondos {
+/* BARRA SUPERIOR */
+.top-bar {
   position: fixed;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(30,30,30,0.9);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(30,30,30,0.85);
+  padding: 10px 15px;
+  border-radius: 10px;
+  z-index: 20;
+}
+
+.top-bar .btn {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+}
+
+/* MENU DESPLEGABLE DE FONDOS */
+#fondosMenu {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(40,40,40,0.95);
   padding: 10px;
   border-radius: 10px;
-  display: flex;
-  gap: 10px;
-  z-index: 20;
+  z-index: 25;
 }
 
 .menu-item {
@@ -140,14 +126,20 @@ body::before {
 
 /* AUDIO */
 audio { display: none; }
-
 </style>
 </head>
 
 <body>
 
-<!-- MENÚ DESPLEGABLE DE FONDOS -->
-<div id="menuFondos">
+<!-- BARRA SUPERIOR -->
+<div class="top-bar">
+  <button class="btn" id="pauseBtn"><i class="fas fa-pause"></i></button>
+  <button class="btn" id="effectBtn"><i class="fas fa-eye"></i></button>
+  <button class="btn" id="showFondosBtn">Fondos</button>
+</div>
+
+<!-- MENU DESPLEGABLE DE FONDOS -->
+<div id="fondosMenu">
   <div class="menu-item" onclick="setBackground('krampus_fondo.gif','karol_of_the_bells.mp3','krampus_inside.png','Krampus is coming!')">
     <img src="thumb1.gif" alt="Krampus">
     <span>Krampus</span>
@@ -175,23 +167,6 @@ audio { display: none; }
   <span>He knows when you are afraid</span>
 </div>
 
-<!-- CONTROLES -->
-<div class="controls">
-  <div class="control">
-    <button class="btn" id="pauseBtn">
-      <i class="fas fa-pause"></i>
-    </button>
-    <span>MÚSICA</span>
-  </div>
-
-  <div class="control">
-    <button class="btn" id="effectBtn">
-      <i class="fas fa-eye"></i>
-    </button>
-    <span>EFECTO</span>
-  </div>
-</div>
-
 <audio id="music" loop></audio>
 
 <script>
@@ -199,15 +174,18 @@ const music = document.getElementById("music");
 const pauseBtn = document.getElementById("pauseBtn");
 const effectBtn = document.getElementById("effectBtn");
 const effect = document.getElementById("effect");
+const showFondosBtn = document.getElementById("showFondosBtn");
+const fondosMenu = document.getElementById("fondosMenu");
 
 let paused = false;
 let effectOn = true;
 
-/* PLAY AUTOMATICO AL PRIMER CLICK */
+/* PLAY AUTOMATICO */
 window.addEventListener("click", () => {
   if (music.src) music.play();
 }, { once: true });
 
+/* PAUSA / REANUDAR */
 pauseBtn.onclick = () => {
   if (paused) {
     music.play();
@@ -219,6 +197,7 @@ pauseBtn.onclick = () => {
   paused = !paused;
 };
 
+/* MOSTRAR / OCULTAR EFECTO */
 effectBtn.onclick = () => {
   effectOn = !effectOn;
   if (effectOn) {
@@ -230,22 +209,22 @@ effectBtn.onclick = () => {
   }
 };
 
+/* MOSTRAR / OCULTAR MENU DE FONDOS */
+showFondosBtn.onclick = () => {
+  fondosMenu.style.display = fondosMenu.style.display === "flex" ? "none" : "flex";
+};
+
 /* CAMBIO DE FONDO + MUSICA + EFECTO + TEXTO */
 function setBackground(bg, song, effectImg, text) {
-  document.body.style.background =
-    `url('${bg}') center/cover no-repeat fixed`;
-
-  effect.style.background =
-    `radial-gradient(circle at top, rgba(255,255,255,.15), rgba(0,0,0,.9)),
-     url('${effectImg}') center/cover no-repeat`;
-
+  document.body.style.background = `url('${bg}') center/cover no-repeat fixed`;
+  effect.style.background = `radial-gradient(circle at top, rgba(255,255,255,.15), rgba(0,0,0,.9)),
+    url('${effectImg}') center/cover no-repeat`;
   effect.querySelector("span").textContent = text;
-
   music.src = song;
   music.play();
-
   paused = false;
   pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  fondosMenu.style.display = "none"; // Cierra el menú al seleccionar un fondo
 }
 </script>
 
