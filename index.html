@@ -15,7 +15,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
-  background: url('fondo1.gif') center/cover no-repeat fixed;
+  background: url('fondo1.jpg') center/cover no-repeat fixed;
   overflow: hidden;
 }
 
@@ -66,7 +66,6 @@ html, body {
   margin-bottom: 14px;
 }
 
-/* Botón cerrar a la izquierda */
 .closeBtn {
   width: 34px;
   height: 34px;
@@ -78,24 +77,22 @@ html, body {
   cursor: pointer;
 }
 
-/* Título centrado */
 .bg-title {
   text-align: center;
   color: white;
   font-size: 1.4em;
   font-weight: bold;
   text-shadow: 0 0 6px #000;
-  margin-right: 34px; /* compensa el botón X */
+  margin-right: 34px;
 }
 
-/* ===== MATRIZ 4xN ===== */
+/* Matriz 4xN */
 .bg-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
-/* Miniaturas */
 .bg-grid img {
   width: 100%;
   height: 26vw;
@@ -172,15 +169,15 @@ audio { display:none; }
   </div>
 
   <div class="bg-grid">
-    <img src="fondo1.gif" onclick="setBackground('fondo1.gif','sia_snowman.mp3','circle','Sia - Snowman')">
-    <img src="fondo2.gif" onclick="setBackground('fondo2.gif','cascanueces_marcha.mp3','star','Cascanueces')">
-    <img src="fondo3.gif" onclick="setBackground('fondo3.gif','bing_crosby_beginning.mp3','heart','Christmas')">
-    <img src="fondo4.gif" onclick="setBackground('fondo4.gif','wham_last_christmas.mp3','circle','Last Christmas')">
+    <img src="fondo1.jpg" onclick="setBackground('fondo1.jpg','enamorado_tuyo.mp3','circle','Enamorado Tuyo')">
+    <img src="fondo2.jpg" onclick="setBackground('fondo2.jpg','nuestra_cancion.mp3','heart','Nuestra Canción')">
+    <img src="fondo3.jpg" onclick="setBackground('fondo3.jpg','new_soul.mp3','circle','New Soul')">
+    <img src="fondo4.jpg" onclick="setBackground('fondo4.jpg','sia_snowman.mp3','star','Sia – Snowman')">
 
-    <img src="fondo5.gif" onclick="setBackground('fondo5.gif','bing_andrews_santa.mp3','star','Santa Claus')">
-    <img src="fondo6.gif" onclick="setBackground('fondo6.gif','karol_of_the_bells.mp3','heart','Krampus')">
-    <img src="fondo7.gif" onclick="setBackground('fondo7.gif','new_soul_yael_naim.mp3','circle','New Soul')">
-    <img src="fondo8.gif" onclick="setBackground('fondo8.gif','lennon_tonight.mp3','star','Tonight')">
+    <img src="fondo5.jpg" onclick="setBackground('fondo5.jpg','funny_day.mp3','circle','Funny Day')">
+    <img src="fondo6.jpg" onclick="setBackground('fondo6.jpg','tonight_you_belong_to_me.mp3','heart','Tonight You Belong To Me')">
+    <img src="fondo7.jpg" onclick="setBackground('fondo7.jpg','perfect_day_lou_reed.mp3','circle','Perfect Day')">
+    <img src="fondo8.jpg" onclick="setBackground('fondo8.jpg','cancion8.mp3','star','Especial')">
   </div>
 </div>
 
