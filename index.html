@@ -58,6 +58,7 @@ html, body {
   overflow-y: auto;
 }
 
+/* Encabezado */
 .bg-header {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -85,6 +86,7 @@ html, body {
   margin-right: 34px;
 }
 
+/* Matriz 4xN */
 .bg-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -114,39 +116,77 @@ html, body {
   justify-content: center;
   z-index: 5;
   transition: all 1s ease;
-  backdrop-filter: blur(2px);
 }
 
 .effect span {
   text-align: center;
   padding: 22px;
   font-size: 1.1em;
-  color: white;
 }
 
-/* Formas */
+/* Formas base */
 .shape-circle { border-radius: 50%; }
 
-.shape-star {
+/* ===== NUEVAS FIGURAS ===== */
+.shape-heart-soft {
   clip-path: polygon(
-    50% 0%, 61% 35%, 98% 35%, 68% 57%,
-    79% 91%, 50% 70%, 21% 91%, 32% 57%,
-    2% 35%, 39% 35%
+    50% 15%, 65% 5%, 85% 20%, 85% 45%,
+    50% 85%, 15% 45%, 15% 20%, 35% 5%
   );
 }
 
-.shape-heart {
+.shape-music {
   clip-path: polygon(
-    50% 15%, 61% 25%, 70% 35%, 75% 50%,
-    70% 65%, 50% 85%, 30% 65%, 25% 50%,
-    30% 35%, 39% 25%
+    40% 10%, 55% 10%, 55% 60%,
+    70% 65%, 70% 80%, 55% 75%,
+    40% 70%, 40% 30%
+  );
+}
+
+.shape-diamond {
+  clip-path: polygon(
+    50% 0%, 85% 50%, 50% 100%, 15% 50%
+  );
+}
+
+.shape-snow {
+  clip-path: polygon(
+    50% 0%, 55% 20%, 70% 30%, 55% 40%,
+    60% 60%, 50% 50%, 40% 60%, 45% 40%,
+    30% 30%, 45% 20%
+  );
+}
+
+.shape-sun {
+  clip-path: polygon(
+    50% 15%, 60% 30%, 75% 35%, 60% 45%,
+    65% 65%, 50% 55%, 35% 65%, 40% 45%,
+    25% 35%, 40% 30%
+  );
+}
+
+.shape-moon {
+  clip-path: circle(40% at 60% 50%);
+}
+
+.shape-flower {
+  clip-path: polygon(
+    50% 20%, 60% 35%, 75% 50%, 60% 65%,
+    50% 80%, 40% 65%, 25% 50%, 40% 35%
+  );
+}
+
+.shape-tear {
+  clip-path: polygon(
+    50% 5%, 65% 35%, 60% 70%, 50% 90%,
+    40% 70%, 35% 35%
   );
 }
 
 /* ===== ANIMACIONES ===== */
 @keyframes pulseSlow {
   0%,100% { transform: translate(-50%,-50%) scale(1); }
-  50% { transform: translate(-50%,-50%) scale(1.08); }
+  50% { transform: translate(-50%,-50%) scale(1.05); }
 }
 
 @keyframes floatSoft {
@@ -155,13 +195,8 @@ html, body {
 }
 
 @keyframes drift {
-  from { transform: translate(-50%,-50%) rotate(0deg); }
-  to { transform: translate(-50%,-50%) rotate(360deg); }
-}
-
-@keyframes slowFade {
-  0%,100% { opacity: .7; }
-  50% { opacity: 1; }
+  0% { transform: translate(-50%,-50%) rotate(0deg); }
+  100% { transform: translate(-50%,-50%) rotate(360deg); }
 }
 
 audio { display:none; }
@@ -183,14 +218,14 @@ audio { display:none; }
   </div>
 
   <div class="bg-grid">
-    <img src="fondo1.gif" onclick="setBackground('fondo1.gif','enamorado_tuyo.mp3','heart','Enamorado Tuyo','warm')">
-    <img src="fondo2.gif" onclick="setBackground('fondo2.gif','nuestra_cancion.mp3','circle','Nuestra Canción','nostalgia')">
-    <img src="fondo3.gif" onclick="setBackground('fondo3.gif','new_soul.mp3','circle','New Soul','light')">
-    <img src="fondo4.gif" onclick="setBackground('fondo4.gif','sia_snowman.mp3','star','Snowman','cold')">
-    <img src="fondo5.gif" onclick="setBackground('fondo5.gif','funny_day.mp3','circle','Funny Day','happy')">
-    <img src="fondo6.gif" onclick="setBackground('fondo6.gif','tonight_you_belong_to_me.mp3','heart','Tonight You Belong To Me','night')">
-    <img src="fondo7.gif" onclick="setBackground('fondo7.gif','perfect_day_lou_reed.mp3','circle','Perfect Day','calm')">
-    <img src="fondo8.gif" onclick="setBackground('fondo8.gif','powfu_death_bed.mp3','circle','death bed','sad')">
+    <img src="fondo1.gif" onclick="setBackground('fondo1.gif','enamorado_tuyo.mp3','heart-soft','Enamorado Tuyo','warm')">
+    <img src="fondo2.gif" onclick="setBackground('fondo2.gif','nuestra_cancion.mp3','music','Nuestra Canción','nostalgia')">
+    <img src="fondo3.gif" onclick="setBackground('fondo3.gif','new_soul.mp3','diamond','New Soul','light')">
+    <img src="fondo4.gif" onclick="setBackground('fondo4.gif','sia_snowman.mp3','snow','Snowman','cold')">
+    <img src="fondo5.gif" onclick="setBackground('fondo5.gif','funny_day.mp3','sun','Funny Day','happy')">
+    <img src="fondo6.gif" onclick="setBackground('fondo6.gif','tonight_you_belong_to_me.mp3','moon','Tonight You Belong To Me','night')">
+    <img src="fondo7.gif" onclick="setBackground('fondo7.gif','perfect_day_lou_reed.mp3','flower','Perfect Day','calm')">
+    <img src="fondo8.gif" onclick="setBackground('fondo8.gif','powfu_death_bed.mp3','tear','death bed','sad')">
   </div>
 </div>
 
@@ -242,38 +277,37 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
   effect.querySelector('span').textContent = texto;
   effect.style.animation = 'none';
 
-  /* EFECTOS AJUSTADOS POR CANCIÓN */
   if(mood === 'warm'){
-    effect.style.background = 'radial-gradient(circle, rgba(255,120,150,.35), rgba(0,0,0,.9))';
+    effect.style.background = 'radial-gradient(circle, rgba(255,120,120,.3), rgba(0,0,0,.9))';
     effect.style.animation = 'pulseSlow 3s infinite';
   }
   if(mood === 'nostalgia'){
-    effect.style.background = 'radial-gradient(circle, rgba(255,200,120,.28), rgba(0,0,0,.92))';
+    effect.style.background = 'radial-gradient(circle, rgba(255,200,120,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'floatSoft 6s infinite';
   }
   if(mood === 'light'){
-    effect.style.background = 'radial-gradient(circle, rgba(230,255,240,.3), rgba(0,0,0,.85))';
+    effect.style.background = 'radial-gradient(circle, rgba(200,255,220,.25), rgba(0,0,0,.85))';
     effect.style.animation = 'floatSoft 4s infinite';
   }
   if(mood === 'cold'){
-    effect.style.background = 'radial-gradient(circle, rgba(200,230,255,.25), rgba(0,0,40,.95))';
-    effect.style.animation = 'drift 14s linear infinite';
+    effect.style.background = 'radial-gradient(circle, rgba(200,220,255,.25), rgba(0,0,0,.9))';
+    effect.style.animation = 'drift 12s linear infinite';
   }
   if(mood === 'happy'){
-    effect.style.background = 'radial-gradient(circle, rgba(255,255,180,.38), rgba(0,0,0,.85))';
+    effect.style.background = 'radial-gradient(circle, rgba(255,255,180,.35), rgba(0,0,0,.85))';
     effect.style.animation = 'pulseSlow 2s infinite';
   }
   if(mood === 'night'){
-    effect.style.background = 'radial-gradient(circle, rgba(140,170,255,.25), rgba(0,0,0,.93))';
+    effect.style.background = 'radial-gradient(circle, rgba(120,160,255,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'floatSoft 7s infinite';
   }
   if(mood === 'calm'){
-    effect.style.background = 'radial-gradient(circle, rgba(220,200,160,.25), rgba(0,0,0,.9))';
+    effect.style.background = 'radial-gradient(circle, rgba(200,180,150,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'floatSoft 8s infinite';
   }
   if(mood === 'sad'){
-    effect.style.background = 'radial-gradient(circle, rgba(170,170,200,.18), rgba(0,0,0,.95))';
-    effect.style.animation = 'slowFade 6s infinite';
+    effect.style.background = 'radial-gradient(circle, rgba(180,180,200,.18), rgba(0,0,0,.92))';
+    effect.style.animation = 'pulseSlow 6s infinite';
   }
 
   musica.src = musicaFile;
