@@ -17,7 +17,7 @@ html, body {
   overflow: hidden;
 }
 
-/* Botones en horizontal arriba */
+/* Botones arriba en horizontal */
 .boton-container {
   position: fixed;
   top: 2%;
@@ -98,21 +98,7 @@ html, body {
   align-self: flex-start;
 }
 
-/* Nieve */
-.snowflake {
-  position: fixed;
-  top: -10px;
-  color: white;
-  font-size: 3vw;
-  z-index: 999;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  to { transform: translateY(100vh) rotate(360deg); }
-}
-
-/* Bola Krampus / efectos */
+/* Bola Krampus / efecto */
 #krampusEffect {
   position: fixed;
   width: 35vw;
@@ -130,16 +116,23 @@ html, body {
   padding-top: 12vw;
   z-index: 1000;
 }
-#krampusEffect button {
-  position: absolute;
-  top: 5%;
-  right: 5%;
-  font-size: 2vw;
-  cursor: pointer;
-  background: rgba(255,255,255,0.3);
-  border: none;
-  border-radius: 50%;
-  color: white;
+
+/* Otros efectos por fondo */
+.effectContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 1000;
+}
+
+/* Ejemplo efecto texto */
+.effectText {
+  font-size: 3vw;
+  color: #ffdd00;
+  text-align: center;
+  text-shadow: 2px 2px 6px black;
 }
 </style>
 </head>
@@ -148,51 +141,63 @@ html, body {
 
 <div class="boton-container">
   <button id="bgBtn" class="boton">🎨 Fondos</button>
-  <button id="effectBtn" class="boton">👁️ Efectos</button>
   <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
+  <button id="effectBtn" class="boton">✨ Efectos</button>
 </div>
 
 <!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif', 'sia_snowman.mp3')">
-  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif', 'cascanueces_marcha.mp3')">
-  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif', 'bing_crosby_beginning.mp3')">
-  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif', 'karol_of_the_bells.mp3')">
-  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif', 'krampus_music.mp3', true)">
-  <img src="fondo6.gif" onclick="cambiarFondo('fondo6.gif', 'wham_last_christmas.mp3')">
-  <img src="fondo7.gif" onclick="cambiarFondo('fondo7.gif', 'bing_andrews_santa.mp3')">
-  <img src="fondo8.gif" onclick="cambiarFondo('fondo8.gif', 'powfu_death_bed.mp3')">
+  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif', 'sia_snowman.mp3', 'snow')">
+  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif', 'cascanueces_marcha.mp3', 'musicNotes')">
+  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif', 'bing_crosby_beginning.mp3', 'stars')">
+  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif', 'karol_of_the_bells.mp3', 'lights')">
+  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif', 'krampus_music.mp3', 'krampus')">
+  <img src="fondo6.gif" onclick="cambiarFondo('fondo6.gif', 'wham_last_christmas.mp3', 'snow2')">
+  <img src="fondo7.gif" onclick="cambiarFondo('fondo7.gif', 'bing_andrews_santa.mp3', 'confetti')">
+  <img src="fondo8.gif" onclick="cambiarFondo('fondo8.gif', 'powfu_death_bed.mp3', 'hearts')">
 </div>
 
-<!-- Bola Krampus / efecto -->
+<!-- Efectos -->
 <div id="krampusEffect">
   CRÉDITOS / ENDING KRAMPUS
-  <button id="toggleEffect">👁️/</button>
+</div>
+<div id="snow" class="effectContainer">
+  <div class="effectText">❄ Nieve Suave ❄</div>
+</div>
+<div id="musicNotes" class="effectContainer">
+  <div class="effectText">🎵 Notas Musicales 🎵</div>
+</div>
+<div id="stars" class="effectContainer">
+  <div class="effectText">⭐ Brillo Estelar ⭐</div>
+</div>
+<div id="lights" class="effectContainer">
+  <div class="effectText">✨ Luces ✨</div>
+</div>
+<div id="snow2" class="effectContainer">
+  <div class="effectText">❄ Copos Intensos ❄</div>
+</div>
+<div id="confetti" class="effectContainer">
+  <div class="effectText">🎉 Confeti 🎉</div>
+</div>
+<div id="hearts" class="effectContainer">
+  <div class="effectText">❤️ Corazones ❤️</div>
 </div>
 
 <audio id="musica" loop></audio>
 
 <script>
-// Referencias
 const bgBtn=document.getElementById('bgBtn');
 const effectBtn=document.getElementById('effectBtn');
 const bgMenu=document.getElementById('bgMenu');
 const musica=document.getElementById('musica');
 const playPauseBtn=document.getElementById('playPauseBtn');
+
+// Efectos
 const krampusEffect=document.getElementById('krampusEffect');
-const toggleEffect=document.getElementById('toggleEffect');
+const effects=document.querySelectorAll('.effectContainer');
 
 bgBtn.onclick=()=>{ bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex'; };
-effectBtn.onclick=()=>{ 
-  if(krampusEffect.style.display==='block'){
-    krampusEffect.style.display='none';
-    effectBtn.textContent='👁️/ Efectos';
-  } else {
-    krampusEffect.style.display='block';
-    effectBtn.textContent='👁️ Efectos';
-  }
-};
 
 let pausado=false;
 playPauseBtn.onclick=()=>{
@@ -201,9 +206,21 @@ playPauseBtn.onclick=()=>{
   pausado=!pausado;
 };
 
-// Cambiar fondo y música/efecto
-function cambiarFondo(fondo, cancion=null, krampus=false){
+// Activar/Desactivar efectos
+let effectVisible=true;
+effectBtn.onclick=()=>{
+  effectVisible = !effectVisible;
+  effects.forEach(e=>e.style.display=effectVisible?'block':'none');
+  if(krampusEffect) krampusEffect.style.display = effectVisible && krampusEffect.dataset.active==='true'?'block':'none';
+};
+
+// Cambiar fondo, música y efecto
+function cambiarFondo(fondo, cancion=null, effectID=null){
   document.body.style.backgroundImage=`url('${fondo}')`;
+  effects.forEach(e=>e.style.display='none'); // Oculta todos
+  krampusEffect.style.display='none';
+  krampusEffect.dataset.active='false';
+  
   if(cancion){
     musica.src=cancion;
     musica.play();
@@ -211,8 +228,13 @@ function cambiarFondo(fondo, cancion=null, krampus=false){
     playPauseBtn.textContent='⏯️ Pausar';
     pausado=false;
   }
-  if(krampus){ krampusEffect.style.display='block'; effectBtn.textContent='👁️ Efectos'; }
-  else { krampusEffect.style.display='none'; effectBtn.textContent='👁️/ Efectos'; }
+  if(effectID==='krampus'){
+    krampusEffect.style.display=effectVisible?'block':'none';
+    krampusEffect.dataset.active='true';
+  } else if(effectID){
+    const e = document.getElementById(effectID);
+    if(e) e.style.display=effectVisible?'block':'none';
+  }
 }
 </script>
 
