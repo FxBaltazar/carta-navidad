@@ -9,28 +9,80 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
-/* FONDO */
 body {
   height: 100vh;
   background: url("krampus_fondo.gif") center / cover no-repeat fixed;
   overflow: hidden;
 }
 
-/* OVERLAY OSCURO */
+/* OSCURECER FONDO */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle, rgba(0,0,0,.3), rgba(0,0,0,.85));
+  background: radial-gradient(circle, rgba(0,0,0,.2), rgba(0,0,0,.85));
   z-index: 0;
+}
+
+/* EFECTO CENTRAL */
+.effect {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(circle at top,
+      rgba(255,255,255,.15),
+      rgba(0,0,0,.9)),
+    url("krampus_inside.png") center / cover no-repeat;
+  box-shadow:
+    inset 0 0 35px rgba(255,255,255,.2),
+    0 0 45px rgba(255,0,0,.6);
+  z-index: 5;
+  transition: opacity .6s ease, transform .6s ease;
+}
+
+/* OCULTO */
+.effect.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+/* TEXTO */
+.effect span {
+  position: absolute;
+  bottom: 18px;
+  width: 100%;
+  text-align: center;
+  color: #ffdddd;
+  font-size: 16px;
+  text-shadow: 0 0 10px crimson;
+}
+
+/* BOTON DEL EFECTO */
+.effect-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.65);
+  border: 1px solid crimson;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 12px crimson;
 }
 
 /* CONTROLES */
@@ -44,19 +96,19 @@ body::before {
   z-index: 10;
 }
 
-/* BOTONES ARCOIRIS OSCURO */
+/* BOTONES OSCUROS ARCOIRIS */
 .btn {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg,
-    #5a189a, #3a0ca3, #7209b7, #560bad);
   border: none;
-  color: #fff;
+  background: linear-gradient(135deg,
+    #240046, #3c096c, #5a189a, #7209b7);
+  color: white;
   font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(120,0,255,.4);
-  animation: glow 3s infinite alternate;
+  box-shadow: 0 0 20px rgba(160,0,255,.5);
+  animation: pulse 3s infinite alternate;
   transition: transform .3s;
 }
 
@@ -64,67 +116,9 @@ body::before {
   transform: scale(1.15);
 }
 
-@keyframes glow {
-  from { box-shadow: 0 0 10px rgba(120,0,255,.3); }
-  to   { box-shadow: 0 0 25px rgba(200,0,255,.7); }
-}
-
-/* ESFERA KRAMPUS */
-.effect {
-  position: fixed;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at top,
-      rgba(255,255,255,.15),
-      rgba(0,0,0,.9)),
-    url("krampus_inside.png") center / cover no-repeat;
-  box-shadow:
-    inset 0 0 30px rgba(255,255,255,.2),
-    0 0 40px rgba(255,0,0,.6);
-  right: 60px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 5;
-  transition: all .6s ease;
-}
-
-/* TEXTO INTERNO */
-.effect span {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  text-align: center;
-  color: #ffdddd;
-  font-size: 16px;
-  text-shadow: 0 0 10px red;
-}
-
-/* BOTON MINIMIZAR / MAXIMIZAR */
-.effect-toggle {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(0,0,0,.6);
-  border: 1px solid crimson;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 0 12px crimson;
-}
-
-/* MODO MAX */
-.effect.full {
-  width: 100vw;
-  height: 100vh;
-  border-radius: 0;
-  right: 0;
-  top: 0;
-  transform: none;
-  background-size: cover;
+@keyframes pulse {
+  from { box-shadow: 0 0 12px rgba(120,0,255,.3); }
+  to   { box-shadow: 0 0 30px rgba(200,0,255,.7); }
 }
 </style>
 </head>
@@ -134,9 +128,9 @@ body::before {
 <!-- EFECTO -->
 <div class="effect" id="effect">
   <button class="effect-toggle" id="toggleEffect">
-    <i class="fas fa-expand"></i>
+    <i class="fas fa-minus"></i>
   </button>
-  <span>He sees you when you're sleeping</span>
+  <span>He knows when you are afraid</span>
 </div>
 
 <!-- CONTROLES -->
@@ -144,9 +138,13 @@ body::before {
   <button class="btn" id="pauseBtn">
     <i class="fas fa-pause"></i>
   </button>
+
+  <button class="btn" id="showEffectBtn">
+    <i class="fas fa-eye"></i>
+  </button>
 </div>
 
-<!-- AUDIO -->
+<!-- MUSICA -->
 <audio id="music" loop>
   <source src="krampus_music.mp3" type="audio/mpeg">
 </audio>
@@ -156,11 +154,12 @@ const music = document.getElementById("music");
 const pauseBtn = document.getElementById("pauseBtn");
 const effect = document.getElementById("effect");
 const toggleEffect = document.getElementById("toggleEffect");
+const showEffectBtn = document.getElementById("showEffectBtn");
 
 let paused = false;
-let full = false;
+let hidden = false;
 
-/* AUTOPLAY */
+/* INICIAR MUSICA */
 window.addEventListener("click", () => {
   music.play();
 }, { once: true });
@@ -177,13 +176,18 @@ pauseBtn.onclick = () => {
   paused = !paused;
 };
 
-/* MAXIMIZAR / MINIMIZAR EFECTO */
+/* MINIMIZAR (OCULTAR) */
 toggleEffect.onclick = () => {
-  full = !full;
-  effect.classList.toggle("full");
-  toggleEffect.innerHTML = full
-    ? '<i class="fas fa-compress"></i>'
-    : '<i class="fas fa-expand"></i>';
+  effect.classList.add("hidden");
+  hidden = true;
+};
+
+/* MAXIMIZAR (MOSTRAR) */
+showEffectBtn.onclick = () => {
+  if (hidden) {
+    effect.classList.remove("hidden");
+    hidden = false;
+  }
 };
 </script>
 
