@@ -122,11 +122,12 @@ html, body {
   text-align: center;
   padding: 22px;
   font-size: 1.1em;
+  color: #ffdede;
+  text-shadow: 0 0 12px rgba(0,0,0,.8);
 }
 
 /* Formas */
 .shape-circle { border-radius: 50%; }
-
 .shape-star {
   clip-path: polygon(
     50% 0%, 61% 35%, 98% 35%, 68% 57%,
@@ -134,7 +135,6 @@ html, body {
     2% 35%, 39% 35%
   );
 }
-
 .shape-heart {
   clip-path: polygon(
     50% 15%, 61% 25%, 70% 35%, 75% 50%,
@@ -146,7 +146,7 @@ html, body {
 /* ===== ANIMACIONES ===== */
 @keyframes pulseSlow {
   0%,100% { transform: translate(-50%,-50%) scale(1); }
-  50% { transform: translate(-50%,-50%) scale(1.05); }
+  50% { transform: translate(-50%,-50%) scale(1.06); }
 }
 
 @keyframes floatSoft {
@@ -157,6 +157,22 @@ html, body {
 @keyframes drift {
   0% { transform: translate(-50%,-50%) rotate(0deg); }
   100% { transform: translate(-50%,-50%) rotate(360deg); }
+}
+
+/* ===== PARTÍCULAS ===== */
+.particle {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  from { transform: translateY(-10vh); }
+  to { transform: translateY(110vh); }
 }
 
 audio { display:none; }
@@ -205,6 +221,7 @@ const musica = document.getElementById('musica');
 
 let pausado = false;
 let efectoActivo = true;
+let particles = [];
 
 bgBtn.onclick = () => {
   bgMenu.style.display = bgMenu.style.display === 'block' ? 'none' : 'block';
@@ -213,21 +230,33 @@ bgBtn.onclick = () => {
 effectBtn.onclick = () => {
   efectoActivo = !efectoActivo;
   effect.style.display = efectoActivo ? 'flex' : 'none';
-  effectBtn.innerHTML = efectoActivo
-    ? '<i class="fas fa-eye"></i>'
-    : '<i class="fas fa-eye-slash"></i>';
 };
 
 playPauseBtn.onclick = () => {
-  if(pausado){
-    musica.play();
-    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  } else {
-    musica.pause();
-    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-  }
+  pausado ? musica.play() : musica.pause();
   pausado = !pausado;
+  playPauseBtn.innerHTML = pausado
+    ? '<i class="fas fa-play"></i>'
+    : '<i class="fas fa-pause"></i>';
 };
+
+function clearParticles(){
+  particles.forEach(p => p.remove());
+  particles = [];
+}
+
+function createParticles(color, count, speed){
+  clearParticles();
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100+'vw';
+    p.style.background = color;
+    p.style.animationDuration = speed + Math.random()*3 + 's';
+    document.body.appendChild(p);
+    particles.push(p);
+  }
+}
 
 function setBackground(fondo, musicaFile, forma, texto, mood){
   document.body.style.background =
@@ -238,36 +267,44 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
   effect.style.animation = 'none';
 
   if(mood === 'warm'){
-    effect.style.background = 'radial-gradient(circle, rgba(255,120,120,.3), rgba(0,0,0,.9))';
+    effect.style.background = 'radial-gradient(circle, rgba(255,120,120,.35), rgba(0,0,0,.9))';
     effect.style.animation = 'pulseSlow 3s infinite';
+    createParticles('#ffb3b3',25,8);
   }
   if(mood === 'nostalgia'){
     effect.style.background = 'radial-gradient(circle, rgba(255,200,120,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'floatSoft 6s infinite';
+    createParticles('#ffd9a3',18,10);
   }
   if(mood === 'light'){
     effect.style.background = 'radial-gradient(circle, rgba(200,255,220,.25), rgba(0,0,0,.85))';
     effect.style.animation = 'floatSoft 4s infinite';
+    createParticles('#c9ffe1',20,7);
   }
   if(mood === 'cold'){
     effect.style.background = 'radial-gradient(circle, rgba(200,220,255,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'drift 12s linear infinite';
+    createParticles('#d6e6ff',30,12);
   }
   if(mood === 'happy'){
     effect.style.background = 'radial-gradient(circle, rgba(255,255,180,.35), rgba(0,0,0,.85))';
     effect.style.animation = 'pulseSlow 2s infinite';
+    createParticles('#fff4a8',35,6);
   }
   if(mood === 'night'){
     effect.style.background = 'radial-gradient(circle, rgba(120,160,255,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'floatSoft 7s infinite';
+    createParticles('#9fb4ff',22,11);
   }
   if(mood === 'calm'){
     effect.style.background = 'radial-gradient(circle, rgba(200,180,150,.25), rgba(0,0,0,.9))';
     effect.style.animation = 'floatSoft 8s infinite';
+    createParticles('#e6d4b5',15,13);
   }
   if(mood === 'sad'){
     effect.style.background = 'radial-gradient(circle, rgba(180,180,200,.18), rgba(0,0,0,.92))';
     effect.style.animation = 'pulseSlow 6s infinite';
+    createParticles('#b0b0c8',12,15);
   }
 
   musica.src = musicaFile;
