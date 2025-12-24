@@ -230,15 +230,21 @@ audio { display:none; }
   text-shadow: 0 0 8px #ff0,0 0 20px #ff0;
   white-space: nowrap;
   position: relative;
-  animation: messageScroll 10s linear infinite;
+  overflow: hidden;
+  height: 300px; /* altura visible del scroll */
 }
 
-/* Star Wars scroll modificado para bucle infinito */
-@keyframes messageScroll {
+.songLine {
+  opacity: 0;
+  transform: translateY(100%);
+  animation: scrollLine 10s linear infinite;
+}
+
+@keyframes scrollLine {
   0% { transform: translateY(100%); opacity:0; }
   10% { opacity:1; }
   90% { opacity:1; }
-  100% { transform: translateY(-200%); opacity:0; }
+  100% { transform: translateY(-100%); opacity:0; }
 }
 
 /* Animación de las caritas: giro más lento pero movimiento rápido */
@@ -336,126 +342,40 @@ function spawnRain(){activeIntervals.push(setInterval(()=>{const r=document.crea
 
 function setBackground(fondo,musicaFile,forma,texto,mood){
   document.body.style.background=`url('${fondo}') center/cover no-repeat fixed`;
-  effect.className='effect shape-'+forma;
-  effect.style.animation='none';
   clearBackgroundEffects();
-
-  // Mensajes tipo Star Wars
   songTitleEl.textContent = texto;
   songMessageEl.innerHTML = '';
+  musica.src = musicaFile;
+  musica.play();
 
-  const messagesMap = {
-    'Enamorado Tuyo': [
-      "Casi nadie sabe que yo estoy enamorado tuyo.",
-      "Eres medio PDJ pero te quiero mucho.",
-      "A veces te falla pero te quiero.",
-      "Y hasta me dan ganas de partirte tu madre.",
-      "Así que dime qué día puedes."
-    ],
-    'Nuestra Canción': [
-      "Me siento mejor cuando estoy contigo.",
-      "Me gusta molestarte.",
-      "Me gusta hacerte enojar.",
-      "Y nunca puedes ganarme.",
-      "Así que tienes que estar tranquila."
-    ],
-    'New Soul': [
-      "Soy un alma nueva.",
-      "Vine a este mundo extraño ",
-      "con la esperanza de aprender un poco sobre cómo dar y recibir.",
-      "Pero desde que llegué aquí sentí la alegría y el miedo.",
-      "Me encontré contigo si es ahora todo está bien."
-    ],
-    'Snowman': [
-     "eres mi hogar, mi hogar por todas las estaciones",
-     "Así que vamos, vamos",
-     "Vamos bajo cero y nos escondamos del sol",
-     "Te amaré por siempre y nos vamos a divertir",
-     "Sí, vayamos al Polo Norte y vivamos felices",
-     "Es Navidad",
-    ],
-    'Funny Day': [
-      "Tenemos un secreto para todos los creeya.",
-      "en todas partes. Tengo algo de meeya.",
-      "solo tú y yo cantando juntos.",
-      "los chicos solo quieren divertirse.",
-      "Sigo cantando mi melodía.",
-      "todo lo que hago en mi cheeya.",
-      "solo tú y yo cantando juntos.",
-      "las chicas solo quieren divertirse.",
-      "oh, las chicas solo quieren divertirse."
-
-    ],
-    'Tonight You Belong To Me': [
-      "Aunque estemos separados, eres parte de mi corazón.",
-      "y esta noche, me perteneces.",
-      "Allá abajo, junto al arroyo.",
-      "Qué dulce parecerá.",
-      "Una vez más, sólo soñar a la luz de la luna.",
-      "Cariño, sé con el amanecer.",
-      "Que te habrás ido.",
-      "Pero esta noche me perteneces a mi."
-
-    ],
-    'Perfect Day': [
-     "Oh, es un día perfecto.",
-      "Me alegro de haberlo pasado contigo.",
-      "Los problemas desaparecen.",
-      "Los días contigo son tan divertidos.",
-      "Caminar paseando por cualquier lugar.",
-      "Luego, una película también y a dormir"
-    ],
-    'Death Bed': [
-      "No te quedes despierto mucho tiempo.",
-      "No te vayas a la cama.",
-      "Haré una taza de café para tu cabeza.",
-      "Te levantará y te hará salir de la cama.",
-      "Sí, no quiero quedarme dormido, no quiero morir."
-    ]
-  };
-
-  const colorMap = {
-    'warm':'#FF4D4D',
-    'nostalgia':'#8E44AD',
-    'light':'#F1C40F',
-    'cold':'#3498DB',
-    'happy':'#F39C12',
-    'night':'#ECF0F1',
-    'calm':'#FFB6C1',
-    'sad':'#95A5A6'
-  };
-
-  messagesMap[texto].forEach(msg=>{
-    const div = document.createElement('div');
-    div.textContent = msg;
-    div.style.color = colorMap[mood] || '#FFF';
-    div.style.margin = '6px 0';
-    div.style.fontSize = '20px';
-    div.style.textShadow = '1px 1px 6px #000';
-    div.style.position = 'relative';
-    songMessageEl.appendChild(div);
+  // Desplegar mensajes estilo STAR WARS
+  let messages = texto.split(' '); // puedes poner un array real de líneas si quieres
+  messages.forEach((line,i)=>{
+    const span = document.createElement('div');
+    span.className = 'songLine';
+    span.style.animationDelay = (i*2)+'s';
+    span.textContent = line;
+    songMessageEl.appendChild(span);
   });
 
-  if(mood==='warm') spawnHearts();
-  if(mood==='nostalgia') spawnMusicNotes();
-  if(mood==='light') spawnStars();
-  if(mood==='cold') spawnSnow();
-  if(mood==='happy') spawnEmojis();
-  if(mood==='night'){
-    const moonEl=document.createElement('div'); moonEl.className='moon';
-    const fogEl=document.createElement('div'); fogEl.className='fog';
-    document.body.appendChild(moonEl); document.body.appendChild(fogEl);
+  // Partículas según mood
+  if(efectoActivo){
+    if(mood==='warm') spawnHearts();
+    if(mood==='nostalgia') spawnMusicNotes();
+    if(mood==='light') spawnStars();
+    if(mood==='cold') spawnSnow();
+    if(mood==='happy') spawnEmojis();
+    if(mood==='night') {spawnMoonFog(); spawnStars();}
+    if(mood==='calm') spawnLeaves();
+    if(mood==='sad') spawnRain();
   }
-  if(mood==='calm') spawnLeaves();
-  if(mood==='sad') spawnRain();
 
-  musica.src=musicaFile;
-  musica.play();
-  pausado=false;
-  playPauseBtn.innerHTML='<i class="fas fa-pause"></i>';
   bgMenu.style.display='none';
 }
+
+// Ejemplo de efecto moon/fog
+function spawnMoonFog(){const m=document.createElement('div'); m.className='moon'; document.body.appendChild(m); const f=document.createElement('div'); f.className='fog'; document.body.appendChild(f); }
 </script>
+
 </body>
 </html>
-
