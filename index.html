@@ -302,44 +302,14 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
   effect.style.animation = 'none';
 
   // Ajustes por mood
-  if(mood === 'warm'){ // corazones
-    effect.style.background = 'radial-gradient(circle, rgba(255,120,120,.3), rgba(0,0,0,.9))';
-    effect.style.animation = 'pulseSlow 3s infinite';
-    spawnHearts();
-  }
-  if(mood === 'nostalgia'){ // notas musicales
-    effect.style.background = 'radial-gradient(circle, rgba(255,200,120,.25), rgba(0,0,0,.9))';
-    effect.style.animation = 'floatSoft 6s infinite';
-    spawnNotes();
-  }
-  if(mood === 'light'){ // diamantes
-    effect.style.background = 'radial-gradient(circle, rgba(200,255,220,.25), rgba(0,0,0,.85))';
-    effect.style.animation = 'floatSoft 4s infinite';
-  }
-  if(mood === 'cold'){ // nieve
-    effect.style.background = 'radial-gradient(circle, rgba(200,220,255,.25), rgba(0,0,0,.9))';
-    effect.style.animation = 'drift 12s linear infinite';
-    spawnSnow();
-  }
-  if(mood === 'happy'){ // sol/emojis
-    effect.style.background = 'radial-gradient(circle, rgba(255,255,180,.35), rgba(0,0,0,.85))';
-    effect.style.animation = 'pulseSlow 2s infinite';
-    spawnEmojis();
-  }
-  if(mood === 'night'){ // luna/hojas
-    effect.style.background = 'radial-gradient(circle, rgba(120,160,255,.25), rgba(0,0,0,.9))';
-    effect.style.animation = 'floatSoft 7s infinite';
-    spawnLeaves();
-  }
-  if(mood === 'calm'){ // flor
-    effect.style.background = 'radial-gradient(circle, rgba(200,180,150,.25), rgba(0,0,0,.9))';
-    effect.style.animation = 'floatSoft 8s infinite';
-  }
-  if(mood === 'sad'){ // lágrimas
-    effect.style.background = 'radial-gradient(circle, rgba(180,180,200,.18), rgba(0,0,0,.92))';
-    effect.style.animation = 'pulseSlow 6s infinite';
-    spawnRain();
-  }
+  if(mood === 'warm'){ spawnHearts(); }
+  if(mood === 'nostalgia'){ spawnNotes(); }
+  if(mood === 'light'){ /* diamantes solo efecto de forma */ }
+  if(mood === 'cold'){ spawnSnow(); }
+  if(mood === 'happy'){ spawnEmojis(true); } // gira más lento
+  if(mood === 'night'){ spawnLeaves(); }
+  if(mood === 'calm'){ /* flor solo forma */ }
+  if(mood === 'sad'){ spawnRain(); }
 
   musica.src = musicaFile;
   musica.play();
@@ -420,7 +390,7 @@ function spawnRain(){
   },50));
 }
 
-function spawnEmojis(){
+function spawnEmojis(slow=false){
   activeIntervals.push(setInterval(()=>{
     const e=document.createElement('div');
     e.className='particle emoji';
@@ -431,14 +401,10 @@ function spawnEmojis(){
     const duration=Math.random()*4+4;
     let startX,startY,endX,endY;
     switch(startEdge){
-      case 0:
-        startX=Math.random()*window.innerWidth; startY=-50; endX=window.innerWidth/2; endY=window.innerHeight+50; break;
-      case 1:
-        startX=Math.random()*window.innerWidth; startY=window.innerHeight+50; endX=window.innerWidth/2; endY=-50; break;
-      case 2:
-        startX=-50; startY=Math.random()*window.innerHeight; endX=window.innerWidth+50; endY=window.innerHeight/2; break;
-      case 3:
-        startX=window.innerWidth+50; startY=Math.random()*window.innerHeight; endX=-50; endY=window.innerHeight/2; break;
+      case 0: startX=Math.random()*window.innerWidth; startY=-50; endX=window.innerWidth/2; endY=window.innerHeight+50; break;
+      case 1: startX=Math.random()*window.innerWidth; startY=window.innerHeight+50; endX=window.innerWidth/2; endY=-50; break;
+      case 2: startX=-50; startY=Math.random()*window.innerHeight; endX=window.innerWidth+50; endY=window.innerHeight/2; break;
+      case 3: startX=window.innerWidth+50; startY=Math.random()*window.innerHeight; endX=-50; endY=window.innerHeight/2; break;
     }
     e.style.left=startX+'px';
     e.style.top=startY+'px';
@@ -449,7 +415,7 @@ function spawnEmojis(){
       const t=Math.min(elapsed/duration,1);
       const x=startX+(endX-startX)*t;
       const y=startY+(endY-startY)*t;
-      const rotation=360*t*(Math.random()>0.5?1:-1);
+      const rotation=(slow?180:360)*t*(Math.random()>0.5?1:-1);
       e.style.transform=`translate(-50%, -50%) translate(${x}px,${y}px) rotate(${rotation}deg)`;
       if(t<1) requestAnimationFrame(animate); else e.remove();
     }
