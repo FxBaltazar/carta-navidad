@@ -33,14 +33,14 @@ html, body {
   padding: 2vw 4vw;
   font-weight: bold;
   font-size: 3.5vw;
-  border: 2px solid #ddd;
+  border: 2px solid #333;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
+  background: linear-gradient(45deg,#0a1b26,#223D47,#1b2a3b,#0f1822);
   background-size: 400% 400%;
   color: white;
-  text-shadow: 1px 1px 3px black;
-  box-shadow: 0 0 8px #111, 0 0 14px #222;
+  text-shadow: 1px 1px 2px black;
+  box-shadow: 0 0 10px #000, 0 0 18px #111;
   animation: rainbowBG 10s ease infinite alternate;
 }
 
@@ -91,10 +91,10 @@ html, body {
   font-weight: bold;
   border-radius: 50%;
   border: 2px solid #fff;
-  background: #9999FF;
+  background: #5555AA;
   color: white;
   cursor: pointer;
-  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
+  box-shadow: 0 0 12px black, 0 0 20px #3333AA;
   align-self: flex-start;
 }
 
@@ -104,7 +104,7 @@ html, body {
   top: -10px;
   color: white;
   font-size: 3vw;
-  z-index: 999;
+  z-index: 900; /* más atrás que la bola */
   animation: fall linear infinite;
 }
 
@@ -115,20 +115,22 @@ html, body {
 /* Bola Krampus */
 #krampusEffect {
   position: fixed;
-  width: 35vw;
-  height: 35vw;
+  width: 38vw;
+  height: 38vw;
   border-radius: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.8);
-  box-shadow: 0 0 25px #ff0000, inset 0 0 15px #660000;
+  background: radial-gradient(circle at center, rgba(20,0,0,0.9), rgba(0,0,0,0.7));
+  box-shadow: 0 0 30px #aa0000, inset 0 0 20px #550000;
   display: none;
   color: white;
   font-size: 3vw;
   text-align: center;
   padding-top: 12vw;
   z-index: 1000;
+  border: 2px solid #880000;
+  backdrop-filter: blur(2px);
 }
 #krampusEffect button {
   position: absolute;
@@ -136,10 +138,20 @@ html, body {
   right: 5%;
   font-size: 2vw;
   cursor: pointer;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.2);
   border: none;
   border-radius: 50%;
   color: white;
+  text-shadow: 0 0 3px black;
+}
+#krampusEffect .label {
+  position: absolute;
+  top: 5%;
+  right: 12%;
+  font-size: 1.5vw;
+  color: white;
+  text-shadow: 0 0 5px black;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -163,6 +175,7 @@ html, body {
 
 <!-- Bola Krampus -->
 <div id="krampusEffect">
+  <span class="label">Efecto</span>
   CRÉDITOS / ENDING KRAMPUS
   <button id="toggleEffect">👁️</button>
 </div>
@@ -189,19 +202,12 @@ const playPauseBtn=document.getElementById('playPauseBtn');
 const krampusEffect=document.getElementById('krampusEffect');
 const toggleEffect=document.getElementById('toggleEffect');
 
-bgBtn.onclick=()=>{
-  bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex';
-};
+bgBtn.onclick=()=>{ bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex'; };
 
 let pausado=false;
 playPauseBtn.onclick=()=>{
-  if(pausado){
-    musica.play();
-    playPauseBtn.textContent='⏯️ Pausar';
-  } else {
-    musica.pause();
-    playPauseBtn.textContent='⏯️ Reanudar';
-  }
+  if(pausado){ musica.play(); playPauseBtn.textContent='⏯️ Pausar'; }
+  else{ musica.pause(); playPauseBtn.textContent='⏯️ Reanudar'; }
   pausado=!pausado;
 };
 
@@ -215,11 +221,8 @@ function cambiarFondo(fondo, cancion=null, krampus=false){
     playPauseBtn.textContent='⏯️ Pausar';
     pausado=false;
   }
-  if(krampus){
-    krampusEffect.style.display='block';
-  } else {
-    krampusEffect.style.display='none';
-  }
+  if(krampus){ krampusEffect.style.display='block'; }
+  else{ krampusEffect.style.display='none'; }
 }
 
 // Mostrar/ocultar efecto
