@@ -205,15 +205,16 @@ html, body {
   top: -10%;
   font-size: 22px;
   pointer-events: none;
-  animation: fall linear infinite;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   opacity: 0.8;
   z-index: 1;
 }
 
 @keyframes fall {
-  to {
-    transform: translateY(120vh) rotate(360deg);
-  }
+  0% { transform: translateY(-10vh) rotate(0deg); }
+  100% { transform: translateY(120vh) rotate(360deg); }
 }
 
 .fog {
@@ -316,14 +317,15 @@ function clearBackgroundEffects(){
   document.querySelectorAll('.particle, .fog, .moon').forEach(e => e.remove());
 }
 
-function spawnParticles(icon, count, speedMin, speedMax){
+function spawnParticles(icon, count, speedMin, speedMax, sizeMin=16, sizeMax=30){
   for(let i=0;i<count;i++){
     const p = document.createElement('div');
     p.className = 'particle';
     p.textContent = icon;
     p.style.left = Math.random()*100 + 'vw';
+    p.style.fontSize = (Math.random()*(sizeMax-sizeMin)+sizeMin)+'px';
     p.style.animationDuration = (Math.random()*(speedMax-speedMin)+speedMin)+'s';
-    p.style.fontSize = (Math.random()*20+16)+'px';
+    p.style.opacity = (Math.random()*0.5+0.5);
     document.body.appendChild(p);
   }
 }
@@ -338,19 +340,19 @@ function setBackground(fondo, musicaFile, forma, texto, mood){
 
   clearBackgroundEffects();
 
-  if(mood === 'warm') spawnParticles('❤️', 20, 8, 14);
-  if(mood === 'nostalgia') spawnParticles('🎶', 16, 10, 18);
-  if(mood === 'light') spawnParticles('✨', 22, 8, 16);
-  if(mood === 'cold') spawnParticles('❄️', 30, 6, 12);
-  if(mood === 'happy') spawnParticles('😄', 18, 8, 14);
+  if(mood === 'warm') spawnParticles('❤️', 20, 6, 12);
+  if(mood === 'nostalgia') spawnParticles('🎶', 16, 8, 14);
+  if(mood === 'light') spawnParticles('✨', 22, 6, 12);
+  if(mood === 'cold') spawnParticles('❄️', 30, 5, 10, 12, 24);
+  if(mood === 'happy') spawnParticles('😄', 18, 6, 12);
   if(mood === 'night'){
     const moonEl = document.createElement('div'); moonEl.className='moon';
     const fogEl = document.createElement('div'); fogEl.className='fog';
     document.body.appendChild(moonEl);
     document.body.appendChild(fogEl);
   }
-  if(mood === 'calm') spawnParticles('🍂', 14, 14, 22);
-  if(mood === 'sad') spawnParticles('🌧️', 26, 10, 16);
+  if(mood === 'calm') spawnParticles('🍂', 14, 8, 16);
+  if(mood === 'sad') spawnParticles('💧', 30, 3, 6, 8, 18); // lluvia rápida solo gotas
 
   musica.src = musicaFile;
   musica.play();
