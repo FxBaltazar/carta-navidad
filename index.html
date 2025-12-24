@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -121,24 +122,97 @@ html, body {
 /* Formas base */
 .shape-circle { border-radius: 50%; }
 
+/* ===== NUEVAS FIGURAS ===== */
+.shape-heart-soft {
+  clip-path: polygon(
+    50% 15%, 65% 5%, 85% 20%, 85% 45%,
+    50% 85%, 15% 45%, 15% 20%, 35% 5%
+  );
+}
+
+.shape-music {
+  clip-path: polygon(
+    40% 10%, 55% 10%, 55% 60%,
+    70% 65%, 70% 80%, 55% 75%,
+    40% 70%, 40% 30%
+  );
+}
+
+.shape-diamond {
+  clip-path: polygon(
+    50% 0%, 85% 50%, 50% 100%, 15% 50%
+  );
+}
+
+.shape-snow {
+  clip-path: polygon(
+    50% 0%, 55% 20%, 70% 30%, 55% 40%,
+    60% 60%, 50% 50%, 40% 60%, 45% 40%,
+    30% 30%, 45% 20%
+  );
+}
+
+.shape-sun {
+  clip-path: polygon(
+    50% 15%, 60% 30%, 75% 35%, 60% 45%,
+    65% 65%, 50% 55%, 35% 65%, 40% 45%,
+    25% 35%, 40% 30%
+  );
+}
+
+.shape-moon {
+  clip-path: circle(40% at 60% 50%);
+}
+
+.shape-flower {
+  clip-path: polygon(
+    50% 20%, 60% 35%, 75% 50%, 60% 65%,
+    50% 80%, 40% 65%, 25% 50%, 40% 35%
+  );
+}
+
+.shape-tear {
+  clip-path: polygon(
+    50% 5%, 65% 35%, 60% 70%, 50% 90%,
+    40% 70%, 35% 35%
+  );
+}
+
 /* ===== PARTICULAS ===== */
 .particle { position: fixed; pointer-events: none; z-index:1; }
-/* ... (tus efectos de partículas siguen igual) ... */
+.heart, .star, .music-note, .emoji, .leaf, .rain, .snowflake { position: fixed; opacity:1; }
+.heart { animation: heartPop 1.2s ease forwards; font-size:24px; }
+@keyframes heartPop {0%{transform:scale(0);opacity:1}50%{transform:scale(1.4);opacity:0.8}100%{transform:scale(1.8);opacity:0}}
+.music-note { animation: noteFall linear forwards; font-size:30px; }
+@keyframes noteFall {0%{transform:translateY(-20px);opacity:1}100%{transform:translateY(110vh);opacity:0}}
+.star { animation: starTwinkle 1.5s ease forwards; font-size:26px; }
+@keyframes starTwinkle {0%{transform:scale(0);opacity:0}50%{transform:scale(1.3);opacity:1;text-shadow:0 0 10px #fff,0 0 20px #ffd}100%{transform:scale(1.5);opacity:0}}
+.leaf { animation: leafFall linear forwards; font-size:24px; }
+@keyframes leafFall {0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+.emoji { font-size:28px; }
+.rain { width:2px; background:rgba(200,200,255,0.7); animation-name:rainFall; animation-timing-function:linear; animation-iteration-count:infinite;}
+@keyframes rainFall {0%{transform:translateY(-20px);opacity:0}10%{opacity:1}100%{transform:translateY(110vh);opacity:0}}
+.snowflake { font-size:18px; animation-name:snowFall; animation-timing-function:linear; animation-iteration-count:infinite; }
+@keyframes snowFall {0%{transform:translateY(-20px)}100%{transform:translateY(110vh)}}
+.fog { position: fixed; inset:0; background: radial-gradient(circle, rgba(255,255,255,0.08), rgba(0,0,0,0.4)); animation:fogMove 12s infinite alternate; z-index:1; }
+@keyframes fogMove { from{opacity:0.2} to{opacity:0.5} }
+.moon { position: fixed; top:15%; right:10%; width:120px; height:120px; border-radius:50%; background: radial-gradient(circle,#fff,#ccc); box-shadow:0 0 40px rgba(255,255,255,.6); z-index:1;}
+
+audio { display:none; }
 
 /* ===== TITULO Y MENSAJE ===== */
 #songInfoContainer {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 80%;
-  height: 100%;
+  transform: translate(-50%, -50%);
+  width: 90%;
   text-align: center;
   pointer-events: none;
   z-index: 2000;
   display: flex;
   flex-direction: column;
   align-items: center;
-  perspective: 800px; /* Para efecto 3D */
 }
 
 #songTitle {
@@ -151,29 +225,26 @@ html, body {
   margin-bottom: 10px;
 }
 
-#songMessageArea {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-}
-
-.songMessageLine {
-  position: absolute;
-  width: 100%;
-  font-size: 28px;
-  font-weight: bold;
+#songMessage {
+  font-size: 22px;
   color: #ffeb3b;
-  text-shadow: 0 0 12px #ff0, 0 0 25px #ff0;
-  opacity: 0;
-  transform-origin: bottom center;
+  text-shadow: 0 0 8px #ff0,0 0 20px #ff0;
+  white-space: nowrap;
+  position: relative;
+  animation: messageScroll 10s linear infinite;
 }
 
-/* Animación estilo Star Wars */
-@keyframes starWarsScroll {
-  0% { transform: rotateX(30deg) translateY(200px) scale(1); opacity:0; }
+@keyframes messageScroll {
+  0% { transform: translateY(100%); opacity:0; }
   10% { opacity:1; }
-  100% { transform: rotateX(30deg) translateY(-800px) scale(0.3); opacity:0; }
+  90% { opacity:1; }
+  100% { transform: translateY(-200%); opacity:0; }
+}
+
+/* Animación de las caritas: giro más lento pero movimiento rápido */
+@keyframes emojiMove {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(360deg); }
 }
 </style>
 </head>
@@ -207,47 +278,171 @@ html, body {
 <!-- CONTENEDOR DE TITULO Y MENSAJE -->
 <div id="songInfoContainer">
   <div id="songTitle"></div>
-  <div id="songMessageArea"></div>
+  <div id="songMessage"></div>
 </div>
 
 <audio id="musica" loop></audio>
 
 <script>
+const bgBtn=document.getElementById('bgBtn');
+const bgMenu=document.getElementById('bgMenu');
+const effectBtn=document.getElementById('effectBtn');
+const effect=document.getElementById('effect');
+const playPauseBtn=document.getElementById('playPauseBtn');
+const musica=document.getElementById('musica');
+
 const songTitleEl = document.getElementById('songTitle');
-const songMessageAreaEl = document.getElementById('songMessageArea');
+const songMessageEl = document.getElementById('songMessage');
+
+let pausado=false;
+let efectoActivo=true;
 let activeIntervals=[];
 
-function showMessagesStarWars(messages){
-  let index = 0;
-  function nextMsg(){
-    if(index >= messages.length) return;
-    const msg = document.createElement('div');
-    msg.className = 'songMessageLine';
-    msg.textContent = messages[index];
-    songMessageAreaEl.appendChild(msg);
+bgBtn.onclick=()=>{bgMenu.style.display=bgMenu.style.display==='block'?'none':'block'};
+effectBtn.onclick=()=>{
+  efectoActivo=!efectoActivo; 
+  document.getElementById('songInfoContainer').style.display=efectoActivo?'flex':'none';
+  effect.style.display=efectoActivo?'flex':'none'; 
+  effectBtn.innerHTML=efectoActivo?'<i class="fas fa-eye"></i>':'<i class="fas fa-eye-slash"></i>'
+};
+playPauseBtn.onclick=()=>{
+  if(pausado){musica.play();playPauseBtn.innerHTML='<i class="fas fa-pause"></i>'}
+  else{musica.pause();playPauseBtn.innerHTML='<i class="fas fa-play"></i>'}
+  pausado=!pausado
+};
 
-    // activar animación
-    msg.style.animation = 'starWarsScroll 10s linear forwards';
-    setTimeout(()=>{
-      msg.remove();
-    }, 10000);
-
-    index++;
-    setTimeout(nextMsg, 3000); // cada mensaje sale 3s después del anterior
-  }
-  nextMsg();
+function clearBackgroundEffects(){
+  activeIntervals.forEach(i=>clearInterval(i));
+  activeIntervals=[];
+  document.querySelectorAll('.particle,.fog,.moon').forEach(e=>e.remove());
 }
 
-// Ejemplo de uso
-const mensajesEjemplo = [
-  "Casi nadie sabe que yo estoy enamorado tuyo.",
-  "Eres medio PDJ pero te quiero mucho.",
-  "A veces fallas pero te quiero.",
-  "Así que dime qué día puedes."
-];
+// EFECTOS EXCLUSIVOS REALISTAS
+function spawnHearts(){activeIntervals.push(setInterval(()=>{const h=document.createElement('div'); h.className='particle heart'; h.textContent='❤️'; h.style.left=Math.random()*100+'vw'; h.style.top=Math.random()*100+'vh'; h.style.fontSize=(Math.random()*30+20)+'px'; document.body.appendChild(h); setTimeout(()=>h.remove(),1200);},120)); }
 
-// showMessagesStarWars(mensajesEjemplo); // se activa al cambiar fondo
+function spawnMusicNotes(){activeIntervals.push(setInterval(()=>{const n=document.createElement('div'); n.className='particle music-note'; n.textContent='🎵'; n.style.left=Math.random()*100+'vw'; n.style.fontSize=(Math.random()*40+25)+'px'; n.style.animationDuration=(Math.random()*6+4)+'s'; document.body.appendChild(n); setTimeout(()=>n.remove(),10000);},300)); }
+
+function spawnStars(){activeIntervals.push(setInterval(()=>{const s=document.createElement('div'); s.className='particle star'; s.textContent='⭐'; s.style.left=Math.random()*100+'vw'; s.style.top=Math.random()*100+'vh'; s.style.fontSize=(Math.random()*25+20)+'px'; document.body.appendChild(s); setTimeout(()=>s.remove(),1600);},200)); }
+
+function spawnSnow(){activeIntervals.push(setInterval(()=>{const s=document.createElement('div'); s.className='particle snowflake'; s.textContent='❄️'; s.style.left=Math.random()*100+'vw'; s.style.fontSize=(Math.random()*20+12)+'px'; s.style.animationDuration=(Math.random()*10+6)+'s'; document.body.appendChild(s); setTimeout(()=>s.remove(),12000);},80)); }
+
+function spawnEmojis(){
+  activeIntervals.push(setInterval(()=>{const e=document.createElement('div'); e.className='particle emoji'; e.textContent='😄'; const size=Math.random()*20+28; e.style.fontSize=size+'px'; let startX, startY, endX, endY; const side=Math.floor(Math.random()*4); const screenW = window.innerWidth; const screenH = window.innerHeight; switch(side){case 0: startX = Math.random()*screenW; startY = -50; endX = screenW/2; endY = screenH; break; case 1: startX = Math.random()*screenW; startY = screenH+50; endX = screenW/2; endY = 0; break; case 2: startX = -50; startY = Math.random()*screenH; endX = screenW; endY = screenH/2; break; case 3: startX = screenW+50; startY = Math.random()*screenH; endX = 0; endY = screenH/2; break;} e.style.left = startX + 'px'; e.style.top = startY + 'px'; e.style.setProperty('--dx', (endX - startX) + 'px'); e.style.setProperty('--dy', (endY - startY) + 'px'); const dur = Math.random()*3 + 2; e.style.animation = `emojiMove ${dur}s linear forwards`; document.body.appendChild(e); setTimeout(()=>e.remove(), dur*1000);},100));
+}
+
+function spawnLeaves(){activeIntervals.push(setInterval(()=>{const l=document.createElement('div'); l.className='particle leaf'; l.textContent='🍂'; l.style.left=Math.random()*100+'vw'; l.style.fontSize=(Math.random()*25+15)+'px'; l.style.animationDuration=(Math.random()*10+8)+'s'; document.body.appendChild(l); setTimeout(()=>l.remove(),12000);},300)); }
+
+function spawnRain(){activeIntervals.push(setInterval(()=>{const r=document.createElement('div'); r.className='particle rain'; r.style.left=Math.random()*100+'vw'; r.style.height=(Math.random()*15+10)+'px'; r.style.animationDuration=(Math.random()*0.5+0.3)+'s'; document.body.appendChild(r); setTimeout(()=>r.remove(),500);},50)); }
+
+function setBackground(fondo,musicaFile,forma,texto,mood){
+  document.body.style.background=`url('${fondo}') center/cover no-repeat fixed`;
+  effect.className='effect shape-'+forma;
+  effect.style.animation='none';
+  clearBackgroundEffects();
+
+  // Mensajes tipo Star Wars
+  songTitleEl.textContent = texto;
+  songMessageEl.innerHTML = '';
+
+  const messagesMap = {
+    'Enamorado Tuyo': [
+      "Casi nadie sabe que yo estoy enamorado tuyo.",
+      "Eres medio PDJ pero te quiero mucho.",
+      "A veces te falla pero te quiero.",
+      "Y hasta me dan ganas de partirte tu madre.",
+      "Así que dime qué día puedes."
+    ],
+    'Nuestra Canción': [
+      "Me siento mejor cuando estoy contigo.",
+      "Me gusta molestarte.",
+      "Me gusta hacerte enojar.",
+      "Y nunca puedes ganarme.",
+      "Así que tienes que estar tranquila."
+    ],
+    'New Soul': [
+      "Soy un alma nueva.",
+      "Vine a este mundo extraño con la esperanza de aprender un poco sobre cómo dar y recibir.",
+      "Pero desde que llegué aquí sentí la alegría y el miedo.",
+      "Me encontré contigo si es ahora todo está bien."
+    ],
+    'Snowman': [
+      "Aunque estemos separados.",
+      "Eres parte de mi corazón.",
+      "Y esta noche, me perteneces.",
+      "Allá abajo, junto al arroyo.",
+      "Qué dulce parecerá."
+    ],
+    'Funny Day': [
+      "Tenemos un secreto para todos los creyentes.",
+      "En todas partes tengo algo de miel.",
+      "Solo tú y yo cantando juntos.",
+      "Los chicos solo quieren divertirse.",
+      "Sigo cantando mi melodía."
+    ],
+    'Tonight You Belong To Me': [
+      "Oh, es un día perfecto.",
+      "Me alegro de haberlo pasado contigo.",
+      "Los problemas desaparecen.",
+      "Los días contigo son tan divertidos.",
+      "Caminar paseando por cualquier lugar."
+    ],
+    'Perfect Day': [
+      "Sí, eres mi hogar, mi hogar por todas las estaciones.",
+      "Así que vamos, vamos.",
+      "Vamos bajo cero y nos escondamos del sol.",
+      "Te amaré por siempre y nos vamos a divertir.",
+      "Sí, vayamos al Polo Norte y vivamos felices."
+    ],
+    'Death Bed': [
+      "No te quedes despierto mucho tiempo.",
+      "No te vayas a la cama.",
+      "Haré una taza de café para tu cabeza.",
+      "Te levantará y te hará salir de la cama.",
+      "Sí, no quiero quedarme dormido, no quiero morir."
+    ]
+  };
+
+  const colorMap = {
+    'warm':'#FF4D4D',
+    'nostalgia':'#8E44AD',
+    'light':'#F1C40F',
+    'cold':'#3498DB',
+    'happy':'#F39C12',
+    'night':'#ECF0F1',
+    'calm':'#FFB6C1',
+    'sad':'#95A5A6'
+  };
+
+  messagesMap[texto].forEach(msg=>{
+    const div = document.createElement('div');
+    div.textContent = msg;
+    div.style.color = colorMap[mood] || '#FFF';
+    div.style.margin = '6px 0';
+    div.style.fontSize = '20px';
+    div.style.textShadow = '1px 1px 6px #000';
+    div.style.position = 'relative';
+    songMessageEl.appendChild(div);
+  });
+
+  if(mood==='warm') spawnHearts();
+  if(mood==='nostalgia') spawnMusicNotes();
+  if(mood==='light') spawnStars();
+  if(mood==='cold') spawnSnow();
+  if(mood==='happy') spawnEmojis();
+  if(mood==='night'){
+    const moonEl=document.createElement('div'); moonEl.className='moon';
+    const fogEl=document.createElement('div'); fogEl.className='fog';
+    document.body.appendChild(moonEl); document.body.appendChild(fogEl);
+  }
+  if(mood==='calm') spawnLeaves();
+  if(mood==='sad') spawnRain();
+
+  musica.src=musicaFile;
+  musica.play();
+  pausado=false;
+  playPauseBtn.innerHTML='<i class="fas fa-pause"></i>';
+  bgMenu.style.display='none';
+}
 </script>
-
 </body>
 </html>
