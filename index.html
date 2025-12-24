@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Navidad Interactiva 🎄</title>
 
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 html, body {
   margin: 0;
@@ -12,203 +15,202 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
-  background: url('fondo1.gif') no-repeat center center fixed;
-  background-size: cover;
+  background: url('fondo1.gif') center/cover no-repeat fixed;
   overflow: hidden;
 }
 
-/* Botón y contenedor */
-.boton-container {
+/* Barra superior de opciones */
+.top-bar {
   position: fixed;
-  top: 2%;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 2vw;
+  gap: 15px;
   z-index: 1000;
 }
 
-/* Botones */
-.boton {
-  padding: 2vw 4vw;
-  font-weight: bold;
-  font-size: 2.5vw;
-  border: 2px solid #ddd;
-  border-radius: 12px;
-  cursor: pointer;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
-  background-size: 400% 400%;
+.top-bar button {
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#240046,#3c096c,#5a189a,#7209b7);
   color: white;
-  text-shadow: 1px 1px 3px black;
-  box-shadow: 0 0 8px #111, 0 0 14px #222;
-  animation: rainbowBG 10s ease infinite alternate;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(160,0,255,.5);
+  transition: transform .3s;
 }
 
-@keyframes rainbowBG {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+.top-bar button:hover {
+  transform: scale(1.15);
 }
 
-/* Menús */
-.menu {
-  position: absolute;
+/* Menú de fondos en matriz 4xN */
+#bgMenu {
   display: none;
-  gap: 1vw;
-  top: 10vh;
+  position: fixed;
+  top: 80px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.75);
-  padding: 1vw;
+  background: rgba(0,0,0,0.85);
+  padding: 15px;
   border-radius: 12px;
   z-index: 1001;
-  max-height: 80vh;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-height: 70vh;
   overflow-y: auto;
-  text-align: center;
 }
 
-/* Menú música vertical */
-#musicMenu { flex-direction: column; }
-
-/* Menú fondos horizontal con miniaturas */
-#bgMenu {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 90vw;
-  overflow-x: auto;
-}
-
-/* Miniaturas de fondos */
 #bgMenu img {
-  width: 18vw;
-  height: 18vw;
+  width: 100%;
+  aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 10px;
-  border: 2px solid white;
   cursor: pointer;
-  margin: 1vw;
-  flex-shrink: 0;
-  transition: transform 0.2s;
+  border: 2px solid white;
+  transition: transform .3s;
 }
+
 #bgMenu img:hover { transform: scale(1.05); }
 
 /* Cerrar */
 .closeBtn {
-  padding: 0.8vw 1.4vw;
-  font-size: 3vw;
-  font-weight: bold;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  background: #9999FF;
+  grid-column: span 4;
+  padding: 0.6em 1em;
+  font-size: 1.2em;
+  border-radius: 12px;
+  border: none;
+  background: #ff4d4d;
   color: white;
   cursor: pointer;
-  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
-  margin-bottom: 1vw;
+  margin-bottom: 10px;
 }
 
-/* Canciones */
-.songBtn {
-  padding: 1vw 2vw;
-  font-size: 2.5vw;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: linear-gradient(45deg,#223D47,#B3C2C8,#759AB0,#7E9D9A);
-  color: white;
-  cursor: pointer;
-  text-align: left;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.songBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px #fff;
+/* EFECTO CENTRAL */
+.effect {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at top, rgba(255,255,255,0.15), rgba(0,0,0,0.9));
+  box-shadow: inset 0 0 30px rgba(255,255,255,.2), 0 0 40px rgba(180,0,0,.7);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all .6s ease;
 }
 
-/* Pausa/Reanudar */
-#playPauseBtn { display:none; }
+.effect span {
+  color: #ffdede;
+  text-align: center;
+  text-shadow: 0 0 10px crimson;
+  font-size: 1em;
+}
+
+/* Formas */
+.shape-circle { border-radius: 50%; }
+.shape-star {
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+    50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+}
+.shape-heart {
+  clip-path: polygon(
+    50% 15%, 61% 25%, 70% 35%, 75% 50%, 70% 65%,
+    50% 85%, 30% 65%, 25% 50%, 30% 35%, 39% 25%
+  );
+}
+
+/* Audio */
+audio { display:none; }
 
 </style>
 </head>
-
 <body>
 
-<div class="boton-container">
-  <button id="musicBtn" class="boton">🎵 Música</button>
-  <button id="bgBtn" class="boton">🎨 Fondos</button>
-  <button id="playPauseBtn" class="boton">⏯️ Pausar</button>
+<!-- Barra superior -->
+<div class="top-bar">
+  <button id="bgBtn" title="Cambiar fondo"><i class="fas fa-image"></i></button>
+  <button id="effectBtn" title="Mostrar/Ocultar efecto"><i class="fas fa-eye"></i></button>
+  <button id="playPauseBtn" title="Pausar/Reanudar música"><i class="fas fa-pause"></i></button>
 </div>
 
-<!-- Menú música -->
-<div id="musicMenu" class="menu">
-  <button class="closeBtn" onclick="musicMenu.style.display='none'">✖</button>
-  <div class="songBtn" onclick="cambiarMusica('sia_snowman.mp3')">Sia - Snowman</div>
-  <div class="songBtn" onclick="cambiarMusica('cascanueces_marcha.mp3')">Cascanueces Marcha</div>
-  <div class="songBtn" onclick="cambiarMusica('bing_crosby_beginning.mp3')">Bing Crosby - It's Beginning To Look A Lot Like Christmas</div>
-  <div class="songBtn" onclick="cambiarMusica('wham_last_christmas.mp3')">Wham! - Last Christmas</div>
-  <div class="songBtn" onclick="cambiarMusica('bing_andrews_santa.mp3')">Santa Claus Is Comin' To Town</div>
-  <div class="songBtn" onclick="cambiarMusica('karol_of_the_bells.mp3')">Karol of the Bells [Krampus]</div>
-  <div class="songBtn" onclick="cambiarMusica('new_soul_yael_naim.mp3')">New Soul - Yael Naim</div>
-  <div class="songBtn" onclick="cambiarMusica('lennon_tonight.mp3')">Tonight You Belong To Me</div>
+<!-- Menú de fondos -->
+<div id="bgMenu">
+  <button class="closeBtn" onclick="bgMenu.style.display='none'">Cerrar</button>
+  <img src="fondo1.gif" onclick="setBackground('fondo1.gif','sia_snowman.mp3','circle','Sia - Snowman')">
+  <img src="fondo2.gif" onclick="setBackground('fondo2.gif','cascanueces_marcha.mp3','star','Cascanueces Marcha')">
+  <img src="fondo3.gif" onclick="setBackground('fondo3.gif','bing_crosby_beginning.mp3','heart','It's Beginning To Look A Lot Like Christmas')">
+  <img src="fondo4.gif" onclick="setBackground('fondo4.gif','wham_last_christmas.mp3','circle','Last Christmas')">
+  <img src="fondo5.gif" onclick="setBackground('fondo5.gif','bing_andrews_santa.mp3','star','Santa Claus Is Comin To Town')">
+  <img src="fondo6.gif" onclick="setBackground('fondo6.gif','karol_of_the_bells.mp3','heart','Krampus')">
+  <img src="fondo7.gif" onclick="setBackground('fondo7.gif','new_soul_yael_naim.mp3','circle','New Soul')">
+  <img src="fondo8.gif" onclick="setBackground('fondo8.gif','lennon_tonight.mp3','star','Tonight You Belong To Me')">
 </div>
 
-<!-- Menú fondos -->
-<div id="bgMenu" class="menu">
-  <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif')">
-  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif')">
-  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif')">
-  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif')">
-  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif')">
-  <img src="fondo6.gif" onclick="cambiarFondo('fondo6.gif')">
-  <img src="fondo7.gif" onclick="cambiarFondo('fondo7.gif')">
-  <img src="fondo8.gif" onclick="cambiarFondo('fondo8.gif')">
-</div>
+<!-- Efecto central -->
+<div class="effect shape-circle" id="effect"><span>He knows when you are afraid</span></div>
 
 <audio id="musica" loop></audio>
 
 <script>
-// Referencias
-const musicBtn = document.getElementById('musicBtn');
 const bgBtn = document.getElementById('bgBtn');
-const musicMenu = document.getElementById('musicMenu');
 const bgMenu = document.getElementById('bgMenu');
-const musica = document.getElementById('musica');
+const effectBtn = document.getElementById('effectBtn');
+const effect = document.getElementById('effect');
 const playPauseBtn = document.getElementById('playPauseBtn');
+const musica = document.getElementById('musica');
 
-musicBtn.onclick = () => {
-  musicMenu.style.display = musicMenu.style.display==='flex'?'none':'flex';
-  bgMenu.style.display='none';
-};
+let pausado = false;
+let effectOn = true;
 
+// Mostrar/Ocultar menú fondos
 bgBtn.onclick = () => {
-  bgMenu.style.display = bgMenu.style.display==='flex'?'none':'flex';
-  musicMenu.style.display='none';
+  bgMenu.style.display = bgMenu.style.display==='grid'?'none':'grid';
 };
 
-function cambiarMusica(ruta){
-  musica.src = ruta;
-  musica.play();
-  playPauseBtn.style.display='inline-block';
-  playPauseBtn.textContent='⏯️ Pausar';
-  pausado=false;
-}
+// Mostrar/Ocultar efecto
+effectBtn.onclick = () => {
+  effectOn = !effectOn;
+  effect.style.display = effectOn ? 'flex' : 'none';
+  effectBtn.innerHTML = effectOn ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+};
 
-function cambiarFondo(ruta){
-  document.body.style.backgroundImage = `url('${ruta}')`;
-}
-
-// Pausar/Reanudar
-let pausado=false;
+// Pausar/Reanudar música
 playPauseBtn.onclick = () => {
-  if(pausado){
-    musica.play();
-    playPauseBtn.textContent='⏯️ Pausar';
-  }else{
-    musica.pause();
-    playPauseBtn.textContent='⏯️ Reanudar';
-  }
-  pausado=!pausado;
+  if(pausado){ musica.play(); pausado=false; playPauseBtn.innerHTML='<i class="fas fa-pause"></i>'; }
+  else{ musica.pause(); pausado=true; playPauseBtn.innerHTML='<i class="fas fa-play"></i>'; }
 };
+
+// Cambiar fondo + música + efecto + texto
+function setBackground(fondo,musicFile,shape,text){
+  document.body.style.background = `url('${fondo}') center/cover no-repeat fixed`;
+  
+  // Cambiar efecto
+  effect.className = 'effect';
+  if(shape==='circle') effect.classList.add('shape-circle');
+  else if(shape==='star') effect.classList.add('shape-star');
+  else if(shape==='heart') effect.classList.add('shape-heart');
+  
+  effect.querySelector('span').textContent = text;
+  effect.style.display = 'flex';
+  
+  // Música
+  musica.src = musicFile;
+  musica.play();
+  pausado = false;
+  playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  
+  bgMenu.style.display = 'none';
+}
 </script>
 
 </body>
