@@ -130,14 +130,15 @@ html, body {
 
 <script>
 const fondos = [
-    { img: 'fondo1.jpg', music: 'enamorado_tuyo.mp3', effect: 'circle' },
-    { img: 'fondo2.jpg', music: 'nuestra_cancion.mp3', effect: 'stars' },
-    { img: 'fondo3.jpg', music: 'new_soul.mp3', effect: 'bubbles' },
-    { img: 'fondo4.jpg', music: 'sia_snowman.mp3', effect: 'snow' },
-    { img: 'fondo5.jpg', music: 'funny_day.mp3', effect: 'hearts' },
-    { img: 'fondo6.jpg', music: 'tonight_you_belong_to_me.mp3', effect: 'lights' },
-    { img: 'fondo7.jpg', music: 'perfect_day.mp3', effect: 'waves' },
-    { img: 'fondo8.jpg', music: 'extra.mp3', effect: 'sparkles' }
+    <img src="fondo1.jpg" onclick="setBackground('fondo1.gif','enamorado_tuyo.mp3','circle','Enamorado Tuyo')">
+    <img src="fondo2.jpg" onclick="setBackground('fondo2.gif','nuestra_cancion.mp3','heart','Nuestra Canción')">
+    <img src="fondo3.jpg" onclick="setBackground('fondo3.gif','new_soul.mp3','circle','New Soul')">
+    <img src="fondo4.jpg" onclick="setBackground('fondo4.gif','sia_snowman.mp3','star','Sia – Snowman')">
+
+    <img src="fondo5.jpg" onclick="setBackground('fondo5.gif','funny_day.mp3','circle','Funny Day')">
+    <img src="fondo6.jpg" onclick="setBackground('fondo6.gif','tonight_you_belong_to_me.mp3','heart','Tonight You Belong To Me')">
+    <img src="fondo7.jpg" onclick="setBackground('fondo7.gif','perfect_day_lou_reed.mp3','circle','Perfect Day')">
+    <img src="fondo8.jpg" onclick="setBackground('fondo8.gif','cancion8.mp3','star','Especial')">
 ];
 
 const bg = document.getElementById('background');
@@ -201,3 +202,4 @@ function loadEffect(type) {
 
 </body>
 </html>
+
