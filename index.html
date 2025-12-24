@@ -17,35 +17,33 @@ html, body {
   overflow: hidden;
 }
 
-/* Botón y contenedor */
+/* Botones en horizontal arriba */
 .boton-container {
   position: fixed;
   top: 2%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-wrap: wrap;
-  gap: 2vw;
+  gap: 1vw;
   z-index: 1000;
 }
 
-/* Botones principales estilo arcoiris oscuro */
-.boton, #toggleEffect {
-  padding: 2vw 4vw;
+/* Botones */
+.boton {
+  padding: 1.5vw 3vw;
   font-weight: bold;
-  font-size: 3.5vw;
+  font-size: 3vw;
   border: 2px solid #ddd;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(45deg,#111,#333,#555,#222);
+  background: linear-gradient(45deg,#0f1a20,#1a2b33,#2e3f4d,#1a2b33);
   background-size: 400% 400%;
   color: white;
   text-shadow: 1px 1px 3px black;
   box-shadow: 0 0 8px #111, 0 0 14px #222;
-  animation: rainbowDark 10s ease infinite alternate;
+  animation: darkRainbowBG 10s ease infinite alternate;
 }
-
-@keyframes rainbowDark {
+@keyframes darkRainbowBG {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }
 }
@@ -56,7 +54,8 @@ html, body {
   display: none;
   gap: 1vw;
   top: 10vh;
-  left: 2vw;
+  left: 50%;
+  transform: translateX(-50%);
   background: rgba(0,0,0,0.75);
   padding: 1vw;
   border-radius: 12px;
@@ -92,10 +91,10 @@ html, body {
   font-weight: bold;
   border-radius: 50%;
   border: 2px solid #fff;
-  background: #555;
+  background: #9999FF;
   color: white;
   cursor: pointer;
-  box-shadow: 0 0 12px black, 0 0 20px #333;
+  box-shadow: 0 0 12px black, 0 0 20px #3a88b5;
   align-self: flex-start;
 }
 
@@ -113,8 +112,8 @@ html, body {
   to { transform: translateY(100vh) rotate(360deg); }
 }
 
-/* Bola / Efectos */
-.effect-circle {
+/* Bola Krampus / efectos */
+#krampusEffect {
   position: fixed;
   width: 35vw;
   height: 35vw;
@@ -131,6 +130,17 @@ html, body {
   padding-top: 12vw;
   z-index: 1000;
 }
+#krampusEffect button {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  font-size: 2vw;
+  cursor: pointer;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  border-radius: 50%;
+  color: white;
+}
 </style>
 </head>
 
@@ -138,111 +148,72 @@ html, body {
 
 <div class="boton-container">
   <button id="bgBtn" class="boton">🎨 Fondos</button>
+  <button id="effectBtn" class="boton">👁️ Efectos</button>
   <button id="playPauseBtn" class="boton" style="display:none;">⏯️ Pausar</button>
-  <button id="toggleEffect" class="boton">👁️ Efectos</button>
 </div>
 
 <!-- Menú fondos -->
 <div id="bgMenu" class="menu">
   <button class="closeBtn" onclick="bgMenu.style.display='none'">✖</button>
-  <img src="fondo1.gif" onclick="cambiarFondo(0)">
-  <img src="fondo2.gif" onclick="cambiarFondo(1)">
-  <img src="fondo3.gif" onclick="cambiarFondo(2)">
-  <img src="fondo4.gif" onclick="cambiarFondo(3)">
-  <img src="fondo5.gif" onclick="cambiarFondo(4)">
-  <img src="fondo6.gif" onclick="cambiarFondo(5)">
-  <img src="fondo7.gif" onclick="cambiarFondo(6)">
-  <img src="fondo8.gif" onclick="cambiarFondo(7)">
+  <img src="fondo1.gif" onclick="cambiarFondo('fondo1.gif', 'sia_snowman.mp3')">
+  <img src="fondo2.gif" onclick="cambiarFondo('fondo2.gif', 'cascanueces_marcha.mp3')">
+  <img src="fondo3.gif" onclick="cambiarFondo('fondo3.gif', 'bing_crosby_beginning.mp3')">
+  <img src="fondo4.gif" onclick="cambiarFondo('fondo4.gif', 'karol_of_the_bells.mp3')">
+  <img src="fondo5.gif" onclick="cambiarFondo('fondo5.gif', 'krampus_music.mp3', true)">
+  <img src="fondo6.gif" onclick="cambiarFondo('fondo6.gif', 'wham_last_christmas.mp3')">
+  <img src="fondo7.gif" onclick="cambiarFondo('fondo7.gif', 'bing_andrews_santa.mp3')">
+  <img src="fondo8.gif" onclick="cambiarFondo('fondo8.gif', 'powfu_death_bed.mp3')">
 </div>
 
-<!-- Efecto círculo -->
-<div id="effectCircle" class="effect-circle"></div>
+<!-- Bola Krampus / efecto -->
+<div id="krampusEffect">
+  CRÉDITOS / ENDING KRAMPUS
+  <button id="toggleEffect">👁️/</button>
+</div>
 
 <audio id="musica" loop></audio>
 
 <script>
-// Nieve
-for(let i=0;i<50;i++){
-  let s=document.createElement('div');
-  s.className='snowflake';
-  s.style.left=Math.random()*100+'vw';
-  s.style.fontSize=(Math.random()*4+2)+'vw';
-  s.style.animationDuration=(Math.random()*5+5)+'s';
-  s.innerHTML='❄';
-  document.body.appendChild(s);
-}
-
 // Referencias
-const bgBtn = document.getElementById('bgBtn');
-const bgMenu = document.getElementById('bgMenu');
-const musica = document.getElementById('musica');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const toggleEffect = document.getElementById('toggleEffect');
-const effectCircle = document.getElementById('effectCircle');
+const bgBtn=document.getElementById('bgBtn');
+const effectBtn=document.getElementById('effectBtn');
+const bgMenu=document.getElementById('bgMenu');
+const musica=document.getElementById('musica');
+const playPauseBtn=document.getElementById('playPauseBtn');
+const krampusEffect=document.getElementById('krampusEffect');
+const toggleEffect=document.getElementById('toggleEffect');
 
-bgBtn.onclick = () => {
-  bgMenu.style.display = bgMenu.style.display === 'flex' ? 'none' : 'flex';
+bgBtn.onclick=()=>{ bgMenu.style.display=bgMenu.style.display==='flex'?'none':'flex'; };
+effectBtn.onclick=()=>{ 
+  if(krampusEffect.style.display==='block'){
+    krampusEffect.style.display='none';
+    effectBtn.textContent='👁️/ Efectos';
+  } else {
+    krampusEffect.style.display='block';
+    effectBtn.textContent='👁️ Efectos';
+  }
 };
 
-let pausado = false;
-playPauseBtn.onclick = () => {
-  if(pausado){
-    musica.play();
-    playPauseBtn.textContent='⏯️ Pausar';
-  } else {
-    musica.pause();
-    playPauseBtn.textContent='⏯️ Reanudar';
-  }
+let pausado=false;
+playPauseBtn.onclick=()=>{
+  if(pausado){ musica.play(); playPauseBtn.textContent='⏯️ Pausar'; } 
+  else { musica.pause(); playPauseBtn.textContent='⏯️ Reanudar'; }
   pausado=!pausado;
 };
 
-// Fondos, músicas y efectos
-const fondos = [
-  {gif:'fondo1.gif', mp3:'sia_snowman.mp3', efecto:'nieve'},
-  {gif:'fondo2.gif', mp3:'cascanueces_marcha.mp3', efecto:'brillo'},
-  {gif:'fondo3.gif', mp3:'bing_crosby_beginning.mp3', efecto:'luces'},
-  {gif:'fondo4.gif', mp3:'karol_of_the_bells.mp3', efecto:'nieve rápida'},
-  {gif:'fondo5.gif', mp3:'krampus_music.mp3', efecto:'krampus'},
-  {gif:'fondo6.gif', mp3:'wham_last_christmas.mp3', efecto:'corazones'},
-  {gif:'fondo7.gif', mp3:'powfu_death_bed.mp3', efecto:'lluvia'},
-  {gif:'fondo8.gif', mp3:'new_soul_yael_naim.mp3', efecto:'destellos'}
-];
-
-let efectoActivo = true;
-
-function cambiarFondo(index){
-  const fondo = fondos[index];
-  document.body.style.backgroundImage = `url('${fondo.gif}')`;
-  musica.src = fondo.mp3;
-  musica.play();
-  playPauseBtn.style.display='inline-block';
-  playPauseBtn.textContent='⏯️ Pausar';
-  pausado=false;
-
-  // Mostrar efecto según fondo
-  if(efectoActivo){
-    effectCircle.style.display='block';
-    if(fondo.efecto === 'krampus'){
-      effectCircle.textContent='CRÉDITOS / ENDING KRAMPUS';
-    } else {
-      effectCircle.textContent='EFECTO: '+fondo.efecto.toUpperCase();
-    }
-  } else {
-    effectCircle.style.display='none';
+// Cambiar fondo y música/efecto
+function cambiarFondo(fondo, cancion=null, krampus=false){
+  document.body.style.backgroundImage=`url('${fondo}')`;
+  if(cancion){
+    musica.src=cancion;
+    musica.play();
+    playPauseBtn.style.display='inline-block';
+    playPauseBtn.textContent='⏯️ Pausar';
+    pausado=false;
   }
+  if(krampus){ krampusEffect.style.display='block'; effectBtn.textContent='👁️ Efectos'; }
+  else { krampusEffect.style.display='none'; effectBtn.textContent='👁️/ Efectos'; }
 }
-
-// Mostrar/ocultar efecto
-toggleEffect.onclick = () => {
-  efectoActivo = !efectoActivo;
-  if(efectoActivo){
-    toggleEffect.textContent='👁️ Efectos';
-    effectCircle.style.display='block';
-  } else {
-    toggleEffect.textContent='👁️ /';
-    effectCircle.style.display='none';
-  }
-};
 </script>
 
 </body>
